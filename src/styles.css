@@ -1,0 +1,27 @@
+.app-shell {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  color: #17202a;
+  background: #f5f8fa;
+  min-height: 100vh;
+}
+
+header h1 {
+  margin: 0 0 0.5rem;
+}
+
+header p {
+  margin: 0 0 1.5rem;
+  color: #425062;
+}
+
+.error {
+  color: #b71c1c;
+}
+
+.hero {
+  background: white;
+  border: 1px solid #d6dee8;
+  border-radius: 12px;
+  padding: 16px;
+}

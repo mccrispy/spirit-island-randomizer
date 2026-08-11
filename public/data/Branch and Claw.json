@@ -1,0 +1,82 @@
+{
+  "$schema": "spirit_island_v4.json",
+  "version": "4.1",
+  "Expansion": "Branch & Claw",
+  "Contents": [
+    {
+      "Category": "Spirits",
+      "Items": [
+        {
+          "Name": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "SharpFangsBehindTheLeaves",
+          "ComplexityRating": "Moderate",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "KeeperOfTheForbiddenWilds",
+          "ComplexityRating": "Moderate",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        }
+      ]
+    },
+    {
+      "Category": "Adversaries",
+      "Items": [
+        {
+          "Name": "France",
+          "CanonicalName": "TheKingdomOfFrance",
+          "Levels": [
+            {
+              "Level": 0,
+              "Difficulty": 2
+            },
+            {
+              "Level": 1,
+              "Difficulty": 3
+            },
+            {
+              "Level": 2,
+              "Difficulty": 5
+            },
+            {
+              "Level": 3,
+              "Difficulty": 7
+            },
+            {
+              "Level": 4,
+              "Difficulty": 8
+            },
+            {
+              "Level": 5,
+              "Difficulty": 9
+            },
+            {
+              "Level": 6,
+              "Difficulty": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Category": "Scenarios",
+      "Items": [
+        {
+          "Name": "Powers Long Forgotten",
+          "CanonicalName": "PowersLongForgotten"
+        },
+        {
+          "Name": "Ward the Shores",
+          "CanonicalName": "WardTheShores"
+        },
+        {
+          "Name": "Rituals of the Destroying Flame",
+          "CanonicalName": "RitualsOfTheDestroyingFlame"
+        }
+      ]
+    }
+  ]
+}

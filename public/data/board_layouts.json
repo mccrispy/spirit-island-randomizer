@@ -1,0 +1,194 @@
+{
+  "Layouts": [
+    {
+      "Name": "Standard",
+      "CanonicalName": "Standard",
+      "ValidBoardCounts": [1, 2, 3, 4, 5, 6, 7],
+      "Templates": [{ "BoardCounts": [1, 2, 3, 4, 5, 6, 7] }],
+      "SVGFile": "Standard",
+      "Description": "Default arrangement with no specific layout."
+    },
+    {
+      "Name": "Coastline",
+      "CanonicalName": "Coastline",
+      "ValidBoardCounts": [2, 3, 4, 5, 6],
+      "Templates": [
+        {
+          "BoardCounts": [2, 3, 4, 5, 6],
+          "Pairs": "1.0:2.2,2.0:3.2,3.0:4.2,4.0:5.2,5.0:6.2"
+        }
+      ],
+      "SVGFile": "Coastline",
+      "Description": ""
+    },
+    {
+      "Name": "Fragment",
+      "CanonicalName": "Fragment",
+      "ValidBoardCounts": [2],
+      "Templates": [
+        {
+          "BoardCounts": [2],
+          "Pairs": "1.2:2.1"
+        }
+      ],
+      "SVGFile": "Fragment",
+      "Description": ""
+    },
+    {
+      "Name": "Opposite Shores",
+      "CanonicalName": "OppositeShores",
+      "ValidBoardCounts": [2, 6],
+      "Templates": [
+        {
+          "BoardCounts": [2, 6],
+          "Pairs": "1.1:2.1,1.2:3.0,2.0:4.2,3.2:5.0,4.0:6.2"
+        }
+      ],
+      "SVGFile": "OppositeShores",
+      "Description": ""
+    },
+    {
+      "Name": "Sunrise",
+      "CanonicalName": "Sunrise",
+      "ValidBoardCounts": [3],
+      "Templates": [
+        {
+          "BoardCounts": [3],
+          "Pairs": "1.0:2.1,2.0:3.1"
+        }
+      ],
+      "SVGFile": "Sunrise",
+      "Description": ""
+    },
+    {
+      "Name": "Leaf",
+      "CanonicalName": "Leaf",
+      "ValidBoardCounts": [4],
+      "Templates": [
+        {
+          "BoardCounts": [4],
+          "Pairs": "1.0:2.1,1.1:3.1,2.0:4.2"
+        }
+      ],
+      "SVGFile": "Leaf",
+      "Description": ""
+    },
+    {
+      "Name": "Snake",
+      "CanonicalName": "Snake",
+      "ValidBoardCounts": [4, 6],
+      "Templates": [
+        {
+          "BoardCounts": [4, 6],
+          "Pairs": "1.2:2.2,2.1:3.1,3.2:4.2,4.1:5.1,5.2:6.2"
+        }
+      ],
+      "SVGFile": "Snake",
+      "Description": ""
+    },
+    {
+      "Name": "Claw",
+      "CanonicalName": "Claw",
+      "ValidBoardCounts": [5],
+      "Templates": [
+        {
+          "BoardCounts": [5],
+          "Pairs": "1.0:2.2,2.1:3.1,3.0:4.1,4.0:5.1"
+        }
+      ],
+      "SVGFile": "Claw",
+      "Description": ""
+    },
+    {
+      "Name": "Peninsula",
+      "CanonicalName": "Peninsula",
+      "ValidBoardCounts": [5],
+      "Templates": [
+        {
+          "BoardCounts": [5],
+          "Pairs": "1.1:2.2,2.1:3.2,3.0:4.2,4.0:5.2"
+        }
+      ],
+      "SVGFile": "Peninsula",
+      "Description": ""
+    },
+    {
+      "Name": "Snail",
+      "CanonicalName": "Snail",
+      "ValidBoardCounts": [5],
+      "Templates": [
+        {
+          "BoardCounts": [5],
+          "Pairs": "1.1:2.2,2.1:3.2,3.0:4.1,4.0:5.2"
+        }
+      ],
+      "SVGFile": "Snail",
+      "Description": ""
+    },
+    {
+      "Name": "V",
+      "CanonicalName": "V",
+      "ValidBoardCounts": [5, 6],
+      "Templates": [
+        {
+          "BoardCounts": [5, 6],
+          "Pairs": "1.1:2.2,1.2:3.0,2.0:4.2,3.2:5.0,4.0:6.2"
+        }
+      ],
+      "SVGFile": "V",
+      "Description": ""
+    },
+    {
+      "Name": "Caldera",
+      "CanonicalName": "Caldera",
+      "ValidBoardCounts": [6],
+      "Templates": [
+        {
+          "BoardCounts": [6],
+          "Pairs": "1.1:2.2,2.0:3.2,3.1:4.2,4.0:5.2,5.1:6.2"
+        }
+      ],
+      "SVGFile": "Caldera",
+      "Description": ""
+    },
+    {
+      "Name": "Flower",
+      "CanonicalName": "Flower",
+      "ValidBoardCounts": [6],
+      "Templates": [
+        {
+          "BoardCounts": [6],
+          "Pairs": "1.2:2.0,2.1:3.2,3.0:4.2,3.1:5.2,5.0:6.2"
+        }
+      ],
+      "SVGFile": "Flower",
+      "Description": ""
+    },
+    {
+      "Name": "Star",
+      "CanonicalName": "Star",
+      "ValidBoardCounts": [6],
+      "Templates": [
+        {
+          "BoardCounts": [6],
+          "Pairs": "1.0:2.1,2.0:3.1,3.0:4.1,4.0:5.1,5.0:6.1"
+        }
+      ],
+      "SVGFile": "Star",
+      "Description": ""
+    },
+    {
+      "Name": "Archipelago",
+      "CanonicalName": "Archipelago",
+      "ValidBoardCounts": [2, 3, 4, 5, 6],
+      "Templates": [
+        {
+          "BoardCounts": [2, 3, 4, 5, 6],
+          "Pairs": "1.3:2.3,2.3:3.3,3.3:4.3,4.3:5.3,5.3:6.3"
+        }
+      ],
+      "SVGFile": "",
+      "Description": ""
+    }
+  ]
+}

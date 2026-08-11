@@ -1,0 +1,125 @@
+{
+  "$schema": "spirit_island_v4.json",
+  "version": "4.1",
+  "Expansion": "Feather & Flame",
+  "Contents": [
+    {
+      "Category": "Spirits",
+      "Items": [
+        {
+          "Name": "Heart of the Wildfire",
+          "CanonicalName": "HeartOfTheWildfire",
+          "ComplexityRating": "High",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Serpent Slumbering beneath the Island",
+          "CanonicalName": "SerpentSlumberingBeneathTheIsland",
+          "ComplexityRating": "High",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Downpour Drenches the World",
+          "CanonicalName": "DownpourDrenchesTheWorld",
+          "ComplexityRating": "High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Finder of Paths Unseen",
+          "CanonicalName": "FinderOfPathsUnseen",
+          "ComplexityRating": "Very High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Immense",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Immense",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Amorphous",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Amorphous",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Foreboding",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Foreboding",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Travel",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Travel",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Might",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Might",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        }
+      ]
+    },
+    {
+      "Category": "Adversaries",
+      "Items": [
+        {
+          "Name": "Scotland",
+          "CanonicalName": "TheKingdomOfScotland",
+          "Levels": [
+            {
+              "Level": 0,
+              "Difficulty": 1
+            },
+            {
+              "Level": 1,
+              "Difficulty": 3
+            },
+            {
+              "Level": 2,
+              "Difficulty": 4
+            },
+            {
+              "Level": 3,
+              "Difficulty": 6
+            },
+            {
+              "Level": 4,
+              "Difficulty": 7
+            },
+            {
+              "Level": 5,
+              "Difficulty": 8
+            },
+            {
+              "Level": 6,
+              "Difficulty": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Category": "Scenarios",
+      "Items": [
+        {
+          "Name": "A Diversity Of Spirits",
+          "CanonicalName": "ADiversityOfSpirits"
+        },
+        {
+          "Name": "Varied Terrains",
+          "CanonicalName": "VariedTerrains"
+        }
+      ]
+    }
+  ]
+}

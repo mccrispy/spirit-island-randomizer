@@ -1,0 +1,769 @@
+{
+  "$schema": "spirit_island_v4.json",
+  "version": "4.1",
+  "Expansion": "Jagged Earth",
+  "Contents": [
+    {
+      "Category": "Spirits",
+      "Items": [
+        {
+          "Name": "Fractured Days Split the Sky",
+          "CanonicalName": "FracturedDaysSplitTheSky",
+          "ComplexityRating": "Very High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Many Minds Move as One",
+          "CanonicalName": "ManyMindsMoveAsOne",
+          "ComplexityRating": "Moderate",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Shroud of Silent Mist",
+          "CanonicalName": "ShroudOfSilentMist",
+          "ComplexityRating": "High",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Starlight Seeks its Form",
+          "CanonicalName": "StarlightSeeksItsForm",
+          "ComplexityRating": "Very High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Lure of the Deep Wilderness",
+          "CanonicalName": "LureOfTheDeepWilderness",
+          "ComplexityRating": "Moderate",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Shifting Memory of Ages",
+          "CanonicalName": "ShiftingMemoryOfAges",
+          "ComplexityRating": "Moderate",
+          "HasAspects": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Stone's Unyielding Defiance",
+          "CanonicalName": "StonesUnyieldingDefiance",
+          "ComplexityRating": "Moderate",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Vengeance as a Burning Plague",
+          "CanonicalName": "VengeanceAsABurningPlague",
+          "ComplexityRating": "High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Volcano Looming High",
+          "CanonicalName": "VolcanoLoomingHigh",
+          "ComplexityRating": "Moderate",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Grinning Trickster Stirs Up Trouble",
+          "CanonicalName": "GrinningTricksterStirsUpTrouble",
+          "ComplexityRating": "Moderate",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "−"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "="
+        },
+        {
+          "Name": "Pandemonium",
+          "CanonicalName": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "CanonicalName": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "CanonicalName": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "CanonicalName": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "CanonicalName": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "CanonicalName": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "CanonicalName": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "CanonicalName": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "CanonicalName": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "CanonicalName": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "CanonicalName": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "CanonicalName": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Pandemonium",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Pandemonium",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Wind",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Wind",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sunshine",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Sunshine",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Madness",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Madness",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Reach",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "Reach",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Resilience",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Resilience",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        }
+      ]
+    },
+    {
+      "Category": "Boards",
+      "Items": [
+        {
+          "Name": "E",
+          "Sides": [
+            {
+              "SideType": "standard",
+              "Identifier": "E",
+              "CanonicalName": "E",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "mountain",
+                  "IsCoastal": true,
+                  "SetupComponents": ["City"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "jungle",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "wetlands",
+                  "SetupComponents": ["Blight"]
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "sands"
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Town"]
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "wetlands",
+                  "SetupComponents": ["Dahan x 2"]
+                }
+              ],
+              "IncompatibleBoards": ["B"]
+            },
+            {
+              "SideType": "thematic",
+              "Identifier": "South East",
+              "CanonicalName": "SouthEast",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "jungle",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Town", "Dahan x 2"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "jungle",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "wetlands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "mountain"
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Beasts"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "wetlands",
+                  "SetupComponents": ["Town x 2", "Dahan", "Disease"]
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "sands",
+                  "SetupComponents": ["Explorer"]
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Blight", "Wilds"]
+                },
+                {
+                  "Number": 9,
+                  "TerrainType": "mountain"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "F",
+          "Sides": [
+            {
+              "SideType": "standard",
+              "Identifier": "F",
+              "CanonicalName": "F",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "jungle",
+                  "IsCoastal": true,
+                  "SetupComponents": ["City"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "wetlands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Blight"]
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "wetlands"
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "sands",
+                  "SetupComponents": ["Town"]
+                }
+              ],
+              "IncompatibleBoards": ["D"]
+            },
+            {
+              "SideType": "thematic",
+              "Identifier": "South West",
+              "CanonicalName": "SouthWest",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Beasts"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "wetlands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Town", "Dahan"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Town(Strife)", "Dahan", "Blight"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Explorer", "Town", "Beasts"]
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Beasts", "Wilds"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Explorer", "Badlands"]
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Explorer"]
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Blight", "Wilds"]
+                },
+                {
+                  "Number": 9,
+                  "TerrainType": "sands"
+                },
+                {
+                  "Number": 10,
+                  "TerrainType": "jungle"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Category": "Adversaries",
+      "Items": [
+        {
+          "Name": "Habsburg Monarchy",
+          "CanonicalName": "TheHabsburgMonarchy",
+          "Levels": [
+            {
+              "Level": 0,
+              "Difficulty": 2
+            },
+            {
+              "Level": 1,
+              "Difficulty": 3
+            },
+            {
+              "Level": 2,
+              "Difficulty": 5
+            },
+            {
+              "Level": 3,
+              "Difficulty": 6
+            },
+            {
+              "Level": 4,
+              "Difficulty": 8
+            },
+            {
+              "Level": 5,
+              "Difficulty": 9
+            },
+            {
+              "Level": 6,
+              "Difficulty": 10
+            }
+          ]
+        },
+        {
+          "Name": "Russia",
+          "CanonicalName": "TheTsardomOfRussia",
+          "Levels": [
+            {
+              "Level": 0,
+              "Difficulty": 1
+            },
+            {
+              "Level": 1,
+              "Difficulty": 3
+            },
+            {
+              "Level": 2,
+              "Difficulty": 4
+            },
+            {
+              "Level": 3,
+              "Difficulty": 6
+            },
+            {
+              "Level": 4,
+              "Difficulty": 7
+            },
+            {
+              "Level": 5,
+              "Difficulty": 9
+            },
+            {
+              "Level": 6,
+              "Difficulty": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Category": "Scenarios",
+      "Items": [
+        {
+          "Name": "Elemental Invocation",
+          "CanonicalName": "ElementalInvocation"
+        },
+        {
+          "Name": "Despicable Theft",
+          "CanonicalName": "DespicableTheft"
+        },
+        {
+          "Name": "The Great River",
+          "CanonicalName": "TheGreatRiver"
+        }
+      ]
+    }
+  ]
+}

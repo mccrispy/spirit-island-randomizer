@@ -1,0 +1,278 @@
+{
+  "$schema": "spirit_island_v4.json",
+  "version": "4.1",
+  "Expansion": "Horizons of Spirit Island",
+  "Contents": [
+    {
+      "Category": "Spirits",
+      "Items": [
+        {
+          "Name": "Devouring Teeth Lurk Underfoot",
+          "CanonicalName": "DevouringTeethLurkUnderfoot",
+          "ComplexityRating": "Low",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Eyes Watch from the Trees",
+          "CanonicalName": "EyesWatchFromTheTrees",
+          "ComplexityRating": "Low",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Fathomless Mud of the Swamp",
+          "CanonicalName": "FathomlessMudOfTheSwamp",
+          "ComplexityRating": "Low",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Rising Heat of Stone and Sand",
+          "CanonicalName": "RisingHeatOfStoneAndSand",
+          "ComplexityRating": "Low",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Sun-Bright Whirlwind",
+          "CanonicalName": "SunBrightWhirlwind",
+          "ComplexityRating": "Low",
+          "SpiritType": "Base Spirit"
+        }
+      ]
+    },
+    {
+      "Category": "Boards",
+      "Items": [
+        {
+          "Name": "F",
+          "Sides": [
+            {
+              "SideType": "standard",
+              "Identifier": "F",
+              "CanonicalName": "F",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "jungle",
+                  "IsCoastal": true,
+                  "SetupComponents": ["City"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "wetlands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Blight"]
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "wetlands"
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "sands",
+                  "SetupComponents": ["Town"]
+                }
+              ],
+              "IncompatibleBoards": ["D"]
+            },
+            {
+              "SideType": "thematic",
+              "Identifier": "South West",
+              "CanonicalName": "SouthWest",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Beasts"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "wetlands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Town", "Dahan"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Town(Strife)", "Dahan", "Blight"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Explorer", "Town", "Beasts"]
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Beasts", "Wilds"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Explorer", "Badlands"]
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Explorer"]
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Blight", "Wilds"]
+                },
+                {
+                  "Number": 9,
+                  "TerrainType": "sands"
+                },
+                {
+                  "Number": 10,
+                  "TerrainType": "jungle"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "Name": "G",
+          "Sides": [
+            {
+              "SideType": "standard",
+              "Identifier": "G",
+              "CanonicalName": "G",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "mountain",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "wetlands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["City"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "wetlands",
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "sands",
+                  "SetupComponents": ["Blight"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "jungle"
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "mountain",
+                  "SetupComponents": ["Town"]
+                }
+              ],
+              "IncompatibleBoards": ["C"]
+            }
+          ]
+        },
+        {
+          "Name": "H",
+          "Sides": [
+            {
+              "SideType": "standard",
+              "Identifier": "H",
+              "CanonicalName": "H",
+              "Lands": [
+                {
+                  "Number": 1,
+                  "TerrainType": "jungle",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 2,
+                  "TerrainType": "sands",
+                  "IsCoastal": true,
+                  "SetupComponents": ["City"]
+                },
+                {
+                  "Number": 3,
+                  "TerrainType": "mountain",
+                  "IsCoastal": true,
+                  "SetupComponents": ["Dahan"]
+                },
+                {
+                  "Number": 4,
+                  "TerrainType": "mountain"
+                },
+                {
+                  "Number": 5,
+                  "TerrainType": "jungle",
+                  "SetupComponents": ["Blight"]
+                },
+                {
+                  "Number": 6,
+                  "TerrainType": "wetlands",
+                  "SetupComponents": ["Dahan x 2"]
+                },
+                {
+                  "Number": 7,
+                  "TerrainType": "wetlands",
+                  "SetupComponents": ["Town"]
+                },
+                {
+                  "Number": 8,
+                  "TerrainType": "sands",
+                  "SetupComponents": ["Dahan x 2"]
+                }
+              ],
+              "IncompatibleBoards": ["A"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Category": "Adversaries",
+      "Items": []
+    },
+    {
+      "Category": "Scenarios",
+      "Items": []
+    }
+  ]
+}

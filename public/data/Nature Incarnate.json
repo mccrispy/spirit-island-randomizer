@@ -1,0 +1,1403 @@
+{
+  "$schema": "spirit_island_v4.json",
+  "version": "4.1",
+  "Expansion": "Nature Incarnate",
+  "Contents": [
+    {
+      "Category": "Spirits",
+      "Items": [
+        {
+          "Name": "Breath of Darkness Down Your Spine",
+          "CanonicalName": "BreathOfDarknessDownYourSpine",
+          "ComplexityRating": "High",
+          "HasIncarna": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Dances up Earthquakes",
+          "CanonicalName": "DancesUpEarthquakes",
+          "ComplexityRating": "Very High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Ember-Eyed Behemoth",
+          "CanonicalName": "EmberEyedBehemoth",
+          "ComplexityRating": "Moderate",
+          "HasIncarna": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Hearth-Vigil",
+          "CanonicalName": "HearthVigil",
+          "ComplexityRating": "Moderate",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Relentless Gaze of the Sun",
+          "CanonicalName": "RelentlessGazeOfTheSun",
+          "ComplexityRating": "High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Towering Roots of the Jungle",
+          "CanonicalName": "ToweringRootsOfTheJungle",
+          "ComplexityRating": "Moderate",
+          "HasIncarna": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Wandering Voice Keens Delirium",
+          "CanonicalName": "WanderingVoiceKeensDelirium",
+          "ComplexityRating": "High",
+          "HasIncarna": true,
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Wounded Waters Bleeding",
+          "CanonicalName": "WoundedWatersBleeding",
+          "ComplexityRating": "High",
+          "SpiritType": "Base Spirit"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "="
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "DarkFire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "="
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+",
+          "HasIncarna": true
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+",
+          "HasIncarna": true
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+",
+          "HasIncarna": true
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "="
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "−"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "+"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "SpiritType": "Aspect",
+          "ComplexityModifier": "−"
+        },
+        {
+          "Name": "Regrowth",
+          "CanonicalName": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "CanonicalName": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "CanonicalName": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "CanonicalName": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "CanonicalName": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "CanonicalName": "SpreadingHostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "CanonicalName": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "CanonicalName": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "CanonicalName": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "CanonicalName": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "CanonicalName": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "CanonicalName": "DarkFire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "CanonicalName": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "CanonicalName": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "CanonicalName": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "CanonicalName": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "CanonicalName": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "CanonicalName": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "CanonicalName": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "CanonicalName": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "CanonicalName": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "CanonicalName": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "CanonicalName": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "CanonicalName": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "CanonicalName": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "CanonicalName": "SpreadingHostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "CanonicalName": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "CanonicalName": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "CanonicalName": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "CanonicalName": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "CanonicalName": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "CanonicalName": "DarkFire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "CanonicalName": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "CanonicalName": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "CanonicalName": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "CanonicalName": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "CanonicalName": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "CanonicalName": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "CanonicalName": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "CanonicalName": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Regrowth",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Regrowth",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tangles",
+          "BaseSpirit": "A Spread of Rampant Green",
+          "CanonicalName": "Tangles",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Enticing",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Enticing",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Violence",
+          "BaseSpirit": "Bringer of Dreams and Nightmares",
+          "CanonicalName": "Violence",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Transforming",
+          "BaseSpirit": "Heart of the Wildfire",
+          "CanonicalName": "Transforming",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Spreading Hostility",
+          "BaseSpirit": "Keeper of the Forbidden Wilds",
+          "CanonicalName": "SpreadingHostility",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Sparking",
+          "BaseSpirit": "Lightning's Swift Strike",
+          "CanonicalName": "Sparking",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Lair",
+          "BaseSpirit": "Lure of the Deep Wilderness",
+          "CanonicalName": "Lair",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Deeps",
+          "BaseSpirit": "Ocean's Hungry Grasp",
+          "CanonicalName": "Deeps",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Haven",
+          "BaseSpirit": "River Surges in Sunlight",
+          "CanonicalName": "Haven",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Locus",
+          "BaseSpirit": "Serpent Slumbering Beneath the Island",
+          "CanonicalName": "Locus",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Dark Fire",
+          "BaseSpirit": "Shadows Flicker Like Flame",
+          "CanonicalName": "DarkFire",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Encircle",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Encircle",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Unconstrained",
+          "BaseSpirit": "Sharp Fangs Behind the Leaves",
+          "CanonicalName": "Unconstrained",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Intensify",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Intensify",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Mentor",
+          "BaseSpirit": "Shifting Memory of Ages",
+          "CanonicalName": "Mentor",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Stranded",
+          "BaseSpirit": "Shroud of Silent Mist",
+          "CanonicalName": "Stranded",
+          "ComplexityModifier": "−",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Tactician",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Tactician",
+          "ComplexityModifier": "=",
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Warrior",
+          "BaseSpirit": "Thunderspeaker",
+          "CanonicalName": "Warrior",
+          "ComplexityModifier": "+",
+          "HasIncarna": true,
+          "SpiritType": "Aspect"
+        },
+        {
+          "Name": "Nourishing",
+          "BaseSpirit": "Vital Strength of the Earth",
+          "CanonicalName": "Nourishing",
+          "ComplexityModifier": "+",
+          "SpiritType": "Aspect"
+        }
+      ]
+    },
+    {
+      "Category": "Adversaries",
+      "Items": [
+        {
+          "Name": "Habsburg Mining Expedition",
+          "CanonicalName": "HabsburgMiningExpedition",
+          "Levels": [
+            {
+              "Level": 0,
+              "Difficulty": 1
+            },
+            {
+              "Level": 1,
+              "Difficulty": 3
+            },
+            {
+              "Level": 2,
+              "Difficulty": 4
+            },
+            {
+              "Level": 3,
+              "Difficulty": 5
+            },
+            {
+              "Level": 4,
+              "Difficulty": 7
+            },
+            {
+              "Level": 5,
+              "Difficulty": 9
+            },
+            {
+              "Level": 6,
+              "Difficulty": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Category": "Scenarios",
+      "Items": [
+        {
+          "Name": "Destiny Unfolds",
+          "CanonicalName": "DestinyUnfolds"
+        },
+        {
+          "Name": "Surges of Colonization",
+          "CanonicalName": "SurgesOfColonization"
+        }
+      ]
+    }
+  ]
+}
