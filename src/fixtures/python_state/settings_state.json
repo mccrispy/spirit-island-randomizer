@@ -1,0 +1,24 @@
+{
+  "window_geometry": {
+    "x": 623,
+    "y": 43,
+    "width": 1185,
+    "height": 1338
+  },
+  "num_spirits": 5,
+  "additional_board": false,
+  "strict_board_compatibility": false,
+  "thematic_boards": false,
+  "spirit_tree_expanded": true,
+  "local_launch": true,
+  "expansion_branch_claw": true,
+  "expansion_jagged_earth": true,
+  "expansion_nature_incarnate": true,
+  "use_events": true,
+  "use_adversaries": true,
+  "use_scenarios": false,
+  "preferred_layouts": {
+    "3": "Standard",
+    "2": "Random"
+  }
+}

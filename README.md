@@ -2,6 +2,8 @@
 
 This repository is a GitHub Pages port of the SIRPYv4 Spirit Island randomizer.
 
+The engine and behavior are being re-implemented from the Python SIRPYv4 source at `C:\Users\mccri\Python Projects\SIRPYv4`.
+
 ## Status
 - Initial React/Vite scaffold created.
 - Data loader and type definitions are in place.
