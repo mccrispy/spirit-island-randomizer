@@ -22,8 +22,11 @@ export type SelectionState = Record<string, TriState>;
 export interface EngineOptions {
     expansions?: string[];
     numSpirits?: number;
+    includeAdditionalBoard?: boolean;
+    useThematicBoards?: boolean;
+    useAdversaries?: boolean;
+    useScenarios?: boolean;
     strictBoardCompatibility?: boolean;
-    requireSpiritAspects?: boolean;
     selectionState?: SelectionState;
 }
 
@@ -40,10 +43,13 @@ export interface SelectedBoard {
 export interface EngineResult {
     selectedSpirits: SelectedSpirit[];
     selectedBoards: SelectedBoard[];
-    adversary: Adversary;
-    scenario: Scenario;
+    selectedAdditionalBoard?: SelectedBoard | null;
+    adversary: Adversary | null;
+    scenario: Scenario | null;
     layout: BoardLayout | null;
     layoutTemplate?: LayoutTemplate | null;
+    boardPositions?: Record<number, Board> | null;
+    layoutUrlString?: string | null;
     options: EngineOptions;
     generatedAt: string;
 }

@@ -3,6 +3,7 @@ import { readFileSync } from "fs";
 import { resolve } from "path";
 import { loadAllData } from "./loader";
 import { createSeededRng, generateSetup } from "../engine/randomizer";
+import { TriState } from "../engine/types";
 
 const expansionFiles = [
     "Base Game.json",
@@ -48,7 +49,24 @@ describe("loader", () => {
 
     it("generates a setup with loaded data", async () => {
         const data = await loadAllData();
-        const result = generateSetup(data, { expansions: ["Base Game"] }, createSeededRng(123));
+        const selectionState = Object.fromEntries(
+            [
+                ...data.spirits.map((spirit) => spirit.canonicalName),
+                ...data.aspects.map((aspect) => aspect.canonicalName),
+                ...data.boards.map((board) => board.canonicalName),
+                ...data.adversaries.map((adversary) => adversary.canonicalName),
+                ...data.scenarios.map((scenario) => scenario.canonicalName),
+            ].map((name) => [name, TriState.CHECKED])
+        );
+
+        const result = generateSetup(
+            data,
+            {
+                expansions: ["Base Game"],
+                selectionState,
+            },
+            createSeededRng(123)
+        );
 
         expect(result.selectedBoards.length).toBeGreaterThan(0);
         expect(result.selectedBoards[0].board).toBeDefined();

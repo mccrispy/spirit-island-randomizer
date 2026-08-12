@@ -35,6 +35,7 @@ interface RawSpirit {
   HasAspects?: boolean;
   HasIncarna?: boolean;
   BaseSpiritName?: string;
+  BaseSpirit?: string;
   ComplexityModifier?: string;
 }
 
@@ -114,7 +115,7 @@ function parseSpirit(item: unknown, expansionName: string): Spirit | null {
     complexityRating: normalizeString(raw.ComplexityRating),
     hasAspects: raw.HasAspects,
     hasIncarna: raw.HasIncarna,
-    baseSpiritName: normalizeString(raw.BaseSpiritName),
+    baseSpiritName: normalizeString(raw.BaseSpiritName) || normalizeString(raw.BaseSpirit),
     complexityModifier: normalizeString(raw.ComplexityModifier),
   };
 }
@@ -129,8 +130,8 @@ function parseBoard(item: unknown, expansionName: string): Board | null {
     sideType: normalizeString(side.SideType),
     identifier: normalizeString(side.Identifier),
     canonicalName: normalizeString(side.CanonicalName),
-    lands: assertArray(side.Lands).map(() => ({})),
-    incompatibleBoards: assertArray(side.IncompatibleBoards),
+    lands: [] as import("./types").BoardLand[],
+    incompatibleBoards: assertArray<string>(side.IncompatibleBoards),
   }));
 
   if (!name || !sides.length) {
@@ -196,7 +197,7 @@ function parseLayout(item: unknown): BoardLayout | null {
     name,
     canonicalName,
     validBoardCounts: assertArray<number>(raw.ValidBoardCounts),
-    templates: assertArray(raw.Templates).map((template) => ({
+    templates: assertArray<RawLayoutTemplate>(raw.Templates).map((template) => ({
       boardCounts: assertArray<number>(template.BoardCounts),
       pairs: normalizeString(template.Pairs),
     })),
@@ -284,10 +285,22 @@ export async function loadAllData(): Promise<AppData> {
     };
   }
 
+  const baseSpiritCanonicalByName: Record<string, string> = {};
+  for (const baseSpirit of spiritsList) {
+    baseSpiritCanonicalByName[baseSpirit.name] = baseSpirit.canonicalName;
+  }
+
   for (const aspect of aspects) {
     const baseName = aspect.baseSpiritName;
-    if (baseName && baseSpiritMap[baseName]) {
-      baseSpiritMap[baseName].aspects.push(aspect);
+    if (!baseName) {
+      continue;
+    }
+
+    const baseCanonicalName =
+      baseSpiritMap[baseName]?.spirit.canonicalName || baseSpiritCanonicalByName[baseName];
+
+    if (baseCanonicalName && baseSpiritMap[baseCanonicalName]) {
+      baseSpiritMap[baseCanonicalName].aspects.push(aspect);
     }
   }
 

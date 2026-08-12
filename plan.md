@@ -3,6 +3,8 @@
 ## Overview
 Create a static web port of the SIRPYv4 Spirit Island randomizer that can be hosted on GitHub Pages. This initial implementation will use React + Vite + TypeScript and preserve the core randomizer behavior, launch URL generation, tri-state selection model, board/adversary/scenario selection, and localStorage persistence. Persistence should remain browser-local only; it should not expose easily user-editable raw files on disk, and the persisted state should be stored in an internal browser-friendly form rather than through a user-facing JSON file.
 
+Parity policy decision: match Python app initialization semantics. On app load, the web app will initialize selectionState and settingsState from browser persistence, and generation will use that initialized state model. If no saved state exists, defaults are initialized in-memory and then persisted in browser storage.
+
 ## Project structure
 - `public/` - static assets and game data JSON files
 - `src/` - application source code
@@ -17,11 +19,21 @@ Create a static web port of the SIRPYv4 Spirit Island randomizer that can be hos
 - `public/data/` contains the game JSON files and loader file names have been corrected.
 - `src/data/loader.ts` parses the JSON data and returns sanitized `spirits`, `boards`, `adversaries`, `scenarios`, `layouts`, and `baseSpiritMap`.
 - Aspect deduplication is implemented and the loader returns the correct aspect count.
+- Aspect linkage to base spirit families is implemented from the upstream JSON schema (`BaseSpirit` / `BaseSpiritName`) so aspect selection behaves correctly.
 - `src/App.tsx` loads data and displays counts successfully.
 - The randomizer engine has been ported to TypeScript in `src/engine/randomizer.ts`.
-- The engine supports board compatibility, multi-spirit selection, forced/optional spirit selection, and layout selection.
-- Vitest tests are passing for engine logic and loader integration, including a real Python-persisted selection/settings JSON fixture.
-- Browser-local persistence and UI selection controls are not implemented yet.
+- The engine supports board compatibility, multi-spirit selection, forced/optional spirit selection, additional board logic, thematic board mode, and layout selection.
+- The engine applies settings-based toggles for `use_adversaries`, `use_scenarios`, and expansion filtering.
+- The engine emits board position assignments and layout URL strings.
+- The engine enforces strict Python parity: `selectionState` is required; generation throws if it is missing.
+- The fixture UI displays spirit-to-board assignment slots and current engine result.
+- Vitest tests are passing (33/33) for engine logic and loader integration, including a real Python-persisted selection/settings JSON fixture.
+- `src/persistence.ts` is implemented: `loadSelectionState`, `saveSelectionState`, `loadSettingsState`, `saveSettingsState`, `buildDefaultSelectionState`, `settingsToExpansions`.
+- `SettingsState` covers all RPM settings keys (all boolean expansion flags, `useEvents`, `spiritTreeExpanded`, `localLaunch`, `preferredLayouts`) plus two web-only expansion flags (`expansionFeatherFlame`, `expansionHorizons`).
+- App-load initialization is implemented: on data load, `selectionState` and `settingsState` are restored from `localStorage`; if absent, defaults are initialized and persisted.
+- `requireSpiritAspects` removed — this flag has no equivalent in the RPM; aspect selection is purely a `selectionState` concern.
+- Expansion settings redesigned to match RPM: individual boolean flags instead of a derived string array; `settingsToExpansions()` computes the engine-facing `expansions[]` from flags.
+- TypeScript project references fixed (`tsconfig.node.json` composite), `@types/react` and `@types/react-dom` installed, all pre-existing type errors resolved.
 
 ## Objectives
 1. Port data loading from the Python project’s `data_files_v4/` JSON files.
@@ -32,7 +44,7 @@ Create a static web port of the SIRPYv4 Spirit Island randomizer that can be hos
    - Expansion and play option controls
    - Generate, Copy, Launch, Save/Load profile, Save/Load result
 4. Preserve tri-state selection semantics (unchecked, checked, forced).
-5. Save settings + selection state to browser-local storage (e.g. localStorage or IndexedDB) in an internal format, not as a user-editable plain JSON file.
+5. Save and restore both settingsState and selectionState to browser-local storage (e.g. localStorage or IndexedDB) in an internal format, not as a user-editable plain JSON file.
 6. Provide GitHub Pages-friendly static hosting.
 
 ## Phase 1: Core implementation
@@ -44,24 +56,25 @@ Create a static web port of the SIRPYv4 Spirit Island randomizer that can be hos
 - Create the main introductory UI shell: complete
 - App displays counts of spirits/boards/adversaries/scenarios: complete
 - Data loader fixed for aspect deduplication and counts validated: complete
+- Data loader fixed for aspect-base family linkage from source schema: complete
 - Implement a first pass of the randomizer engine and verify data loading: complete
 - Add engine unit tests and deterministic RNG support: complete
 - Add real Python-persisted selection/settings integration test: complete
+- Port Python parity steps 1-6 for randomizer behavior: complete
+- Add assignment display in fixture UI (spirit -> board by slot): complete
+- Add browser persistence scaffolding for settingsState and selectionState: complete
+- App-load restore/initialization of settingsState and selectionState: complete
+- Strict selectionState requirement enforced in engine (Python parity): complete
+- SettingsState aligned to full RPM settings schema: complete
+- TypeScript config and type errors resolved: complete
 - Add launch URL generation for web launch and Steam launch support: pending
-- Add localStorage persistence scaffolding: pending
 
 ### Tasks
-- Scaffold React/Vite app
-- Copy game data JSON files to `public/data`
-- Build TypeScript data interfaces for spirits, boards, adversaries, scenarios, layouts
-- Implement `loadAllData()` to parse the JSON files into web-friendly structures
-- Create the main introductory UI shell
-- Implement a first pass of the randomizer engine and verify data loading
-- Add engine unit tests and deterministic RNG support
-- Add real Python-persisted selection/settings integration tests
 - Add launch URL generation for web launch and Steam launch support
-- Add localStorage persistence scaffolding
-- Port Python-derived compatibility rules into the engine
+- Build tri-state selection UI controls and wire them to engine options
+- Build board/adversary/scenario selection controls and sorting/filtering
+- Add profile/result save-load UX over browser-local persistence
+- Split current single-file demo UI into focused components
 
 ### Success criteria
 - App starts in the browser
@@ -118,21 +131,19 @@ Create a static web port of the SIRPYv4 Spirit Island randomizer that can be hos
 
 ## Next steps
 ### Recommended immediate work
-1. Add browser-local persistence infrastructure (localStorage or IndexedDB) and define the internal storage schema.
-2. Implement the UI selection model and tri-state spirit selection controls.
-3. Add board/adversary/scenario controls and expansion/options toggles.
-4. Wire the UI to `generateSetup(...)` and build a results panel with copy/share functionality.
-5. Add launch URL generation and connect it to the result view.
+1. Implement the full UI selection model and tri-state spirit selection controls.
+2. Add board/adversary/scenario controls and expansion/options toggles (wired to the persisted `settingsState`).
+3. Add launch URL generation and connect it to the result view.
+4. Wire save-on-change for `settingsState` and `selectionState` to `localStorage`.
 
 ### Mapped task list
-- `src/persistence/*` or `src/utils/persistence.ts`: implement local persistence helpers and optional migration logic.
-- `src/App.tsx`: add state initialization/loading from browser storage and save-on-change behavior.
+- `src/App.tsx`: add save-on-change for settingsState + selectionState.
 - `src/components/SpiritSelection.tsx`: build tri-state spirit tree UI with forced/optional states.
-- `src/components/OptionsPanel.tsx`: add expansion toggles, board count, layout, require aspect, and other play options.
+- `src/components/OptionsPanel.tsx`: add expansion toggles, board count, layout, and other play options.
 - `src/components/BoardSelection.tsx`: add board/adversary/scenario filters and selection controls.
 - `src/components/ResultPanel.tsx`: render generated setup details, copy button, and launch URL.
-- `src/engine/randomizer.ts`: extend engine inputs for persisted selection/options and keep compatibility rules isolated.
-- `src/engine/randomizer.test.ts`: add regression tests for persisted-state logic and launch URL generation.
+- `src/engine/randomizer.ts`: add result-level forced metadata fields used by Python UI if needed.
+- `src/engine/randomizer.test.ts`: add regression tests for launch URL generation.
 - `vite.config.ts` / GitHub Pages config: add static deployment settings once UI is stable.
 
 ### Milestone criteria
