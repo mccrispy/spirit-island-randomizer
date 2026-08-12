@@ -286,6 +286,93 @@ describe("randomizer engine", () => {
         ).toThrow("selectionState is required for spirit selection parity with Python");
     });
 
+    it("marks forced spirits as forced and optional spirits as not forced", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 2,
+                selectionState: {
+                    "test-spirit": TriState.UNCHECKED,
+                    "test-aspect": TriState.INDETERMINATE,
+                    "optional-spirit": TriState.CHECKED,
+                    "optional-aspect": TriState.UNCHECKED,
+                },
+            },
+            createSeededRng(88)
+        );
+
+        const forcedSpirit = result.selectedSpirits.find((s) => s.spirit.canonicalName === "test-aspect");
+        const optionalSpirit = result.selectedSpirits.find((s) => s.spirit.canonicalName === "optional-spirit");
+        expect(forcedSpirit?.forced).toBe(true);
+        expect(optionalSpirit?.forced).toBe(false);
+    });
+
+    it("marks forced boards as forced and optional boards as not forced", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 1,
+                selectionState: {
+                    "test-spirit": TriState.CHECKED,
+                    "test-board": TriState.CHECKED,
+                    "optional-board": TriState.INDETERMINATE,
+                },
+            },
+            createSeededRng(17)
+        );
+
+        expect(result.selectedBoards[0].board.canonicalName).toBe("optional-board");
+        expect(result.selectedBoards[0].forced).toBe(true);
+    });
+
+    it("marks forced adversary as forced", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 1,
+                selectionState: {
+                    "test-spirit": TriState.CHECKED,
+                    "optional-adversary": TriState.INDETERMINATE,
+                },
+            },
+            createSeededRng(23)
+        );
+
+        expect(result.adversary?.canonicalName).toBe("optional-adversary");
+        expect(result.adversaryForced).toBe(true);
+    });
+
+    it("marks randomly selected adversary as not forced", () => {
+        const result = runWithTrace(
+            sampleData,
+            { expansions: ["Base Game"], selectionState: defaultSelectionState },
+            createSeededRng(23)
+        );
+
+        expect(result.adversaryForced).toBe(false);
+    });
+
+    it("marks forced scenario as forced", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 1,
+                selectionState: {
+                    "test-spirit": TriState.CHECKED,
+                    "optional-scenario": TriState.INDETERMINATE,
+                },
+            },
+            createSeededRng(31)
+        );
+
+        expect(result.scenario?.canonicalName).toBe("optional-scenario");
+        expect(result.scenarioForced).toBe(true);
+    });
+
     it("populates board positions and layout URL string for templated layouts", () => {
         const layoutData: AppData = {
             ...sampleData,

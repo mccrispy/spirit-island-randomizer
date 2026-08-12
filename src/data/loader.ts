@@ -301,6 +301,8 @@ export async function loadAllData(): Promise<AppData> {
 
     if (baseCanonicalName && baseSpiritMap[baseCanonicalName]) {
       baseSpiritMap[baseCanonicalName].aspects.push(aspect);
+      // Normalize to canonical name so callers don't need to resolve display names.
+      aspect.baseSpiritName = baseCanonicalName;
     }
   }
 

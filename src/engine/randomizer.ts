@@ -150,13 +150,13 @@ function selectOneSpiritPerFamily(
     optionsPerFamily: Record<string, { forced: Spirit[]; optional: Spirit[] }>,
     numSpirits: number,
     rng: RNG
-): Spirit[] {
-    const selected: Spirit[] = [];
+): { spirit: Spirit; forced: boolean }[] {
+    const selected: { spirit: Spirit; forced: boolean }[] = [];
     const selectedFamilies = new Set<string>();
 
     for (const [familyName, options] of Object.entries(optionsPerFamily)) {
         if (options.forced.length) {
-            selected.push(options.forced[0]);
+            selected.push({ spirit: options.forced[0], forced: true });
             selectedFamilies.add(familyName);
         }
     }
@@ -185,7 +185,7 @@ function selectOneSpiritPerFamily(
         if (!spirit) {
             throw new Error("Failed to select a spirit from optional options.");
         }
-        selected.push(spirit);
+        selected.push({ spirit, forced: false });
     }
 
     return selected;
@@ -368,12 +368,14 @@ function selectBoards(
                 return {
                     board,
                     boardSide: thematicSide,
+                    forced: isForcedState(options.selectionState?.[board.canonicalName]),
                 };
             }),
             selectedAdditionalBoard: additionalBoard
                 ? {
                     board: additionalBoard,
                     boardSide: getThematicSide(additionalBoard) ?? additionalBoard.sides[0],
+                    forced: false,
                 }
                 : null,
         };
@@ -406,6 +408,7 @@ function selectBoards(
         selectedAdditionalBoard = {
             board: additionalBoard,
             boardSide: standardAdditionalSide,
+            forced: false,
         };
     }
 
@@ -415,7 +418,7 @@ function selectBoards(
             if (!boardSide) {
                 throw new Error(`Board ${board.name} has no sides available`);
             }
-            return { board, boardSide };
+            return { board, boardSide, forced: isForcedState(options.selectionState?.[board.canonicalName]) };
         }),
         selectedAdditionalBoard,
     };
@@ -436,10 +439,7 @@ function selectSpirits(data: AppData, options: EngineOptions, rng: RNG): Selecte
 
     const selected = selectOneSpiritPerFamily(optionsPerFamily, numSpirits, rng);
 
-    return selected.map((spirit) => {
-        const baseSpirit = data.baseSpiritMap[getSpiritFamilyName(spirit)];
-        return { spirit };
-    });
+    return selected.map(({ spirit, forced }) => ({ spirit, forced }));
 }
 
 function selectAdversary(data: AppData, options: EngineOptions, rng: RNG) {
@@ -567,7 +567,9 @@ export function generateSetup(
     const { selectedBoards, selectedAdditionalBoard } = selectBoards(data, mergedOptions, engineRng);
     const selectedSpirits = selectSpirits(data, mergedOptions, engineRng);
     const adversary = selectAdversary(data, mergedOptions, engineRng);
+    const adversaryForced = adversary !== null && isForcedState(mergedOptions.selectionState?.[adversary.canonicalName]);
     const scenario = selectScenario(data, mergedOptions, engineRng);
+    const scenarioForced = scenario !== null && isForcedState(mergedOptions.selectionState?.[scenario.canonicalName]);
     const layout = selectLayout(data, mergedOptions, engineRng);
     const totalBoards = selectedBoards.length + (selectedAdditionalBoard ? 1 : 0);
     const layoutTemplate = layout?.templates?.length
@@ -594,7 +596,9 @@ export function generateSetup(
         selectedAdditionalBoard,
         selectedSpirits,
         adversary,
+        adversaryForced,
         scenario,
+        scenarioForced,
         layout,
         layoutTemplate: layoutTemplate ?? null,
         boardPositions,

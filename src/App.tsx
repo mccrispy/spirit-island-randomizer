@@ -3,6 +3,7 @@ import { loadAllData } from "./data/loader";
 import type { AppData } from "./data/types";
 import { generateSetup, createSeededRng } from "./engine/randomizer";
 import type { EngineResult, SelectionState } from "./engine/types";
+import { buildWebLaunchUrl, buildSteamLaunchUrl } from "./launchUrl";
 import {
   buildDefaultSelectionState,
   defaultSettings,
@@ -187,6 +188,26 @@ function App() {
                       : "None")}
                 </li>
               </ul>
+              <div style={{ marginTop: 12 }}>
+                {[
+                  {
+                    label: "Web Launch",
+                    url: buildWebLaunchUrl(result, settings!),
+                  },
+                  {
+                    label: "Steam Launch",
+                    url: buildSteamLaunchUrl(result, settings!),
+                  },
+                ].map(({ label, url }) => (
+                  <p key={label} style={{ wordBreak: "break-all" }}>
+                    <a href={url} target="_blank" rel="noreferrer">
+                      {label}
+                    </a>
+                    {": "}
+                    <code style={{ fontSize: "0.85em" }}>{url}</code>
+                  </p>
+                ))}
+              </div>
               <pre
                 style={{
                   maxHeight: 400,

@@ -26,7 +26,7 @@ const DEFAULT_SETTINGS: SettingsState = {
     expansionNatureIncarnate: false,
     expansionFeatherFlame: false,
     expansionHorizons: false,
-    numSpirits: 1,
+    numSpirits: 3,
     includeAdditionalBoard: false,
     useThematicBoards: false,
     useAdversaries: true,

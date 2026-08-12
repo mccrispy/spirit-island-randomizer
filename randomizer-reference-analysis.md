@@ -90,15 +90,14 @@ This document captures the reference behavior of the Python randomizer engine an
 - App-load restore of `selectionState` and `settingsState` from `localStorage` is implemented; defaults are initialized and persisted on first run.
 - `SettingsState` covers all RPM settings keys (`useEvents`, `spiritTreeExpanded`, `localLaunch`, `preferredLayouts`) plus per-expansion boolean flags matching RPM structure.
 - `requireSpiritAspects` removed: aspect selection is a `selectionState` concern only, matching RPM behavior.
+- `aspect.baseSpiritName` normalized to canonical name in the loader so all callers receive a canonical key without further resolution.
+- Launch URL generation implemented (`src/launchUrl.ts`); parameter order, canonical name usage, expansion ID mapping, `useTokens` logic, and `useEvents` as a standalone flag all match RPM behavior.
 
 ### Remaining known divergence
 1. Result-level forced metadata fields (forced spirit/board/adversary/scenario markers) are tracked in the RPM result model but not yet emitted by the web engine. Needed if the UI needs to distinguish forced vs randomly-selected items in the result display.
 
-2. Launch URL generation is not yet implemented in the web engine or UI.
-
 ## Recommended Porting Order
 1. Add result-level forced metadata fields if the UI needs to distinguish forced vs random items.
-2. Implement Python-style launch URL generation and wire it to UI actions.
 
 ## Working Rule For This Repo
 When implementing or reviewing randomizer behavior, use this document first, then verify against SIRPYv4 source if needed. Avoid re-deriving the same baseline analysis unless reference code changes.

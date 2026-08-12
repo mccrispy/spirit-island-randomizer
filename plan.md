@@ -34,6 +34,9 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - `requireSpiritAspects` removed — this flag has no equivalent in the RPM; aspect selection is purely a `selectionState` concern.
 - Expansion settings redesigned to match RPM: individual boolean flags instead of a derived string array; `settingsToExpansions()` computes the engine-facing `expansions[]` from flags.
 - TypeScript project references fixed (`tsconfig.node.json` composite), `@types/react` and `@types/react-dom` installed, all pre-existing type errors resolved.
+- `src/launchUrl.ts` implemented: `buildWebLaunchUrl` and `buildSteamLaunchUrl` generate the Handelabra launch URL in the canonical parameter order. `useExpansions` is a union of settings flags and expansions inferred from result content; `useTokens` follows from BC/JE presence; `useEvents` is a standalone game-behavior flag independent of expansion state.
+- Loader normalizes `aspect.baseSpiritName` to the canonical name at load time so callers always receive a canonical key.
+- Both Web Launch and Steam Launch URLs are displayed with full text in the result view for testing.
 
 ## Objectives
 1. Port data loading from the Python project’s `data_files_v4/` JSON files.
@@ -67,13 +70,13 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - Strict selectionState requirement enforced in engine (Python parity): complete
 - SettingsState aligned to full RPM settings schema: complete
 - TypeScript config and type errors resolved: complete
-- Add launch URL generation for web launch and Steam launch support: pending
+- Add launch URL generation for web launch and Steam launch support: complete
 
 ### Tasks
-- Add launch URL generation for web launch and Steam launch support
 - Build tri-state selection UI controls and wire them to engine options
 - Build board/adversary/scenario selection controls and sorting/filtering
 - Add profile/result save-load UX over browser-local persistence
+- Wire save-on-change for settingsState and selectionState to localStorage
 - Split current single-file demo UI into focused components
 
 ### Success criteria
@@ -133,17 +136,16 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 ### Recommended immediate work
 1. Implement the full UI selection model and tri-state spirit selection controls.
 2. Add board/adversary/scenario controls and expansion/options toggles (wired to the persisted `settingsState`).
-3. Add launch URL generation and connect it to the result view.
-4. Wire save-on-change for `settingsState` and `selectionState` to `localStorage`.
+3. Wire save-on-change for `settingsState` and `selectionState` to `localStorage`.
+4. Split `App.tsx` into focused components.
 
 ### Mapped task list
 - `src/App.tsx`: add save-on-change for settingsState + selectionState.
 - `src/components/SpiritSelection.tsx`: build tri-state spirit tree UI with forced/optional states.
 - `src/components/OptionsPanel.tsx`: add expansion toggles, board count, layout, and other play options.
 - `src/components/BoardSelection.tsx`: add board/adversary/scenario filters and selection controls.
-- `src/components/ResultPanel.tsx`: render generated setup details, copy button, and launch URL.
+- `src/components/ResultPanel.tsx`: render generated setup details, copy button, and launch URLs.
 - `src/engine/randomizer.ts`: add result-level forced metadata fields used by Python UI if needed.
-- `src/engine/randomizer.test.ts`: add regression tests for launch URL generation.
 - `vite.config.ts` / GitHub Pages config: add static deployment settings once UI is stable.
 
 ### Milestone criteria

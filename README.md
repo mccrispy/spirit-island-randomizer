@@ -6,7 +6,7 @@ The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\
 
 ## Current status
 - React + Vite scaffold: complete
-- Data loader and types: implemented (`src/data/loader.ts`, `src/data/types.ts`)
+- Data loader and types: implemented (`src/data/loader.ts`, `src/data/types.ts`); `aspect.baseSpiritName` normalized to canonical name at load time
 - Engine port: implemented (`src/engine/randomizer.ts`) and validated with deterministic tests
 - Randomizer parity steps 1-6 from the RPM are implemented (forced selections, additional board, thematic mode, compatibility gating, layout rendering, expansion-aware family selection)
 - Strict Python parity enforced: engine requires explicit `selectionState` and throws otherwise
@@ -15,12 +15,13 @@ The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\
 - Browser-local persistence implemented (`src/persistence.ts`): `selectionState` and `settingsState` are saved to and restored from `localStorage` on app load
 - `SettingsState` covers all RPM settings keys including `useEvents`, `spiritTreeExpanded`, `localLaunch`, `preferredLayouts`, and individual per-expansion boolean flags
 - App-load initialization: defaults are written to storage on first run; saved state is restored on subsequent loads
-- Tests: 33/33 passing via `vitest` (`src/engine/randomizer.test.ts`, `src/data/loader.test.ts`)
+- Launch URL generation implemented (`src/launchUrl.ts`): `buildWebLaunchUrl` and `buildSteamLaunchUrl` produce the Handelabra canonical-parameter-order URL; expansion IDs are derived from both settings flags and result content; `useEvents` is a standalone game-behavior flag
+- Both Web Launch and Steam Launch URLs are shown with full text in the result view
+- Tests: 49/49 passing via `vitest`
 
 ## Outstanding work
 - Build the full selection UI (tri-state spirit tree, board/adversary/scenario selectors, expansion and option controls)
 - Wire save-on-change for `settingsState` and `selectionState` to `localStorage`
-- Add launch URL generation and launch actions in the results UI
 - Split `App.tsx` into focused components (`SpiritSelection`, `OptionsPanel`, `BoardSelection`, `ResultPanel`)
 
 ## How to run

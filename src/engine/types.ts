@@ -33,11 +33,13 @@ export interface EngineOptions {
 export interface SelectedSpirit {
     spirit: Spirit;
     aspect?: Spirit;
+    forced: boolean;
 }
 
 export interface SelectedBoard {
     board: Board;
     boardSide: BoardSide;
+    forced: boolean;
 }
 
 export interface EngineResult {
@@ -45,7 +47,9 @@ export interface EngineResult {
     selectedBoards: SelectedBoard[];
     selectedAdditionalBoard?: SelectedBoard | null;
     adversary: Adversary | null;
+    adversaryForced: boolean;
     scenario: Scenario | null;
+    scenarioForced: boolean;
     layout: BoardLayout | null;
     layoutTemplate?: LayoutTemplate | null;
     boardPositions?: Record<number, Board> | null;
