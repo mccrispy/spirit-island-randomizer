@@ -131,6 +131,30 @@ function App() {
           </p>
 
           <div style={{ marginTop: 12 }}>
+            <label htmlFor="num-spirits-select">
+              Number of spirits:{" "}
+              <select
+                id="num-spirits-select"
+                value={settings?.numSpirits ?? 3}
+                disabled={!settings}
+                onChange={(e) => {
+                  if (!settings) return;
+                  const numSpirits = Number(e.target.value);
+                  const updated = { ...settings, numSpirits };
+                  setSettings(updated);
+                  saveSettingsState(updated);
+                }}
+              >
+                {[1, 2, 3, 4, 5, 6].map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div style={{ marginTop: 12 }}>
             <button
               onClick={generate}
               disabled={running || !selectionState || !settings}

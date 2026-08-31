@@ -20,9 +20,11 @@ The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\
 - Tests: 49/49 passing via `vitest`
 
 ## Outstanding work
-- Build the full selection UI (tri-state spirit tree, board/adversary/scenario selectors, expansion and option controls)
-- Wire save-on-change for `settingsState` and `selectionState` to `localStorage`
-- Split `App.tsx` into focused components (`SpiritSelection`, `OptionsPanel`, `BoardSelection`, `ResultPanel`)
+See [ui-implementation-plan.md](ui-implementation-plan.md) for the staged plan covering the remaining UI work:
+- Phase 0: Tailwind v4 + Radix UI tooling, Context/reducer app state, responsive `AppShell`
+- Phase 1: tri-state spirit/board/adversary/scenario selection UI, options panel, results panel, save-on-change wiring
+- Phase 2: filters, sorting, forced-item highlighting (Python parity), layout template preference
+- Phase 3: PWA support (installable, offline-capable)
 
 ## How to run
 1. Install dependencies:

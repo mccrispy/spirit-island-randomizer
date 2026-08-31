@@ -88,7 +88,13 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - Launch URL generation logic is present and can later be wired to UI
 
 ## Phase 2: Full feature completion
-### Tasks
+**Superseded by [ui-implementation-plan.md](ui-implementation-plan.md).** That document is now the authoritative,
+staged plan (Phase 0 foundation/tooling, Phase 1 MVP selection UI, Phase 2 polish/parity, Phase 3 PWA) for all
+remaining UI work, including the decisions on layout, styling (Tailwind v4 + Radix UI), state management
+(Context + reducer), tri-state control design, and the deferral of file-based profile save/load and board
+layout SVG rendering. Refer to it instead of the task list below.
+
+### Tasks (historical, see ui-implementation-plan.md for current plan)
 - Add spirit selection tab with tri-state tree and filters
 - Add board/adversary/scenario selection controls with sorting and select/deselect operations
 - Add options panel for expansion toggles and board-generation flags
@@ -133,20 +139,9 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - **Data parsing differences from Python**: keep the web loader simple; avoid strict schema enforcement on first pass.
 
 ## Next steps
-### Recommended immediate work
-1. Implement the full UI selection model and tri-state spirit selection controls.
-2. Add board/adversary/scenario controls and expansion/options toggles (wired to the persisted `settingsState`).
-3. Wire save-on-change for `settingsState` and `selectionState` to `localStorage`.
-4. Split `App.tsx` into focused components.
-
-### Mapped task list
-- `src/App.tsx`: add save-on-change for settingsState + selectionState.
-- `src/components/SpiritSelection.tsx`: build tri-state spirit tree UI with forced/optional states.
-- `src/components/OptionsPanel.tsx`: add expansion toggles, board count, layout, and other play options.
-- `src/components/BoardSelection.tsx`: add board/adversary/scenario filters and selection controls.
-- `src/components/ResultPanel.tsx`: render generated setup details, copy button, and launch URLs.
-- `src/engine/randomizer.ts`: add result-level forced metadata fields used by Python UI if needed.
-- `vite.config.ts` / GitHub Pages config: add static deployment settings once UI is stable.
+See [ui-implementation-plan.md](ui-implementation-plan.md) for the current staged UI implementation plan
+(Phase 0-3), including file-level task breakdown, dependencies, and verification steps. The task/milestone
+lists formerly here have been superseded by that document.
 
 ### Milestone criteria
 - Browser-local persistence works without exposing raw JSON files.
