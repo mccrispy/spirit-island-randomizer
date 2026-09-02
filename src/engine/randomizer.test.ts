@@ -5,7 +5,7 @@ import { createSeededRng, generateSetup } from "./randomizer";
 import { loadAllData } from "../data/loader";
 import { TriState } from "./types";
 import { mapPythonSelectionState, mapPythonSettingsState } from "../fixtures/python_state_adapter";
-import { settingsToExpansions } from "../persistence";
+import { buildDefaultSelectionState, settingsToExpansions } from "../persistence";
 import selectionStateFixture from "../fixtures/python_state/selection_state.json";
 import settingsStateFixture from "../fixtures/python_state/settings_state.json";
 import type { AppData } from "../data/types";
@@ -284,6 +284,43 @@ describe("randomizer engine", () => {
                 createSeededRng(5)
             )
         ).toThrow("selectionState is required for spirit selection parity with Python");
+    });
+
+    it("drops the additional board and sets a warning when thematic mode reaches 7 total boards (PRM parity)", async () => {
+        const data = await loadAllData();
+        const selectionState = buildDefaultSelectionState(data);
+        const result = runWithTrace(
+            data,
+            {
+                numSpirits: 6,
+                includeAdditionalBoard: true,
+                useThematicBoards: true,
+                strictBoardCompatibility: false,
+                selectionState,
+            },
+            createSeededRng(303)
+        );
+
+        expect(result.selectedBoards).toHaveLength(6);
+        expect(result.selectedAdditionalBoard).toBeNull();
+        expect(result.additionalBoardDroppedWarning).toBe(true);
+    });
+
+    it("does not set the additional-board-dropped warning when thematic mode has 6 or fewer total boards", async () => {
+        const data = await loadAllData();
+        const selectionState = buildDefaultSelectionState(data);
+        const result = runWithTrace(
+            data,
+            {
+                numSpirits: 1,
+                includeAdditionalBoard: false,
+                useThematicBoards: true,
+                selectionState,
+            },
+            createSeededRng(304)
+        );
+
+        expect(result.additionalBoardDroppedWarning).toBe(false);
     });
 
     it("marks forced spirits as forced and optional spirits as not forced", () => {

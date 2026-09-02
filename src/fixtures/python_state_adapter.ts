@@ -81,9 +81,6 @@ export function mapPythonSettingsState(input: SettingsStateContainer): SettingsS
         expansionBranchClaw: Boolean(rawSettingsState.expansion_branch_claw),
         expansionJaggedEarth: Boolean(rawSettingsState.expansion_jagged_earth),
         expansionNatureIncarnate: Boolean(rawSettingsState.expansion_nature_incarnate),
-        // F&F and Horizons have no flag in the Python model; default to false.
-        expansionFeatherFlame: false,
-        expansionHorizons: false,
         numSpirits: rawSettingsState.num_spirits ?? 1,
         includeAdditionalBoard: Boolean(rawSettingsState.additional_board),
         useThematicBoards: Boolean(rawSettingsState.thematic_boards),

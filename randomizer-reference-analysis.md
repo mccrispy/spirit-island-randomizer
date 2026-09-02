@@ -92,12 +92,17 @@ This document captures the reference behavior of the Python randomizer engine an
 - `requireSpiritAspects` removed: aspect selection is a `selectionState` concern only, matching RPM behavior.
 - `aspect.baseSpiritName` normalized to canonical name in the loader so all callers receive a canonical key without further resolution.
 - Launch URL generation implemented (`src/launchUrl.ts`); parameter order, canonical name usage, expansion ID mapping, `useTokens` logic, and `useEvents` as a standalone flag all match RPM behavior.
+- Result-level forced metadata is now emitted end-to-end: `SelectedSpirit.forced`, `SelectedBoard.forced` (including the additional board), `EngineResult.adversaryForced`, `EngineResult.scenarioForced`. Wired into the UI's `ResultsPanel` as red/bold highlighting, matching the RPM's `#E74C3C` forced-item convention.
+- Expansion checkboxes verified against the RPM source: the RPM has exactly 3 (Branch & Claw, Jagged Earth, Nature Incarnate), which affect only the launch URL (`useExpansions`/`useTokens`) — never local engine eligibility, which is gated purely by per-item tri-state selection for all 6 expansions' content. The web port previously diverged (5 checkboxes gating local eligibility) and has been corrected to match.
+- Nature Incarnate checkbox requires Jagged Earth (disabled + force-unchecked otherwise); Use Events requires any of the 3 expansion checkboxes (disabled + force-unchecked otherwise) — both verified against RPM's `_on_expansion_checkbox_changed` and implemented in `OptionsPanel`.
+- Strict Board Compatibility (default checked) and Thematic Boards (default unchecked) options are implemented in `OptionsPanel`/`SettingsState`/engine, matching RPM key names (`strict_board_compatibility`, `thematic_boards`) and RPM's auto-disable/restore behavior for Strict Board Compatibility past 4 total boards.
+- Thematic mode's additional-board-drop behavior at 7 total boards (6 spirits + additional) is implemented: the engine sets `EngineResult.additionalBoardDroppedWarning` (verified against RPM's `additional_board_dropped_warning` field and `_on_thematic_changed` logic) and the UI shows a red warning line, adapted in wording since this port regenerates rather than mutating an existing displayed result in place.
 
 ### Remaining known divergence
-1. Result-level forced metadata fields (forced spirit/board/adversary/scenario markers) are tracked in the RPM result model but not yet emitted by the web engine. Needed if the UI needs to distinguish forced vs randomly-selected items in the result display.
+None currently tracked — the previously listed forced-metadata gap is resolved (see above). Revisit this section if new RPM behavior is ported and a gap is found.
 
 ## Recommended Porting Order
-1. Add result-level forced metadata fields if the UI needs to distinguish forced vs random items.
+No outstanding items from this analysis; remaining UI work (filters, sorting, layout template preference, PWA) is tracked in [ui-implementation-plan.md](ui-implementation-plan.md) Phase 2/3, not here.
 
 ## Working Rule For This Repo
 When implementing or reviewing randomizer behavior, use this document first, then verify against SIRPYv4 source if needed. Avoid re-deriving the same baseline analysis unless reference code changes.

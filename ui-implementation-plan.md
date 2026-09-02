@@ -37,7 +37,7 @@ features, (3) PWA support.
 - **PWA support**: included as its own final stage (manifest + service worker + offline caching of data JSON +
   app shell).
 
-## Phase 0 — Foundation & Tooling
+## Phase 0 — Foundation & Tooling — COMPLETE
 
 1. Add dependencies: `tailwindcss`, `@tailwindcss/vite`, `@radix-ui/react-tabs`, `@radix-ui/react-checkbox`,
    `@radix-ui/react-accordion`, `@radix-ui/react-select`, `@radix-ui/react-slider`. Wire `@tailwindcss/vite` into
@@ -56,7 +56,7 @@ features, (3) PWA support.
 
 *Depends on: nothing (can start immediately). Steps 2-4 depend on step 1.*
 
-## Phase 1 — MVP Functional Selection UI
+## Phase 1 — MVP Functional Selection UI — COMPLETE
 
 5. `src/components/TriStateCheckbox.tsx` — reusable tri-state control (Unchecked/Checked/Forced cycle), used by
    all pool items.
@@ -67,13 +67,25 @@ features, (3) PWA support.
    (list), each row using `TriStateCheckbox`. *Parallel with step 6.*
 8. `src/components/tabs/AboutTab.tsx` — simple static info tab (port relevant text from Python's
    `about_tab.py`, no license file wiring needed). *Parallel with 6/7.*
-9. `src/components/OptionsPanel.tsx` — expansion toggles (5 flags incl. Feather & Flame/Horizons), play options
+9. `src/components/OptionsPanel.tsx` — expansion toggles, play options
    (use events/adversaries/scenarios), board options (additional board, strict compatibility, thematic boards,
    num spirits control — **Radix `Slider` (1-6) + numeric readout, matching Python parity**), all bound to
    `settings` from context and calling `saveSettingsState` on change.
+
+   **Correction (verified against the RPM source after initial implementation):** the RPM has exactly **3**
+   expansion checkboxes (Branch & Claw, Jagged Earth, Nature Incarnate), not 5 — Feather & Flame/Horizons have
+   no checkbox and are usable only via per-item tri-state selection. The RPM's expansion checkboxes affect only
+   the launch URL (`useExpansions`/`useTokens`), never local engine eligibility (that's per-item tri-state only
+   for all 6 expansions). An initial 5-flag design that also gated local eligibility was implemented, found to
+   diverge from the RPM, and corrected. Also implemented per RPM: Nature Incarnate requires Jagged Earth;
+   Use Events requires any expansion checkbox (both disable + force-uncheck when their requirement isn't met);
+   Strict Board Compatibility (default on, auto-disables past 4 total boards, restores prior value when the
+   count drops back); Thematic Boards checkbox (default off).
 10. `src/components/ResultsPanel.tsx` — Generate button + structured result display (spirits/boards/
     adversary/scenario/launch URLs), replacing the raw JSX currently in `App.tsx`; always visible per
-    `AppShell` layout.
+    `AppShell` layout. Includes PRM-format spirit/aspect/board labels, expansion abbreviations, forced-item
+    highlighting (pulled forward from Phase 2 step 14 below), and the thematic-mode additional-board-dropped
+    warning (`EngineResult.additionalBoardDroppedWarning`).
 11. Wire `SpiritPoolTab`/`BoardsAdversariesScenariosTab` selection changes to update `selectionState` in context
     and call `saveSelectionState` (already implemented) on every change.
 
@@ -82,23 +94,18 @@ depend on `AppShell` (step 3) and context (step 2).*
 
 ## Phase 2 — Polish & Parity Features
 
+**Step 14 (forced-item highlighting) is already done** — see step 10 above; `SelectedSpirit`/`SelectedBoard`'s
+existing `forced: boolean` fields (plus `adversaryForced`/`scenarioForced`) proved sufficient end-to-end,
+including for the additional board. No further engine change is needed for this item.
+
 12. Add a filter row to `SpiritPoolTab`: expansion dropdown, complexity dropdown, name search, "Clear All
     Filters" (Radix `Select` for dropdowns).
 13. Add Select All/Deselect All buttons to the boards section; sortable adversary/scenario lists (by name,
     adversary also by difficulty) in `BoardsAdversariesScenariosTab`.
-14. Forced-item highlighting (Python parity requirement — engine changes are in scope if needed): red styling
-    (Tailwind class, matching Python's `#E74C3C`) applied wherever a `TriStateCheckbox` is in Forced state, and
-    in `ResultsPanel` for forced spirits/boards/adversary/scenario. `SelectedSpirit`/`SelectedBoard` already
-    expose a `forced: boolean` field in `src/engine/types.ts` — first verify this is populated correctly
-    end-to-end (including additional board, adversary, scenario forced-state, since Python separately tracks
-    `forced_spirit_canonical_names`/`forced_board_canonical_names` plus adversary/scenario forcing per
-    [randomizer-reference-analysis.md](randomizer-reference-analysis.md)'s known gap). If adversary/scenario
-    forced flags are missing from `EngineResult`, add them in `src/engine/randomizer.ts`/`types.ts` (with test
-    coverage) before wiring the UI highlighting — this is an authorized engine change, not just a UI task.
 15. Board layout template dropdown + "Preferred" checkbox in `OptionsPanel`, wired to
     `settings.preferredLayouts`.
 
-*Depends on Phase 1. Steps 12-15 are independent of each other, can be done in any order.*
+*Depends on Phase 1. Steps 12, 13, 15 are independent of each other, can be done in any order.*
 
 ## Phase 3 — PWA Support
 
@@ -110,22 +117,23 @@ depend on `AppShell` (step 3) and context (step 2).*
 
 ## Relevant files
 
-- `src/App.tsx` — replace monolithic logic with provider + `AppShell` mount (Phase 0 step 4)
-- `src/persistence.ts` — reuse existing `SettingsState`, `loadSelectionState`/`saveSelectionState`/
-  `loadSettingsState`/`saveSettingsState`/`buildDefaultSelectionState`/`defaultSettings`/`settingsToExpansions`
-  (no changes expected)
+- `src/App.tsx` — replaced with provider + `AppShell` mount (Phase 0 step 4, done)
+- `src/persistence.ts` — reuses existing `SettingsState`, `loadSelectionState`/`saveSelectionState`/
+  `loadSettingsState`/`saveSettingsState`/`buildDefaultSelectionState`/`defaultSettings`/`settingsToExpansions`;
+  `SettingsState` trimmed to the RPM's 3 expansion flags (see Phase 1 step 9 correction above)
 - `src/engine/randomizer.ts`, `src/engine/types.ts` — consume `generateSetup`/`createSeededRng`;
-  `TriState`/`SelectionState`/`EngineOptions`/`EngineResult` types; possible forced-metadata addition in
-  Phase 2 step 14
+  `TriState`/`SelectionState`/`EngineOptions`/`EngineResult` types; forced-metadata fields
+  (`adversaryForced`/`scenarioForced`/per-item `forced`) and `additionalBoardDroppedWarning` are implemented
+  and test-covered
 - `src/data/loader.ts`, `src/data/types.ts` — consume `AppData`, `baseSpiritMap`, `BaseSpirit` for tree
   structure
-- `src/launchUrl.ts` — reuse `buildWebLaunchUrl`/`buildSteamLaunchUrl` in `ResultsPanel`
-- `vite.config.ts` — add Tailwind plugin (Phase 0), PWA plugin (Phase 3)
-- `src/styles.css` (or new `src/index.css`) — Tailwind directives
-- New: `src/state/AppStateContext.tsx`, `src/components/layout/AppShell.tsx`,
+- `src/launchUrl.ts` — reused via `buildWebLaunchUrl`/`buildSteamLaunchUrl` in `ResultsPanel`
+- `vite.config.ts` — Tailwind plugin wired (Phase 0, done); PWA plugin still pending (Phase 3)
+- `src/styles.css` — Tailwind directives + app styling
+- `src/state/AppStateContext.tsx`, `src/components/layout/AppShell.tsx`,
   `src/components/TriStateCheckbox.tsx`, `src/components/tabs/SpiritPoolTab.tsx`,
   `src/components/tabs/BoardsAdversariesScenariosTab.tsx`, `src/components/tabs/AboutTab.tsx`,
-  `src/components/OptionsPanel.tsx`, `src/components/ResultsPanel.tsx`
+  `src/components/OptionsPanel.tsx`, `src/components/ResultsPanel.tsx` — all implemented
 
 ## Verification
 

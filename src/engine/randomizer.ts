@@ -331,11 +331,11 @@ function selectBoards(
     data: AppData,
     options: EngineOptions,
     rng: RNG
-): { selectedBoards: SelectedBoard[]; selectedAdditionalBoard: SelectedBoard | null } {
+): { selectedBoards: SelectedBoard[]; selectedAdditionalBoard: SelectedBoard | null; additionalBoardDroppedWarning: boolean } {
     const numBoards = options.numSpirits ?? 1;
     const includeAdditionalBoard = Boolean(options.includeAdditionalBoard);
     const useThematicBoards = Boolean(options.useThematicBoards);
-    const totalBoards = numBoards + (includeAdditionalBoard ? 1 : 0);
+    let totalBoards = numBoards + (includeAdditionalBoard ? 1 : 0);
     const expansionFilteredBoards = filterByExpansion(data.boards, options.expansions);
     const boards = filterEligibleBySelectionState(expansionFilteredBoards, options.selectionState);
 
@@ -348,6 +348,14 @@ function selectBoards(
         throw new Error(`Too many forced boards (${forcedBoards.length}) for spirit count (${numBoards}).`);
     }
 
+    // PRM parity: thematic mode supports at most 6 boards. 6 spirits + an additional board reach 7,
+    // so the additional board is silently dropped rather than failing generation (surfaced as a warning).
+    const additionalBoardDroppedWarning = useThematicBoards && includeAdditionalBoard && totalBoards === 7;
+    const effectiveIncludeAdditionalBoard = includeAdditionalBoard && !additionalBoardDroppedWarning;
+    if (additionalBoardDroppedWarning) {
+        totalBoards = numBoards;
+    }
+
     if (boards.length < totalBoards) {
         throw new Error(`Not enough boards available for selected expansions: need ${totalBoards}, have ${boards.length}`);
     }
@@ -357,7 +365,7 @@ function selectBoards(
     if (useThematicBoards) {
         const selectedThematicBoards = selectThematicBoards(totalBoards, boards, strictCompatibility);
         const spiritBoards = selectedThematicBoards.slice(0, numBoards);
-        const additionalBoard = includeAdditionalBoard ? selectedThematicBoards[numBoards] ?? null : null;
+        const additionalBoard = effectiveIncludeAdditionalBoard ? selectedThematicBoards[numBoards] ?? null : null;
 
         return {
             selectedBoards: spiritBoards.map((board) => {
@@ -378,13 +386,14 @@ function selectBoards(
                     forced: false,
                 }
                 : null,
+            additionalBoardDroppedWarning,
         };
     }
 
     const selectedBoards = findCompatibleBoards(numBoards, boards, rng, strictCompatibility, forcedBoards);
 
     let selectedAdditionalBoard: SelectedBoard | null = null;
-    if (includeAdditionalBoard) {
+    if (effectiveIncludeAdditionalBoard) {
         const selectedBoardNames = new Set(selectedBoards.map((board) => board.canonicalName));
         const availableAdditionalBoards = boards.filter((board) => !selectedBoardNames.has(board.canonicalName));
 
@@ -421,6 +430,7 @@ function selectBoards(
             return { board, boardSide, forced: isForcedState(options.selectionState?.[board.canonicalName]) };
         }),
         selectedAdditionalBoard,
+        additionalBoardDroppedWarning,
     };
 }
 
@@ -564,7 +574,7 @@ export function generateSetup(
     const mergedOptions = { ...DEFAULT_ENGINE_OPTIONS, ...options };
     const engineRng = rng;
 
-    const { selectedBoards, selectedAdditionalBoard } = selectBoards(data, mergedOptions, engineRng);
+    const { selectedBoards, selectedAdditionalBoard, additionalBoardDroppedWarning } = selectBoards(data, mergedOptions, engineRng);
     const selectedSpirits = selectSpirits(data, mergedOptions, engineRng);
     const adversary = selectAdversary(data, mergedOptions, engineRng);
     const adversaryForced = adversary !== null && isForcedState(mergedOptions.selectionState?.[adversary.canonicalName]);
@@ -594,6 +604,7 @@ export function generateSetup(
     return {
         selectedBoards,
         selectedAdditionalBoard,
+        additionalBoardDroppedWarning,
         selectedSpirits,
         adversary,
         adversaryForced,

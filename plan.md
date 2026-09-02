@@ -29,7 +29,7 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - The fixture UI displays spirit-to-board assignment slots and current engine result.
 - Vitest tests are passing (33/33) for engine logic and loader integration, including a real Python-persisted selection/settings JSON fixture.
 - `src/persistence.ts` is implemented: `loadSelectionState`, `saveSelectionState`, `loadSettingsState`, `saveSettingsState`, `buildDefaultSelectionState`, `settingsToExpansions`.
-- `SettingsState` covers all RPM settings keys (all boolean expansion flags, `useEvents`, `spiritTreeExpanded`, `localLaunch`, `preferredLayouts`) plus two web-only expansion flags (`expansionFeatherFlame`, `expansionHorizons`).
+- `SettingsState` covers all RPM settings keys (`useEvents`, `spiritTreeExpanded`, `localLaunch`, `preferredLayouts`) and exactly the RPM's 3 expansion checkboxes (`expansionBranchClaw`, `expansionJaggedEarth`, `expansionNatureIncarnate`) — Feather & Flame/Horizons content remains fully selectable via per-item tri-state only, matching the RPM (verified against the RPM source; an earlier 5-flag design was corrected).
 - App-load initialization is implemented: on data load, `selectionState` and `settingsState` are restored from `localStorage`; if absent, defaults are initialized and persisted.
 - `requireSpiritAspects` removed — this flag has no equivalent in the RPM; aspect selection is purely a `selectionState` concern.
 - Expansion settings redesigned to match RPM: individual boolean flags instead of a derived string array; `settingsToExpansions()` computes the engine-facing `expansions[]` from flags.
@@ -37,6 +37,7 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - `src/launchUrl.ts` implemented: `buildWebLaunchUrl` and `buildSteamLaunchUrl` generate the Handelabra launch URL in the canonical parameter order. `useExpansions` is a union of settings flags and expansions inferred from result content; `useTokens` follows from BC/JE presence; `useEvents` is a standalone game-behavior flag independent of expansion state.
 - Loader normalizes `aspect.baseSpiritName` to the canonical name at load time so callers always receive a canonical key.
 - Both Web Launch and Steam Launch URLs are displayed with full text in the result view for testing.
+- Full responsive selection/options/results UI is implemented per [ui-implementation-plan.md](ui-implementation-plan.md) Phase 0-1 (tabbed shell, tri-state pools, options panel, structured results with forced-item highlighting), plus RPM-parity fixes pulled forward from Phase 2: expansion checkboxes no longer gate local engine eligibility (per-item tri-state only, matching the RPM), NI requires Jagged Earth, Use Events requires any expansion checkbox, Strict Board Compatibility auto-disables past 4 total boards, Thematic Boards checkbox, and the additional-board-dropped warning at 7 total boards in thematic mode.
 
 ## Objectives
 1. Port data loading from the Python project’s `data_files_v4/` JSON files.
@@ -72,12 +73,13 @@ Parity policy decision: match Python app initialization semantics. On app load, 
 - TypeScript config and type errors resolved: complete
 - Add launch URL generation for web launch and Steam launch support: complete
 
+- Add tri-state selection UI controls wired to engine options: complete
+- Add board/adversary/scenario selection controls: complete (sorting/filtering deferred to ui-implementation-plan.md Phase 2)
+- Wire save-on-change for settingsState and selectionState to localStorage: complete
+- Split single-file demo UI into focused components (`AppShell`, tabs, `OptionsPanel`, `ResultsPanel`, context provider): complete
+
 ### Tasks
-- Build tri-state selection UI controls and wire them to engine options
-- Build board/adversary/scenario selection controls and sorting/filtering
-- Add profile/result save-load UX over browser-local persistence
-- Wire save-on-change for settingsState and selectionState to localStorage
-- Split current single-file demo UI into focused components
+- Add profile/result save-load UX over browser-local persistence (out of scope per ui-implementation-plan.md decisions — file-based save/load is not planned)
 
 ### Success criteria
 - App starts in the browser

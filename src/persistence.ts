@@ -6,8 +6,6 @@ export interface SettingsState {
     expansionBranchClaw: boolean;
     expansionJaggedEarth: boolean;
     expansionNatureIncarnate: boolean;
-    expansionFeatherFlame: boolean;
-    expansionHorizons: boolean;
     numSpirits: number;
     includeAdditionalBoard: boolean;
     useThematicBoards: boolean;
@@ -24,29 +22,28 @@ const DEFAULT_SETTINGS: SettingsState = {
     expansionBranchClaw: false,
     expansionJaggedEarth: false,
     expansionNatureIncarnate: false,
-    expansionFeatherFlame: false,
-    expansionHorizons: false,
     numSpirits: 3,
     includeAdditionalBoard: false,
     useThematicBoards: false,
     useAdversaries: true,
     useScenarios: true,
-    useEvents: true,
+    // Matches PRM: disabled and unchecked until an expansion checkbox is checked.
+    useEvents: false,
     strictBoardCompatibility: true,
     spiritTreeExpanded: true,
     localLaunch: true,
     preferredLayouts: {},
 };
 
-// Returns the expansions[] array the engine expects, derived from the boolean flags.
+// Returns the expansions[] array matching the PRM's 3 client-launch expansion flags.
+// Not used to gate local engine eligibility (that's per-item tri-state only); kept for
+// engine-level expansion-filter test coverage and potential launch-URL use.
 // An empty result means no filter (all loaded data is eligible).
 export function settingsToExpansions(settings: SettingsState): string[] {
     const active: string[] = [];
     if (settings.expansionBranchClaw) active.push("Branch & Claw");
     if (settings.expansionJaggedEarth) active.push("Jagged Earth");
     if (settings.expansionNatureIncarnate) active.push("Nature Incarnate");
-    if (settings.expansionFeatherFlame) active.push("Feather and Flame");
-    if (settings.expansionHorizons) active.push("Horizons of Spirit Island");
     // Base Game is always included when any expansion is enabled.
     if (active.length) active.unshift("Base Game");
     return active;

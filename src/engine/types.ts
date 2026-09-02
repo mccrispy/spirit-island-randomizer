@@ -46,6 +46,8 @@ export interface EngineResult {
     selectedSpirits: SelectedSpirit[];
     selectedBoards: SelectedBoard[];
     selectedAdditionalBoard?: SelectedBoard | null;
+    // PRM parity: true when thematic mode dropped the additional board to stay within its 6-board limit.
+    additionalBoardDroppedWarning: boolean;
     adversary: Adversary | null;
     adversaryForced: boolean;
     scenario: Scenario | null;

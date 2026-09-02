@@ -36,6 +36,7 @@ function makeResult(overrides: Partial<EngineResult> = {}): EngineResult {
             },
         ],
         selectedAdditionalBoard: null,
+        additionalBoardDroppedWarning: false,
         adversary: null,
         adversaryForced: false,
         scenario: null,
