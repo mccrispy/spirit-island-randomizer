@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { BoardLayout } from "../data/types";
 
-const LAYOUT_ASSET_BASE = "/assets/layouts";
+const LAYOUT_ASSET_BASE = `${import.meta.env.BASE_URL}assets/layouts`;
 const PLACEHOLDER_ASSET = `${LAYOUT_ASSET_BASE}/Wild.png`;
 
 export interface LayoutDisplayProps {

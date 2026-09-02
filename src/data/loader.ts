@@ -213,7 +213,7 @@ export async function loadAllData(): Promise<AppData> {
   const scenarios: Scenario[] = [];
 
   for (const filename of expansionFiles) {
-    const response = await fetch(`/data/${encodeURIComponent(filename)}`);
+    const response = await fetch(`${import.meta.env.BASE_URL}data/${encodeURIComponent(filename)}`);
     if (!response.ok) {
       throw new Error(`Failed to load ${filename}`);
     }
@@ -313,7 +313,7 @@ export async function loadAllData(): Promise<AppData> {
     ),
   }));
 
-  const layoutsResponse = await fetch("/data/board_layouts.json");
+  const layoutsResponse = await fetch(`${import.meta.env.BASE_URL}data/board_layouts.json`);
   if (!layoutsResponse.ok) {
     throw new Error("Failed to load board_layouts.json");
   }
