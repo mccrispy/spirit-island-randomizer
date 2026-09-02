@@ -456,8 +456,33 @@ h1 {
 }
 .launch-links {
   display: flex;
-  gap: 14px;
-  font: 0.82rem sans-serif;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+.launch-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #b65d3b;
+  border-radius: 8px;
+  padding: 9px 16px;
+  background: #fbfaf5;
+  color: #b65d3b;
+  font: 700 0.8rem sans-serif;
+  text-decoration: none;
+  transition:
+    background 120ms ease,
+    color 120ms ease;
+}
+.launch-link::after {
+  content: "\2197";
+  font-size: 0.95em;
+}
+.launch-link:hover,
+.launch-link:focus-visible {
+  background: #b65d3b;
+  color: #fffaf2;
 }
 .results-panel h3 {
   margin-bottom: 8px;
@@ -556,6 +581,12 @@ h1 {
   opacity: 0.6;
   cursor: wait;
 }
+.generate-button {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  text-align: center;
+}
 .error {
   color: #a33f35;
   font-family: sans-serif;
@@ -571,8 +602,5 @@ h1 {
   .app-layout {
     display: flex;
     flex-direction: column;
-  }
-  .results-panel {
-    order: 2;
   }
 }

@@ -36,6 +36,9 @@ The design follows the Python PRM behavior closely, with the key corrected assum
 - Options panel with board-generation settings and layout preference controls
 - Results panel with forced highlighting, warnings, launch URL generation, a live pre-generation layout preview,
   and per-board "Position N" badges tied to the layout diagram's numbered slots
+- UI polish: Generate button relocated into the results panel (always visible, contextual label), launch links
+  restyled as clearly clickable buttons, and the results panel repositioned above the options panel for CTA
+  proximity/reduced scrolling
 - Persistence sync for settings and selection state
 - Project verification via Vitest with the current suite passing
 

@@ -55,7 +55,7 @@ function buildBoardPositionMap(
 }
 
 export function ResultsPanel() {
-  const { data, result, settings } = useAppState();
+  const { data, result, settings, running, generate } = useAppState();
 
   // PRM parity: before Generate is pressed, preview the currently selected layout for the current board count.
   const previewTotalBoards = settings
@@ -75,6 +75,17 @@ export function ResultsPanel() {
         <h2>Results</h2>
         <span>{result ? "Ready" : "Waiting"}</span>
       </div>
+      <button
+        className="primary-button generate-button"
+        onClick={generate}
+        disabled={running || !settings || !data}
+      >
+        {running
+          ? "Generating..."
+          : result
+            ? "Regenerate setup"
+            : "Generate setup"}
+      </button>
       {result && settings && data ? (
         <>
           <h3>Spirits &amp; Boards</h3>
@@ -205,8 +216,10 @@ export function ResultsPanel() {
             )}
           </p>
 
+          <h3>Launch setup</h3>
           <div className="launch-links">
             <a
+              className="launch-link"
               href={buildWebLaunchUrl(result, settings)}
               target="_blank"
               rel="noreferrer"
@@ -214,6 +227,7 @@ export function ResultsPanel() {
               Web launch
             </a>
             <a
+              className="launch-link"
               href={buildSteamLaunchUrl(result, settings)}
               target="_blank"
               rel="noreferrer"

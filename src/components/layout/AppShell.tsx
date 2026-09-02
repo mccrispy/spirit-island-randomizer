@@ -7,7 +7,7 @@ import { OptionsPanel } from "../OptionsPanel";
 import { ResultsPanel } from "../ResultsPanel";
 
 export function AppShell() {
-  const { data, error, result, running, generate } = useAppState();
+  const { data, error } = useAppState();
 
   if (error && !data)
     return (
@@ -31,14 +31,6 @@ export function AppShell() {
           <p className="eyebrow">Spirit Island setup</p>
           <h1>SIRPY Web</h1>
         </div>
-        <button
-          className="primary-button"
-          onClick={generate}
-          disabled={running}
-        >
-          {" "}
-          {running ? "Generating..." : "Generate setup"}{" "}
-        </button>
       </header>
       {error && <p className="error">{error}</p>}
       <div className="app-layout">
@@ -74,8 +66,8 @@ export function AppShell() {
           </Tabs.Content>
         </Tabs.Root>
         <div className="side-stack">
-          <OptionsPanel />
           <ResultsPanel />
+          <OptionsPanel />
         </div>
       </div>
     </main>

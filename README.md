@@ -21,6 +21,9 @@ The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\
   assets under `public/assets/layouts/`), including a live pre-generation preview of the currently selected
   layout and "Position N" badges tying each board to its numbered slot in the layout diagram (not shown in
   thematic mode, where board names are already directional slot identifiers)
+- UI polish: the Generate button now lives in the results panel itself (always visible, contextual label),
+  launch links are styled as clearly clickable buttons, and the results panel is positioned above the options
+  panel so the primary action and its output are reachable without scrolling past configuration controls first
 
 ## Reference UI review corrections
 The review against the Python PRM clarified the design in a few important ways:

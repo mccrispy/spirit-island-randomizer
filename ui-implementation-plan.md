@@ -193,13 +193,34 @@ ocean-background backdrop.
 independently of steps 20-22 (assets + display), but step 22 depends on step 21 which depends on step 20. Steps
 23-24 are follow-on refinements once 18-22 are in place.*
 
-The remaining project work is now limited to the final PWA phase (Phase 4, below).
+The remaining project work is now limited to the final PWA phase (Phase 4, below), aside from ongoing UI polish
+(below), which is not phase-gated.
+
+## UI Polish (post-Phase 3, ongoing)
+
+Small ergonomic refinements to the shell/results layout, done opportunistically rather than as a numbered phase:
+
+- **Generate button relocated into `ResultsPanel`.** Previously lived in the `AppShell` page header, physically
+  separate from where its output appears. Now a full-width button at the top of `ResultsPanel`, always visible
+  (not gated on a result existing), with a contextual label: "Generate setup" → "Regenerate setup" once a
+  result exists, "Generating..." while `running`. `AppShell`'s header is now title-only.
+- **Launch links restyled as buttons.** `.launch-links` anchors previously used default browser link styling
+  (easy to mistake for inert text). Restyled as bordered pill-buttons (`.launch-link`) matching the app's accent
+  color, with hover/focus fill state and a CSS-appended "↗" glyph to signal they open something in a new tab.
+  Added a "Launch setup" heading above them for consistency with other result section headings.
+- **`ResultsPanel` moved above `OptionsPanel`** in the `side-stack`. Rationale: since Generate now lives in
+  Results, that panel is the primary call-to-action — leading with it keeps the CTA reachable without scrolling
+  past Options first (Fitts's-law-style proximity) and keeps generated output visible closest to the action that
+  produced it (visibility-of-system-status). Required removing a mobile-only `.results-panel { order: 2; }` rule
+  in `styles.css` that would otherwise have silently forced Results back below Options on narrow viewports,
+  contradicting the new desktop DOM order (it only reordered within `.side-stack`'s grid, not the top-level
+  tabs-vs-sidebar split).
 
 ## Phase 4 — PWA Support
 
-23. Add `vite-plugin-pwa`, configure manifest (name, icons, theme color) and service worker (cache app shell +
+25. Add `vite-plugin-pwa`, configure manifest (name, icons, theme color) and service worker (cache app shell +
     `public/data/*.json`, and now `public/assets/layouts/*`) in `vite.config.ts`.
-24. Add icon assets, test offline load via browser devtools "Offline" mode.
+26. Add icon assets, test offline load via browser devtools "Offline" mode.
 
 *Depends on the stable app shell and data layer already being in place, and is unaffected by Phase 3.*
 
@@ -225,8 +246,9 @@ The remaining project work is now limited to the final PWA phase (Phase 4, below
 - `src/components/LayoutDisplay.tsx` — new in Phase 3, resolves/renders the layout SVG asset; also used for the
   pre-generation preview (step 23) via its `showPlaceholderWhenNoLayout` prop
 - `public/assets/layouts/` — new in Phase 3, copied SVG/PNG assets from the PRM's `assets/` folder
-- `src/components/ResultsPanel.tsx` — also renders the pre-generation layout preview (step 23) and per-board
-  "Position N" badges (step 24)
+- `src/components/ResultsPanel.tsx` — also renders the pre-generation layout preview (step 23), per-board
+  "Position N" badges (step 24), and (UI Polish) the relocated Generate button + restyled launch links; now
+  rendered before `OptionsPanel` in `AppShell`'s side-stack
 
 ## Verification
 
@@ -245,5 +267,8 @@ The remaining project work is now limited to the final PWA phase (Phase 4, below
    preferred/thematic layout (or `Wild.png` for "Random"), updating live as options change; after Generate,
    confirm each spirit/board line and the additional board (when present) show a "Position N" badge matching
    the numbered slots drawn on the layout SVG, and that the badge is absent in thematic mode.
-5. Phase 4: use devtools Network "Offline" toggle after one online visit to confirm app shell + data still
+5. UI Polish: confirm Results renders above Options in the side-stack on both desktop and mobile widths; confirm
+   the Generate button lives in Results, is always visible, and its label changes appropriately
+   (Generate/Regenerate/Generating...); confirm the launch links are visually button-like with a hover state.
+6. Phase 4: use devtools Network "Offline" toggle after one online visit to confirm app shell + data still
    load.
