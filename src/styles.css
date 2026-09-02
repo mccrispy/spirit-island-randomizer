@@ -248,7 +248,9 @@ h1 {
   padding: 8px 14px;
   font: 700 0.76rem sans-serif;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease;
 }
 .toolbar-button:hover {
   transform: translateY(-1px);
@@ -478,7 +480,33 @@ h1 {
   font-weight: 700;
 }
 .about-copy {
-  max-width: 560px;
+  max-width: 620px;
+}
+.about-copy h3 {
+  margin: 22px 0 6px;
+  font-size: 1.05rem;
+  border-bottom: 1px solid #d5ddd2;
+  padding-bottom: 4px;
+}
+.about-copy ul {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+.about-copy li {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+.about-copy .disclaimer {
+  background: rgba(240, 160, 0, 0.12);
+  border-left: 3px solid #c77700;
+  padding: 10px 14px;
+  margin: 16px 0;
+}
+.about-copy .disclaimer p {
+  margin: 6px 0 0;
+}
+.about-copy a {
+  color: #b65d3b;
 }
 .panel-heading {
   display: flex;
