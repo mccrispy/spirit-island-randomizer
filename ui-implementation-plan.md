@@ -98,8 +98,11 @@ depend on `AppShell` (step 3) and context (step 2).*
 existing `forced: boolean` fields (plus `adversaryForced`/`scenarioForced`) proved sufficient end-to-end,
 including for the additional board. No further engine change is needed for this item.
 
-12. Add a filter row to `SpiritPoolTab`: expansion dropdown, complexity dropdown, name search, "Clear All
-    Filters" (Radix `Select` for dropdowns).
+12. Add the spirit-tab control set to `SpiritPoolTab`: a filter row (expansion dropdown, complexity dropdown,
+    name search, "Clear All Filters") plus the bulk-action toolbar from the RPM (Collapse All / Expand All,
+    "Base Only", "Aspects Only", "Select All", "Deselect All"). The bulk actions must respect the
+    current filter visibility: when filters are active, only the currently visible base spirits/aspects are
+    affected, matching the Python reference behavior.
 13. Add Select All/Deselect All buttons to the boards section; sortable adversary/scenario lists (by name,
     adversary also by difficulty) in `BoardsAdversariesScenariosTab`.
 15. Board layout template dropdown + "Preferred" checkbox in `OptionsPanel`, wired to

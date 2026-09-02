@@ -23,8 +23,8 @@ The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\
 - Tests: 56/56 passing via `vitest`
 
 ## Outstanding work
-See [ui-implementation-plan.md](ui-implementation-plan.md) for the staged plan covering the remaining UI work:
-- Phase 2: filters, sorting, layout template preference (forced-item highlighting is already done, see above)
+See [ui-implementation-plan.md](ui-implementation-plan.md) for the staged plan covering the remaining UI work.
+- Phase 2: exact RPM UI polish for the spirit tab (filter row + bulk-action toolbar: expansion/complexity/name filters, Clear All Filters, Collapse/Expand All, Base Only, Aspects Only, Select All, Deselect All), board bulk actions, adversary/scenario sorting, and preferred board-layout controls (forced-item highlighting is already done, see above)
 - Phase 3: PWA support (installable, offline-capable)
 
 ## How to run
