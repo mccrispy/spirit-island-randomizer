@@ -7,3 +7,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 plan.html
+
+# Internal planning/analysis docs — kept locally, not part of the public repo
+plan.md
+ui-implementation-plan.md
+randomizer-reference-analysis.md
+engine-trace.json
+.repo_memory/
