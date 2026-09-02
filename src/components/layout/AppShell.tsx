@@ -12,14 +12,14 @@ export function AppShell() {
   if (error && !data)
     return (
       <main className="app-shell">
-        <h1>SIRPY Web</h1>
+        <h1>Spirit Island Randomizer</h1>
         <p className="error">{error}</p>
       </main>
     );
   if (!data)
     return (
       <main className="app-shell">
-        <h1>SIRPY Web</h1>
+        <h1>Spirit Island Randomizer</h1>
         <p>Loading game data...</p>
       </main>
     );
@@ -29,7 +29,7 @@ export function AppShell() {
       <header className="app-header">
         <div>
           <p className="eyebrow">Spirit Island setup</p>
-          <h1>SIRPY Web</h1>
+          <h1>Spirit Island Randomizer</h1>
         </div>
       </header>
       {error && <p className="error">{error}</p>}

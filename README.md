@@ -1,63 +1,50 @@
-# SIRPY Web
+# Spirit Island Randomizer
 
-GitHub Pages port of the SIRPYv4 Spirit Island randomizer (React + Vite + TypeScript).
+**[Play it live](https://mccrispy.github.io/spirit-island-randomizer/)**
 
-The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\mccri\Python Projects\SIRPYv4`.
+A browser-based randomizer for [Spirit Island](https://greaterthangames.com/spirit-island), the cooperative
+board game. Pick which expansions, spirits, boards, adversaries, and scenarios you own, set your preferences,
+and generate a randomized setup for your next game — entirely client-side, with no server or account needed.
 
-## Current status
-- React + Vite app: implemented and working end-to-end
-- Data loader and types: complete (`src/data/loader.ts`, `src/data/types.ts`); aspect names are normalized and linked correctly to their base spirits
-- Engine port: complete (`src/engine/randomizer.ts`) and validated in deterministic tests
-- Randomizer parity: implemented for forced selections, additional board handling, thematic mode, compatibility rules, layout handling, and expansion-aware selection behavior
-- Strict Python parity: enforced in engine code; generation requires explicit `selectionState`
-- Browser persistence: complete (`src/persistence.ts`); `selectionState` and `settingsState` restore from and save to `localStorage`
-- Settings model: matches the corrected PRM behavior with exactly three expansion checkboxes (Branch & Claw, Jagged Earth, Nature Incarnate), plus the full set of play and board options used by the reference app
-- Responsive UI: complete with tabbed selection pages, grouped options controls, persistent results panel, bulk actions, filter row, sorting, and board layout preference controls
-- Launch URL generation: complete (`src/launchUrl.ts`); both Web Launch and Steam Launch URLs are generated and shown in the results panel
-- Forced highlighting and warnings: implemented to match the PRM result presentation, including additional-board warnings and forced item emphasis
-- Project verification: the latest Vitest run completed successfully with 5 test files passing and 64 tests passing
-- Board layout parity: preferred-layout settings are honored by the engine, layout selection is suppressed in
-  thematic mode, and the results panel renders the PRM's SVG layout diagrams (`src/components/LayoutDisplay.tsx`,
-  assets under `public/assets/layouts/`), including a live pre-generation preview of the currently selected
-  layout and "Position N" badges tying each board to its numbered slot in the layout diagram (not shown in
-  thematic mode, where board names are already directional slot identifiers)
-- UI polish: the Generate button now lives in the results panel itself (always visible, contextual label),
-  launch links are styled as clearly clickable buttons, and the results panel is positioned above the options
-  panel so the primary action and its output are reachable without scrolling past configuration controls first
+## Features
+- Fine-grained selection of spirits, boards, adversaries, and scenarios, including aspect variants
+- Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result)
+- Full set of play and board options: player count, difficulty adjustments, thematic vs. random board layouts,
+  preferred layouts, and more
+- Board layout diagrams shown for the selected/generated layout, including numbered board positions
+- Generates both a plain-text summary and ready-to-use launch links for
+  [Spirit Island Digital](http://play.spiritislanddigital.com)
+- Your selections and settings are saved locally in your browser and restored on your next visit — nothing is
+  sent to a server
 
-## Reference UI review corrections
-The review against the Python PRM clarified the design in a few important ways:
-- The RPM exposes exactly 3 expansion checkboxes: Branch & Claw, Jagged Earth, and Nature Incarnate.
-- Feather & Flame and Horizons remain selectable through per-item tri-state selection rather than dedicated expansion switches.
-- Expansion toggles are not a local engine eligibility gate; eligibility is derived from item-level selection state.
-- Nature Incarnate requires Jagged Earth.
-- Use Events requires an active expansion.
-- Spirit bulk actions are visibility-aware: when filters are active, they operate only on the currently visible items.
-
-## Outstanding work
-- Phase 4 PWA support: installable/offline-capable app shell and data caching in the production build
-
-## How to run
+## How to run locally
 1. Install dependencies:
 
-```bash
-npm install
-```
+   ```bash
+   npm install
+   ```
 
-2. Run tests:
+2. Start the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+3. Open the printed local URL in your browser, choose your options, and click "Generate".
+
+## Running tests
 
 ```bash
 npm test
 ```
 
-3. Start the dev server and open the app in your browser:
+## Contributing / development notes
+- Built with React, Vite, and TypeScript.
+- `src/engine/randomizer.ts` contains the randomization logic; `src/data/loader.ts` loads and normalizes the
+  game data under `public/data/`.
+- Fixture files under `src/fixtures/python_state/` are used by `randomizer.test.ts` to validate the engine
+  against known-good reference state; they aren't wired into the live UI.
 
-```bash
-npm run dev
-```
-
-Click "Generate" on the home page to run the engine with the current persisted state and view the generated setup.
-
-## Fixtures for testing
-- Fixture files are stored at `src/fixtures/python_state/selection_state.json` and `src/fixtures/python_state/settings_state.json`.
-- These are used in integration tests (`randomizer.test.ts`) to validate the engine against real Python-persisted state. They are not wired to the live UI.
+## License
+Spirit Island is a trademark of Greater Than Games. This project is an unofficial, fan-made tool and is not
+affiliated with or endorsed by Greater Than Games.
