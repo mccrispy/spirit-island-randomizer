@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Boards list now sorts alphabetically (a board was previously appearing out of order at the end of the list).
+- About tab no longer shows leftover "SIRPY" branding.
+
+### Changed
+- Spirit count and layout preference options moved to the top of the Options panel.
 
 ## [1.0.0] - 2026-09-02
 ### Added

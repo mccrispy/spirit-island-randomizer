@@ -97,69 +97,6 @@ export function OptionsPanel() {
         <h2>Options</h2>
       </div>
 
-      <div className="option-section">
-        <h3>Expansions</h3>
-        <div className="option-grid">
-          {checkboxRow("Branch & Claw", settings.expansionBranchClaw, () =>
-            toggleExpansion("expansionBranchClaw"),
-          )}
-          {checkboxRow("Jagged Earth", settings.expansionJaggedEarth, () =>
-            toggleExpansion("expansionJaggedEarth"),
-          )}
-          {checkboxRow(
-            "Nature Incarnate",
-            settings.expansionNatureIncarnate,
-            () => toggleExpansion("expansionNatureIncarnate"),
-            !settings.expansionJaggedEarth,
-            !settings.expansionJaggedEarth
-              ? "requires Jagged Earth"
-              : undefined,
-          )}
-        </div>
-      </div>
-
-      <div className="option-section">
-        <h3>Board rules</h3>
-        <div className="option-grid">
-          {checkboxRow(
-            "Additional board",
-            settings.includeAdditionalBoard,
-            () => toggle("includeAdditionalBoard"),
-          )}
-          {checkboxRow(
-            "Strict board compatibility",
-            settings.strictBoardCompatibility,
-            () => toggle("strictBoardCompatibility"),
-            strictDisabledByBoardCount,
-            strictDisabledByBoardCount
-              ? "requires four boards or fewer"
-              : undefined,
-          )}
-          {checkboxRow("Thematic boards", settings.useThematicBoards, () =>
-            toggle("useThematicBoards"),
-          )}
-        </div>
-      </div>
-
-      <div className="option-section">
-        <h3>Game toggles</h3>
-        <div className="option-grid">
-          {checkboxRow("Use adversary", settings.useAdversaries, () =>
-            toggle("useAdversaries"),
-          )}
-          {checkboxRow("Use scenario", settings.useScenarios, () =>
-            toggle("useScenarios"),
-          )}
-          {checkboxRow(
-            "Use events",
-            settings.useEvents,
-            () => toggle("useEvents"),
-            !anyExpansion,
-            !anyExpansion ? "requires an expansion" : undefined,
-          )}
-        </div>
-      </div>
-
       <div className="option-section slider-section">
         <h3>Spirit count</h3>
         <label className="spirits-slider">
@@ -228,6 +165,69 @@ export function OptionsPanel() {
           </label>
           {settings.useThematicBoards && (
             <em>disabled — thematic boards use no layout</em>
+          )}
+        </div>
+      </div>
+
+      <div className="option-section">
+        <h3>Expansions</h3>
+        <div className="option-grid">
+          {checkboxRow("Branch & Claw", settings.expansionBranchClaw, () =>
+            toggleExpansion("expansionBranchClaw"),
+          )}
+          {checkboxRow("Jagged Earth", settings.expansionJaggedEarth, () =>
+            toggleExpansion("expansionJaggedEarth"),
+          )}
+          {checkboxRow(
+            "Nature Incarnate",
+            settings.expansionNatureIncarnate,
+            () => toggleExpansion("expansionNatureIncarnate"),
+            !settings.expansionJaggedEarth,
+            !settings.expansionJaggedEarth
+              ? "requires Jagged Earth"
+              : undefined,
+          )}
+        </div>
+      </div>
+
+      <div className="option-section">
+        <h3>Board rules</h3>
+        <div className="option-grid">
+          {checkboxRow(
+            "Additional board",
+            settings.includeAdditionalBoard,
+            () => toggle("includeAdditionalBoard"),
+          )}
+          {checkboxRow(
+            "Strict board compatibility",
+            settings.strictBoardCompatibility,
+            () => toggle("strictBoardCompatibility"),
+            strictDisabledByBoardCount,
+            strictDisabledByBoardCount
+              ? "requires four boards or fewer"
+              : undefined,
+          )}
+          {checkboxRow("Thematic boards", settings.useThematicBoards, () =>
+            toggle("useThematicBoards"),
+          )}
+        </div>
+      </div>
+
+      <div className="option-section">
+        <h3>Game toggles</h3>
+        <div className="option-grid">
+          {checkboxRow("Use adversary", settings.useAdversaries, () =>
+            toggle("useAdversaries"),
+          )}
+          {checkboxRow("Use scenario", settings.useScenarios, () =>
+            toggle("useScenarios"),
+          )}
+          {checkboxRow(
+            "Use events",
+            settings.useEvents,
+            () => toggle("useEvents"),
+            !anyExpansion,
+            !anyExpansion ? "requires an expansion" : undefined,
           )}
         </div>
       </div>

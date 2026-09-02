@@ -24,6 +24,10 @@ export function sortScenarios(scenarios: Scenario[]) {
   return [...scenarios].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+export function sortBoards(boards: Board[]) {
+  return [...boards].sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export function applyBulkPoolSelection(
   selectionState: Record<string, TriState>,
   items: Array<{ canonicalName: string }>,
@@ -84,12 +88,13 @@ export function BoardsAdversariesScenariosTab() {
     [data.adversaries, adversarySort],
   );
   const sortedScenarios = useMemo(() => sortScenarios(data.scenarios), [data.scenarios]);
+  const sortedBoards = useMemo(() => sortBoards(data.boards), [data.boards]);
 
   return (
     <div className="board-pool-layout">
       <Pool<Board>
         title="Boards"
-        items={data.boards}
+        items={sortedBoards}
         selectionState={selectionState}
         setValue={setValue}
         headerAction={
@@ -100,7 +105,7 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, data.boards, TriState.CHECKED),
+                  ...applyBulkPoolSelection(selectionState, sortedBoards, TriState.CHECKED),
                 })
               }
             >
@@ -112,7 +117,7 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, data.boards, TriState.UNCHECKED),
+                  ...applyBulkPoolSelection(selectionState, sortedBoards, TriState.UNCHECKED),
                 })
               }
             >
