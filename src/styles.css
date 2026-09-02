@@ -297,6 +297,10 @@ h1 {
   padding-top: 4px;
   padding-bottom: 4px;
 }
+.layout-controls em {
+  color: #82978a;
+  font-size: 0.78em;
+}
 .option-section {
   border: 1px solid #d2d9d0;
   border-radius: 14px;
@@ -459,6 +463,17 @@ h1 {
   margin-bottom: 8px;
   font-size: 0.95rem;
 }
+.position-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: #e4eadf;
+  color: #4a625b;
+  font: 700 0.7rem sans-serif;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
 .results-panel ol {
   margin: 0 0 16px;
   padding-left: 20px;
@@ -507,6 +522,15 @@ h1 {
 }
 .about-copy a {
   color: #b65d3b;
+}
+.layout-diagram {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  margin: 10px 0 16px;
+  border: 1px solid #c8d2c6;
+  border-radius: 8px;
+  background: #eaf0e8;
 }
 .panel-heading {
   display: flex;

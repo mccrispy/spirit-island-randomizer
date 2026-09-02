@@ -273,6 +273,62 @@ describe("randomizer engine", () => {
         expect(result.layoutTemplate?.pairs).toBe("1-2");
     });
 
+    it("honors a preferred layout for the resolved board count instead of picking randomly", () => {
+        const twoLayoutData: AppData = {
+            ...sampleData,
+            layouts: [
+                { ...sampleData.layouts[0], canonicalName: "layout-a" },
+                { ...sampleData.layouts[0], canonicalName: "layout-b" },
+            ],
+        };
+
+        for (const seed of [1, 2, 3, 4, 5]) {
+            const result = runWithTrace(
+                twoLayoutData,
+                {
+                    expansions: ["Base Game"],
+                    numSpirits: 2,
+                    selectionState: defaultSelectionState,
+                    preferredLayouts: { "2": "layout-b" },
+                },
+                createSeededRng(seed)
+            );
+            expect(result.layout?.canonicalName).toBe("layout-b");
+        }
+    });
+
+    it("falls back to random selection when the preferred layout isn't valid for the resolved board count", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 2,
+                selectionState: defaultSelectionState,
+                preferredLayouts: { "2": "layout-that-does-not-exist" },
+            },
+            createSeededRng(7)
+        );
+        expect(result.layout?.canonicalName).toBe("test-layout");
+    });
+
+    it("never selects a layout in thematic mode, even when a preferred layout is set (PRM parity)", async () => {
+        const data = await loadAllData();
+        const selectionState = buildDefaultSelectionState(data);
+        const result = runWithTrace(
+            data,
+            {
+                numSpirits: 1,
+                useThematicBoards: true,
+                selectionState,
+                preferredLayouts: { "1": "standard" },
+            },
+            createSeededRng(305)
+        );
+        expect(result.layout).toBeNull();
+        expect(result.boardPositions).toBeNull();
+        expect(result.layoutUrlString).toBeNull();
+    });
+
     it("throws when selectionState is missing to match strict Python parity", () => {
         expect(() =>
             runWithTrace(

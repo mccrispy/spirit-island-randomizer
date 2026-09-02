@@ -519,8 +519,22 @@ function selectScenario(data: AppData, options: EngineOptions, rng: RNG) {
 }
 
 function selectLayout(data: AppData, options: EngineOptions, rng: RNG) {
+    // PRM parity: thematic mode always resolves to no layout (the layout combo is disabled in the PRM UI).
+    if (options.useThematicBoards) {
+        return null;
+    }
+
     const boardCount = (options.numSpirits ?? 1) + (options.includeAdditionalBoard ? 1 : 0);
     const layouts = data.layouts.filter((layout) => layout.validBoardCounts.includes(boardCount));
+
+    const preferredName = options.preferredLayouts?.[String(boardCount)];
+    if (preferredName) {
+        const preferred = layouts.find((layout) => layout.canonicalName === preferredName);
+        if (preferred) {
+            return preferred;
+        }
+    }
+
     return pickRandom(layouts, rng);
 }
 

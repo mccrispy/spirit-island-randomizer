@@ -15,7 +15,12 @@ The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\
 - Responsive UI: complete with tabbed selection pages, grouped options controls, persistent results panel, bulk actions, filter row, sorting, and board layout preference controls
 - Launch URL generation: complete (`src/launchUrl.ts`); both Web Launch and Steam Launch URLs are generated and shown in the results panel
 - Forced highlighting and warnings: implemented to match the PRM result presentation, including additional-board warnings and forced item emphasis
-- Project verification: the latest Vitest run completed successfully with 5 test files passing and 61 tests passing
+- Project verification: the latest Vitest run completed successfully with 5 test files passing and 64 tests passing
+- Board layout parity: preferred-layout settings are honored by the engine, layout selection is suppressed in
+  thematic mode, and the results panel renders the PRM's SVG layout diagrams (`src/components/LayoutDisplay.tsx`,
+  assets under `public/assets/layouts/`), including a live pre-generation preview of the currently selected
+  layout and "Position N" badges tying each board to its numbered slot in the layout diagram (not shown in
+  thematic mode, where board names are already directional slot identifiers)
 
 ## Reference UI review corrections
 The review against the Python PRM clarified the design in a few important ways:
@@ -27,7 +32,7 @@ The review against the Python PRM clarified the design in a few important ways:
 - Spirit bulk actions are visibility-aware: when filters are active, they operate only on the currently visible items.
 
 ## Outstanding work
-- Phase 3 PWA support: installable/offline-capable app shell and data caching in the production build
+- Phase 4 PWA support: installable/offline-capable app shell and data caching in the production build
 
 ## How to run
 1. Install dependencies:

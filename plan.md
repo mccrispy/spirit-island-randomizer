@@ -14,7 +14,7 @@ The design follows the Python PRM behavior closely, with the key corrected assum
 - The UI shell, tabs, filters, bulk actions, grouped options panel, and results panel are all implemented.
 - Browser-local persistence is complete and saves the selection/settings state across reloads.
 - Launch URL generation for web launch and Steam launch is implemented and verified.
-- The remaining scope is Phase 3 PWA support, which is the only major functional item left before final packaging.
+- The remaining scope is Phase 4 PWA support, which is the only major functional item left before final packaging.
 
 ## Project structure
 - `public/` — static game data and app assets
@@ -34,7 +34,8 @@ The design follows the Python PRM behavior closely, with the key corrected assum
 - Engine parity for randomization rules, compatibility checks, thematic boards, and additional board logic
 - Tri-state selection model and UI across spirit, board, adversary, and scenario pools
 - Options panel with board-generation settings and layout preference controls
-- Results panel with forced highlighting, warnings, and launch URL generation
+- Results panel with forced highlighting, warnings, launch URL generation, a live pre-generation layout preview,
+  and per-board "Position N" badges tied to the layout diagram's numbered slots
 - Persistence sync for settings and selection state
 - Project verification via Vitest with the current suite passing
 
@@ -47,11 +48,12 @@ The design follows the Python PRM behavior closely, with the key corrected assum
 - App can generate and display a valid setup: complete
 - Launch URL generation: complete
 - Test coverage remains green: complete in the current project state
+- Board layout selection/display parity: complete
 - PWA support: remaining
 
 ## Verification
 - Latest test run: `npm test -- --run`
-- Result: 5 test files passed, 61 tests passed
+- Result: 5 test files passed, 64 tests passed
 
 ## Next steps
 - Implement the PWA phase in `vite.config.ts` and related assets.

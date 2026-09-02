@@ -16,7 +16,10 @@ export function OptionsPanel() {
     if (strictDisabledByBoardCount && settings.strictBoardCompatibility) {
       savedStrictCompatibilityRef.current = true;
       setSettings({ ...settings, strictBoardCompatibility: false });
-    } else if (!strictDisabledByBoardCount && savedStrictCompatibilityRef.current !== null) {
+    } else if (
+      !strictDisabledByBoardCount &&
+      savedStrictCompatibilityRef.current !== null
+    ) {
       const saved = savedStrictCompatibilityRef.current;
       savedStrictCompatibilityRef.current = null;
       setSettings({ ...settings, strictBoardCompatibility: saved });
@@ -29,23 +32,32 @@ export function OptionsPanel() {
     setSettings({ ...settings, [key]: !settings[key] });
 
   const toggleExpansion = (
-    key: "expansionBranchClaw" | "expansionJaggedEarth" | "expansionNatureIncarnate",
+    key:
+      | "expansionBranchClaw"
+      | "expansionJaggedEarth"
+      | "expansionNatureIncarnate",
   ) => {
     const updated: SettingsState = { ...settings, [key]: !settings[key] };
     if (key === "expansionJaggedEarth" && !updated.expansionJaggedEarth) {
       updated.expansionNatureIncarnate = false;
     }
     const anyExpansion =
-      updated.expansionBranchClaw || updated.expansionJaggedEarth || updated.expansionNatureIncarnate;
+      updated.expansionBranchClaw ||
+      updated.expansionJaggedEarth ||
+      updated.expansionNatureIncarnate;
     if (!anyExpansion) updated.useEvents = false;
     setSettings(updated);
   };
 
   const anyExpansion =
-    settings.expansionBranchClaw || settings.expansionJaggedEarth || settings.expansionNatureIncarnate;
+    settings.expansionBranchClaw ||
+    settings.expansionJaggedEarth ||
+    settings.expansionNatureIncarnate;
 
-  const boardCount = settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0);
-  const preferredLayoutForBoardCount = settings.preferredLayouts[String(boardCount)] ?? "";
+  const boardCount =
+    settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0);
+  const preferredLayoutForBoardCount =
+    settings.preferredLayouts[String(boardCount)] ?? "";
   const availableLayouts = data.layouts.filter((layout) =>
     layout.validBoardCounts.includes(boardCount),
   );
@@ -60,9 +72,20 @@ export function OptionsPanel() {
     setSettings({ ...settings, preferredLayouts: next });
   };
 
-  const checkboxRow = (label: string, checked: boolean, onChange: () => void, disabled = false, note?: string) => (
+  const checkboxRow = (
+    label: string,
+    checked: boolean,
+    onChange: () => void,
+    disabled = false,
+    note?: string,
+  ) => (
     <label className={`option-check ${disabled ? "disabled" : ""}`}>
-      <input type="checkbox" checked={checked} disabled={disabled} onChange={onChange} />
+      <input
+        type="checkbox"
+        checked={checked}
+        disabled={disabled}
+        onChange={onChange}
+      />
       <span>{label}</span>
       {note && <em>{note}</em>}
     </label>
@@ -77,14 +100,20 @@ export function OptionsPanel() {
       <div className="option-section">
         <h3>Expansions</h3>
         <div className="option-grid">
-          {checkboxRow("Branch & Claw", settings.expansionBranchClaw, () => toggleExpansion("expansionBranchClaw"))}
-          {checkboxRow("Jagged Earth", settings.expansionJaggedEarth, () => toggleExpansion("expansionJaggedEarth"))}
+          {checkboxRow("Branch & Claw", settings.expansionBranchClaw, () =>
+            toggleExpansion("expansionBranchClaw"),
+          )}
+          {checkboxRow("Jagged Earth", settings.expansionJaggedEarth, () =>
+            toggleExpansion("expansionJaggedEarth"),
+          )}
           {checkboxRow(
             "Nature Incarnate",
             settings.expansionNatureIncarnate,
             () => toggleExpansion("expansionNatureIncarnate"),
             !settings.expansionJaggedEarth,
-            !settings.expansionJaggedEarth ? "requires Jagged Earth" : undefined,
+            !settings.expansionJaggedEarth
+              ? "requires Jagged Earth"
+              : undefined,
           )}
         </div>
       </div>
@@ -92,23 +121,35 @@ export function OptionsPanel() {
       <div className="option-section">
         <h3>Board rules</h3>
         <div className="option-grid">
-          {checkboxRow("Additional board", settings.includeAdditionalBoard, () => toggle("includeAdditionalBoard"))}
+          {checkboxRow(
+            "Additional board",
+            settings.includeAdditionalBoard,
+            () => toggle("includeAdditionalBoard"),
+          )}
           {checkboxRow(
             "Strict board compatibility",
             settings.strictBoardCompatibility,
             () => toggle("strictBoardCompatibility"),
             strictDisabledByBoardCount,
-            strictDisabledByBoardCount ? "requires four boards or fewer" : undefined,
+            strictDisabledByBoardCount
+              ? "requires four boards or fewer"
+              : undefined,
           )}
-          {checkboxRow("Thematic boards", settings.useThematicBoards, () => toggle("useThematicBoards"))}
+          {checkboxRow("Thematic boards", settings.useThematicBoards, () =>
+            toggle("useThematicBoards"),
+          )}
         </div>
       </div>
 
       <div className="option-section">
         <h3>Game toggles</h3>
         <div className="option-grid">
-          {checkboxRow("Use adversary", settings.useAdversaries, () => toggle("useAdversaries"))}
-          {checkboxRow("Use scenario", settings.useScenarios, () => toggle("useScenarios"))}
+          {checkboxRow("Use adversary", settings.useAdversaries, () =>
+            toggle("useAdversaries"),
+          )}
+          {checkboxRow("Use scenario", settings.useScenarios, () =>
+            toggle("useScenarios"),
+          )}
           {checkboxRow(
             "Use events",
             settings.useEvents,
@@ -132,12 +173,17 @@ export function OptionsPanel() {
             max={6}
             step={1}
             value={[settings.numSpirits]}
-            onValueChange={([numSpirits]) => setSettings({ ...settings, numSpirits })}
+            onValueChange={([numSpirits]) =>
+              setSettings({ ...settings, numSpirits })
+            }
           >
             <Slider.Track className="slider-track">
               <Slider.Range className="slider-range" />
             </Slider.Track>
-            <Slider.Thumb className="slider-thumb" aria-label="Number of spirits" />
+            <Slider.Thumb
+              className="slider-thumb"
+              aria-label="Number of spirits"
+            />
           </Slider.Root>
         </label>
       </div>
@@ -150,7 +196,9 @@ export function OptionsPanel() {
             <select
               value={preferredLayoutForBoardCount}
               onChange={(event) => setPreferredLayout(event.target.value)}
-              disabled={availableLayouts.length === 0}
+              disabled={
+                availableLayouts.length === 0 || settings.useThematicBoards
+              }
             >
               <option value="">Random</option>
               {availableLayouts.map((layout) => (
@@ -165,7 +213,9 @@ export function OptionsPanel() {
             <input
               type="checkbox"
               checked={Boolean(preferredLayoutForBoardCount)}
-              disabled={availableLayouts.length === 0}
+              disabled={
+                availableLayouts.length === 0 || settings.useThematicBoards
+              }
               onChange={() => {
                 if (preferredLayoutForBoardCount) {
                   setPreferredLayout("");
@@ -176,6 +226,9 @@ export function OptionsPanel() {
             />
             <span>Preferred</span>
           </label>
+          {settings.useThematicBoards && (
+            <em>disabled — thematic boards use no layout</em>
+          )}
         </div>
       </div>
     </section>

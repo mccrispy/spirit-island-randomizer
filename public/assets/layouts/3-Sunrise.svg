@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="65.891968mm"
+   height="83.967232mm"
+   viewBox="0 0 65.891968 83.967232"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-378.85155,-46.024497)">
+    <g
+       id="g69"
+       transform="rotate(60,253.04991,385.10333)">
+      <g
+         id="g68"
+         transform="translate(-4.9070738,-18.965991)">
+        <path
+           id="path68"
+           style="fill:none;stroke:#000000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 68.043909,111.07487 32.021451,0.0692 z m 0.01188,0.003 -16.061544,27.76904 z m 32.006431,0.0598 -15.976396,27.76956 z m -48.061776,27.66931 32.079995,0.0851 z" />
+      </g>
+      <path
+         style="fill:#1900f6;fill-opacity:1;stroke:#2525ff;stroke-width:0.168518;stroke-dasharray:none;stroke-opacity:1"
+         id="path69"
+         d="m 107.34937,-104.28966 a 15.995491,4.0089459 0 0 1 -16.028606,3.99227 15.995491,4.0089459 0 0 1 -15.962236,-4.00894 h 15.995491 z"
+         transform="matrix(-0.50192518,0.86491105,-0.96644995,-0.256855,0,0)" />
+    </g>
+    <g
+       id="g71"
+       transform="rotate(120,258.72584,193.10286)">
+      <g
+         id="g70"
+         transform="translate(-4.9070738,-18.965991)">
+        <path
+           id="path70"
+           style="fill:none;stroke:#000000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 68.043909,111.07487 32.021451,0.0692 z m 0.01188,0.003 -16.061544,27.76904 z m 32.006431,0.0598 -15.976396,27.76956 z m -48.061776,27.66931 32.079995,0.0851 z" />
+      </g>
+      <path
+         style="fill:#1900f6;fill-opacity:1;stroke:#2525ff;stroke-width:0.168518;stroke-dasharray:none;stroke-opacity:1"
+         id="path71"
+         d="m 107.34937,-104.28966 a 15.995491,4.0089459 0 0 1 -16.028606,3.99227 15.995491,4.0089459 0 0 1 -15.962236,-4.00894 h 15.995491 z"
+         transform="matrix(-0.50192518,0.86491105,-0.96644995,-0.256855,0,0)" />
+    </g>
+    <g
+       id="g73"
+       transform="translate(332.90603,9.86564)">
+      <g
+         id="g72"
+         transform="translate(-4.9070738,-18.965991)">
+        <path
+           id="path72"
+           style="fill:none;stroke:#000000;stroke-width:0.4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 68.043909,111.07487 32.021451,0.0692 z m 0.01188,0.003 -16.061544,27.76904 z m 32.006431,0.0598 -15.976396,27.76956 z m -48.061776,27.66931 32.079995,0.0851 z" />
+      </g>
+      <path
+         style="fill:#1900f6;fill-opacity:1;stroke:#2525ff;stroke-width:0.168518;stroke-dasharray:none;stroke-opacity:1"
+         id="path73"
+         d="m 107.34937,-104.28966 a 15.995491,4.0089459 0 0 1 -16.028606,3.99227 15.995491,4.0089459 0 0 1 -15.962236,-4.00894 h 15.995491 z"
+         transform="matrix(-0.50192518,0.86491105,-0.96644995,-0.256855,0,0)" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:11.0212px;writing-mode:lr-tb;direction:ltr;fill:#1900f6;fill-opacity:1;stroke:#2525ff;stroke-width:0.347124;stroke-dasharray:none;stroke-opacity:1"
+       x="463.90497"
+       y="104.01127"
+       id="text173"
+       transform="scale(0.86306499,1.1586613)"><tspan
+         id="tspan173"
+         style="stroke-width:0.347124"
+         x="463.90497"
+         y="104.01127">1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.0212px;writing-mode:lr-tb;direction:ltr;fill:#1900f6;fill-opacity:1;stroke:#2525ff;stroke-width:0.347124;stroke-dasharray:none;stroke-opacity:1"
+       x="464.27737"
+       y="78.353012"
+       id="text174"
+       transform="scale(0.86306499,1.1586613)"><tspan
+         id="tspan174"
+         style="stroke-width:0.347124"
+         x="464.27737"
+         y="78.353012">2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:11.0212px;writing-mode:lr-tb;direction:ltr;fill:#1900f6;fill-opacity:1;stroke:#2525ff;stroke-width:0.347124;stroke-dasharray:none;stroke-opacity:1"
+       x="492.61771"
+       y="67.889191"
+       id="text175"
+       transform="scale(0.86306499,1.1586613)"><tspan
+         id="tspan175"
+         style="stroke-width:0.347124"
+         x="492.61771"
+         y="67.889191">3</tspan></text>
+  </g>
+</svg>

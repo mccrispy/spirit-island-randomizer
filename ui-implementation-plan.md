@@ -8,7 +8,7 @@ for their status). It supersedes the "Next steps" section of `plan.md` for UI wo
 
 Port the PyQt6 Python reference UI (`SIRPYv4`, at `C:\Users\mccri\Python Projects\SIRPYv4`) to a responsive,
 web-native React UI, built in stages: (0) foundation/tooling, (1) MVP functional selection UI, (2) polish/parity
-features, (3) PWA support.
+features, (3) board layout selection/display parity, (4) PWA support.
 
 ## Decisions
 
@@ -110,16 +110,98 @@ The PRM parity and polish pass is implemented and in the app:
 15. The board layout template selector + Preferred toggle is implemented in `OptionsPanel` and wired to
     `settings.preferredLayouts`.
 
-The remaining project work is now limited to the final PWA phase.
+The remaining project work is board layout selection/display parity (Phase 3, below), then the final PWA phase
+(Phase 4).
 
-## Phase 3 — PWA Support
+## Phase 3 — Board Layout Selection & Display Parity — COMPLETE
 
-16. Add `vite-plugin-pwa`, configure manifest (name, icons, theme color) and service worker (cache app shell +
-    `public/data/*.json`) in `vite.config.ts`.
-17. Add icon assets, test offline load via browser devtools "Offline" mode.
+PWA support (previously Phase 3) is deferred to Phase 4 in favor of bringing forward this PRM-parity feature.
+The engine already models layout data (`BoardLayout`, `boardPositions`, `layoutUrlString`), but source review
+against the PRM (`randomizer/engine.py`, `ui/main_window.py`, `data_files_v4/board_layouts.json`,
+`assets/*.svg`) found two real gaps, not just missing polish:
 
-*Depends on the stable app shell and data layer already being in place. This is the remaining feature work after the
-current UI parity pass.*
+- **Preferred layout is a no-op today.** `settings.preferredLayouts` is captured, persisted, and editable in
+  `OptionsPanel`, but `selectLayout()` in `src/engine/randomizer.ts` ignores it and always picks randomly among
+  valid layouts for the board count — `EngineOptions` doesn't even declare a preferred-layout field.
+- **Thematic mode doesn't suppress layout selection.** The PRM always resolves `selected_layout = None` when
+  Thematic Boards is enabled (and disables the layout combo). The web engine currently still computes/attaches a
+  random Standard-family layout even in thematic mode, which is meaningless since layout template pairs describe
+  standard board sides, not thematic sides.
+- **No visual display exists at all.** `ResultsPanel` only prints the layout name as text. The PRM renders an SVG
+  diagram via a `LayoutSvgWidget`, resolving asset filenames as `{totalBoards}-{layout.svgFile}.svg`, with
+  `Wild.png` as the placeholder for layouts with no SVG (e.g. Archipelago — player-defined) and
+  `{totalBoards}-thematic.svg` for thematic mode. These assets don't exist yet in this repo.
+
+18. **Engine: honor preferred layout + null it out for thematic mode.**
+    - Add `preferredLayouts?: Record<string, string>` to `EngineOptions` (`src/engine/types.ts`).
+    - In `selectLayout()` (`src/engine/randomizer.ts`): return `null` immediately when `options.useThematicBoards`
+      is true (PRM parity). Otherwise filter valid layouts for the resolved board count; if
+      `preferredLayouts[String(boardCount)]` names one of them, use it directly (no RNG call); otherwise fall
+      back to the existing `pickRandom`.
+    - No change needed in `AppStateContext.tsx`'s `generate()` — `state.settings` (including `preferredLayouts`)
+      is already spread into `options`; this step just makes the engine actually read it.
+    - Extend `randomizer.test.ts`: preferred layout is honored when valid for the resolved board count; falls
+      back to random when the stored preference isn't valid for that count (e.g. board count changed since it
+      was set); thematic mode always yields `layout: null`, `boardPositions: null`, `layoutUrlString: ""`
+      regardless of any preferred-layout setting.
+19. **Options UI: disable layout controls in thematic mode.** In `OptionsPanel.tsx`, disable the layout
+    `<select>` and "Preferred" checkbox when `settings.useThematicBoards` is true (mirrors the PRM disabling its
+    combo), with a disabled-note consistent with existing patterns (e.g. "requires four boards or fewer").
+    Existing preference storage is untouched — no need for the PRM's separate pre-thematic-selection save/restore
+    since `preferredLayouts` already persists per board count independent of the thematic toggle.
+20. **Bring in layout SVG assets.** Copy the 33 layout SVGs + `Wild.png` from
+    `C:\Users\mccri\Python Projects\SIRPYv4\assets` into `public/assets/layouts/` in this repo, unchanged
+    filenames (`1-Standard.svg` … `6-thematic.svg`, `Wild.png`). Skip `Ocean Background - small.jpg` (decorative
+    backdrop, out of scope) and `4-Standard-8.svg` (unused 8-board experimental variant, no matching engine mode).
+    These are the app author's own original assets reused across the same project's two implementations — no
+    third-party licensing concern.
+21. **`LayoutDisplay` component.** New `src/components/LayoutDisplay.tsx`, rendered in `ResultsPanel` alongside
+    the existing "Layout: {name}" text line (kept for accessibility/no-image fallback). Props: `layout:
+    BoardLayout | null`, `totalBoards: number`, `useThematicBoards: boolean`. Resolve the asset path with a small
+    exported pure function (unit-testable without rendering), porting `_update_layout_svg`/`_load_svg_for_layout`:
+    - `useThematicBoards` → `/assets/layouts/{totalBoards}-thematic.svg`.
+    - else `layout` is `null` → render nothing (guard only; shouldn't normally happen post-generation outside
+      thematic mode).
+    - else `layout.svgFile` is empty (e.g. Archipelago) → `/assets/layouts/Wild.png` with alt text
+      "Player-defined arrangement".
+    - else → `/assets/layouts/{totalBoards}-{layout.svgFile}.svg`.
+    Render as a plain `<img>` (static files served from `public/`, no inline-SVG import machinery needed), with an
+    `onError` fallback (hide image, keep text line) for known gaps such as 7 total boards with Standard layout
+    (no `7-Standard.svg` asset exists in the PRM either).
+22. **Wire into `ResultsPanel.tsx`.** Compute `totalBoards` the same way the existing additional-board-dropped
+    warning logic does (`result.selectedBoards.length + (result.selectedAdditionalBoard ? 1 : 0)`) and render
+    `<LayoutDisplay layout={result.layout} totalBoards={totalBoards} useThematicBoards={settings.useThematicBoards} />`
+    after the "Layout:" line.
+23. **Pre-generation layout preview (PRM parity).** `ResultsPanel`'s "Waiting" state (before Generate is first
+    pressed) now also renders `LayoutDisplay`, resolved from current `settings` rather than a result: total
+    boards from `numSpirits`/`includeAdditionalBoard`, the preferred layout for that count (or `null` for
+    "Random"), and `useThematicBoards`. `LayoutDisplay` gained a `showPlaceholderWhenNoLayout` prop so the
+    `Wild.png` placeholder renders for the "Random"/no-preference case pre-generation, matching the PRM's
+    behavior of showing `Wild.png` before a "Random" choice resolves. This updates live as options change.
+24. **Board position numbering (extends PRM parity beyond the PRM itself).** The PRM's own result *text* only
+    shows sequential enumeration, never layout position numbers — but its non-thematic layout SVGs (including
+    Standard) have numeric text labels (1, 2, 3…) baked into the diagram, matching `board_positions` order
+    (verified by reading the actual SVG XML, not just the PRM's Python source). Added a "Position N" badge next
+    to each board (main spirit/board list + additional board) in `ResultsPanel`, built from a canonicalName →
+    position lookup derived from `result.boardPositions` (not from list-order assumptions), shown only when
+    `!useThematicBoards` (thematic board names are already the directional slot identifier, e.g. "North East").
+
+*Out of scope / deferred:* interactive/clickable SVGs (PRM's is display-only too); the decorative
+ocean-background backdrop.
+
+*Depends on Phase 2 (result/options plumbing already in place). Steps 18-19 (engine + options) can proceed
+independently of steps 20-22 (assets + display), but step 22 depends on step 21 which depends on step 20. Steps
+23-24 are follow-on refinements once 18-22 are in place.*
+
+The remaining project work is now limited to the final PWA phase (Phase 4, below).
+
+## Phase 4 — PWA Support
+
+23. Add `vite-plugin-pwa`, configure manifest (name, icons, theme color) and service worker (cache app shell +
+    `public/data/*.json`, and now `public/assets/layouts/*`) in `vite.config.ts`.
+24. Add icon assets, test offline load via browser devtools "Offline" mode.
+
+*Depends on the stable app shell and data layer already being in place, and is unaffected by Phase 3.*
 
 ## Relevant files
 
@@ -134,12 +216,17 @@ current UI parity pass.*
 - `src/data/loader.ts`, `src/data/types.ts` — consume `AppData`, `baseSpiritMap`, `BaseSpirit` for tree
   structure
 - `src/launchUrl.ts` — reused via `buildWebLaunchUrl`/`buildSteamLaunchUrl` in `ResultsPanel`
-- `vite.config.ts` — Tailwind plugin wired (Phase 0, done); PWA plugin still pending (Phase 3)
+- `vite.config.ts` — Tailwind plugin wired (Phase 0, done); PWA plugin still pending (Phase 4)
 - `src/styles.css` — Tailwind directives + app styling
 - `src/state/AppStateContext.tsx`, `src/components/layout/AppShell.tsx`,
   `src/components/TriStateCheckbox.tsx`, `src/components/tabs/SpiritPoolTab.tsx`,
   `src/components/tabs/BoardsAdversariesScenariosTab.tsx`, `src/components/tabs/AboutTab.tsx`,
   `src/components/OptionsPanel.tsx`, `src/components/ResultsPanel.tsx` — all implemented
+- `src/components/LayoutDisplay.tsx` — new in Phase 3, resolves/renders the layout SVG asset; also used for the
+  pre-generation preview (step 23) via its `showPlaceholderWhenNoLayout` prop
+- `public/assets/layouts/` — new in Phase 3, copied SVG/PNG assets from the PRM's `assets/` folder
+- `src/components/ResultsPanel.tsx` — also renders the pre-generation layout preview (step 23) and per-board
+  "Position N" badges (step 24)
 
 ## Verification
 
@@ -150,5 +237,13 @@ current UI parity pass.*
    page reload (localStorage).
 3. Resize browser to mobile width (devtools responsive mode) to confirm tabs/results layout doesn't require
    awkward full-page scrolling.
-4. Phase 3: use devtools Network "Offline" toggle after one online visit to confirm app shell + data still
+4. Phase 3: set a preferred layout for a given board count and Generate repeatedly — confirm the same layout is
+   used (not random) until board count changes or the preference is cleared; toggle Thematic Boards on — layout
+   control disables and Results shows `{n}-thematic.svg`; toggle back off — control re-enables with the prior
+   preference intact; pick a no-SVG layout (Archipelago) and confirm the `Wild.png` placeholder renders instead
+   of a broken image; before pressing Generate, confirm the Results panel already previews the current
+   preferred/thematic layout (or `Wild.png` for "Random"), updating live as options change; after Generate,
+   confirm each spirit/board line and the additional board (when present) show a "Position N" badge matching
+   the numbered slots drawn on the layout SVG, and that the badge is absent in thematic mode.
+5. Phase 4: use devtools Network "Offline" toggle after one online visit to confirm app shell + data still
    load.

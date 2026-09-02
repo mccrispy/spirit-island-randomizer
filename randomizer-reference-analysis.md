@@ -102,7 +102,9 @@ This document captures the reference behavior of the Python randomizer engine an
 None currently tracked — the previously listed forced-metadata gap is resolved (see above). Revisit this section if new RPM behavior is ported and a gap is found.
 
 ## Recommended Porting Order
-No outstanding items from this analysis; remaining UI work (filters, sorting, layout template preference, PWA) is tracked in [ui-implementation-plan.md](ui-implementation-plan.md) Phase 2/3, not here.
+No outstanding items from this analysis; remaining UI work (PWA) is tracked in
+[ui-implementation-plan.md](ui-implementation-plan.md) Phase 4, not here. Filters, sorting, and layout template
+preference/display parity are complete (Phases 2-3).
 
 ## Working Rule For This Repo
 When implementing or reviewing randomizer behavior, use this document first, then verify against SIRPYv4 source if needed. Avoid re-deriving the same baseline analysis unless reference code changes.

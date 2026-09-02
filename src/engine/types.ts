@@ -28,6 +28,8 @@ export interface EngineOptions {
     useScenarios?: boolean;
     strictBoardCompatibility?: boolean;
     selectionState?: SelectionState;
+    // Keyed by total board count (as a string); PRM parity — ignored entirely in thematic mode.
+    preferredLayouts?: Record<string, string>;
 }
 
 export interface SelectedSpirit {
