@@ -55,14 +55,21 @@ export function AppShell() {
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content className="tab-content" value="spirits">
-            <h2>Spirit pool</h2>
+            <div className="content-heading">
+              <h2>Spirit pool</h2>
+            </div>
             <SpiritPoolTab />
           </Tabs.Content>
           <Tabs.Content className="tab-content" value="boards">
-            <h2>Boards, adversaries &amp; scenarios</h2>
+            <div className="content-heading">
+              <h2>Boards, adversaries &amp; scenarios</h2>
+            </div>
             <BoardsAdversariesScenariosTab />
           </Tabs.Content>
           <Tabs.Content className="tab-content" value="about">
+            <div className="content-heading">
+              <h2>About</h2>
+            </div>
             <AboutTab />
           </Tabs.Content>
         </Tabs.Root>

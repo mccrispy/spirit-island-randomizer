@@ -15,6 +15,11 @@ features, (3) PWA support.
 - **Layout**: responsive, web-native layout (not a literal desktop port), structured as **tabbed sections**
   (Spirits / Boards & Adversaries & Scenarios / About) with a **persistent Results panel** always visible (side
   panel on wide viewports, bottom panel/sheet on narrow), avoiding deep scrolling to reach Generate/Results.
+- **Reference review correction**: the PRM uses a narrower set of options than the first pass assumed. The spirit/
+  options UI is aligned to the exact RPM: there are exactly 3 expansion checkboxes (Branch & Claw, Jagged Earth,
+  Nature Incarnate), with Feather & Flame and Horizons remaining in the per-item pool selection rather than as
+  dedicated expansion toggles. Expansion settings are metadata for launch filtering and should not be treated as a
+  local engine eligibility gate.
 - **Styling**: **Tailwind CSS v4** via the official `@tailwindcss/vite` plugin (no `postcss.config` needed) +
   **Radix UI primitives** (Tabs, Checkbox, Accordion/Collapsible, Select, Slider) for accessible unstyled building
   blocks. Pure npm dependencies, no native installs required.
@@ -92,23 +97,20 @@ features, (3) PWA support.
 *Depends on Phase 0 completion. Steps 5-8 can proceed in parallel once step 5 (`TriStateCheckbox`) exists; 9-10
 depend on `AppShell` (step 3) and context (step 2).*
 
-## Phase 2 — Polish & Parity Features
+## Phase 2 — Polish & Parity Features — COMPLETE
 
-**Step 14 (forced-item highlighting) is already done** — see step 10 above; `SelectedSpirit`/`SelectedBoard`'s
-existing `forced: boolean` fields (plus `adversaryForced`/`scenarioForced`) proved sufficient end-to-end,
-including for the additional board. No further engine change is needed for this item.
+The PRM parity and polish pass is implemented and in the app:
 
-12. Add the spirit-tab control set to `SpiritPoolTab`: a filter row (expansion dropdown, complexity dropdown,
-    name search, "Clear All Filters") plus the bulk-action toolbar from the RPM (Collapse All / Expand All,
-    "Base Only", "Aspects Only", "Select All", "Deselect All"). The bulk actions must respect the
-    current filter visibility: when filters are active, only the currently visible base spirits/aspects are
-    affected, matching the Python reference behavior.
-13. Add Select All/Deselect All buttons to the boards section; sortable adversary/scenario lists (by name,
-    adversary also by difficulty) in `BoardsAdversariesScenariosTab`.
-15. Board layout template dropdown + "Preferred" checkbox in `OptionsPanel`, wired to
+12. The spirit-tab control set is in place: filter row, name/complexity/expansion-based filtering, clear/reset,
+    collapse/expand all, base-only/aspects-only actions, and select/deselect all behavior. The bulk logic respects
+    the current visible subset when filters are active, matching the Python reference UI.
+13. Board bulk controls and sorted adversary/scenario lists are implemented in `BoardsAdversariesScenariosTab`.
+14. Forced-item highlighting is implemented in the results view and remains aligned with the Python reference
+    behavior for spirits, boards, additional board, adversary, and scenario.
+15. The board layout template selector + Preferred toggle is implemented in `OptionsPanel` and wired to
     `settings.preferredLayouts`.
 
-*Depends on Phase 1. Steps 12, 13, 15 are independent of each other, can be done in any order.*
+The remaining project work is now limited to the final PWA phase.
 
 ## Phase 3 — PWA Support
 
@@ -116,7 +118,8 @@ including for the additional board. No further engine change is needed for this 
     `public/data/*.json`) in `vite.config.ts`.
 17. Add icon assets, test offline load via browser devtools "Offline" mode.
 
-*Depends on Phase 1 (needs a working app to cache). Independent of Phase 2.*
+*Depends on the stable app shell and data layer already being in place. This is the remaining feature work after the
+current UI parity pass.*
 
 ## Relevant files
 

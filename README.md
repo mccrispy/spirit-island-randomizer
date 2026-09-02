@@ -5,27 +5,29 @@ GitHub Pages port of the SIRPYv4 Spirit Island randomizer (React + Vite + TypeSc
 The engine and behavior are derived from the Python SIRPYv4 source at `C:\Users\mccri\Python Projects\SIRPYv4`.
 
 ## Current status
-- React + Vite application shell: complete
-- Data loader and types: implemented (`src/data/loader.ts`, `src/data/types.ts`); `aspect.baseSpiritName` normalized to canonical name at load time
-- Engine port: implemented (`src/engine/randomizer.ts`) and validated with deterministic tests
-- Randomizer parity steps 1-6 from the RPM are implemented (forced selections, additional board, thematic mode, compatibility gating, layout rendering, expansion-aware family selection)
-- Strict Python parity enforced: engine requires explicit `selectionState` and throws otherwise
-- Aspect linkage from source JSON is fixed (aspects are correctly attached to base spirit families)
-- `use_adversaries`, `use_scenarios`, and expansion filtering are wired end-to-end
-- Browser-local persistence implemented (`src/persistence.ts`): `selectionState` and `settingsState` are saved to and restored from `localStorage` on app load
-- `SettingsState` covers all RPM settings keys including `useEvents`, `spiritTreeExpanded`, `localLaunch`, `preferredLayouts`, and exactly the RPM's 3 expansion checkboxes (Branch & Claw, Jagged Earth, Nature Incarnate) — Feather & Flame/Horizons content is fully usable via per-item tri-state selection only, with no dedicated checkbox, matching the RPM exactly
-- App-load initialization: defaults are written to storage on first run; saved state is restored on subsequent loads
-- Launch URL generation implemented (`src/launchUrl.ts`): `buildWebLaunchUrl` and `buildSteamLaunchUrl` produce the Handelabra canonical-parameter-order URL; expansion IDs are derived from both settings flags and result content; `useEvents` is a standalone game-behavior flag
-- Both Web Launch and Steam Launch URLs are shown with full text in the result view
-- Responsive tabbed selection UI: MVP complete, including tri-state spirit/aspect/board/adversary/scenario controls, options, and structured results
-- RPM parity fixes verified against the Python reference source and implemented: expansion checkboxes only affect the launch URL (never local engine eligibility, which is per-item tri-state only); Nature Incarnate requires Jagged Earth; Use Events requires any expansion checkbox and auto-unchecks otherwise; Strict Board Compatibility defaults on and auto-disables/restores past 4 total boards; Thematic Boards toggle; thematic mode silently drops the additional board (with an on-screen warning) when 6 spirits + an additional board reach 7 total
-- Forced-item highlighting in results (Python parity) is implemented ahead of schedule from the Phase 2 plan
-- Tests: 56/56 passing via `vitest`
+- React + Vite app: implemented and working end-to-end
+- Data loader and types: complete (`src/data/loader.ts`, `src/data/types.ts`); aspect names are normalized and linked correctly to their base spirits
+- Engine port: complete (`src/engine/randomizer.ts`) and validated in deterministic tests
+- Randomizer parity: implemented for forced selections, additional board handling, thematic mode, compatibility rules, layout handling, and expansion-aware selection behavior
+- Strict Python parity: enforced in engine code; generation requires explicit `selectionState`
+- Browser persistence: complete (`src/persistence.ts`); `selectionState` and `settingsState` restore from and save to `localStorage`
+- Settings model: matches the corrected PRM behavior with exactly three expansion checkboxes (Branch & Claw, Jagged Earth, Nature Incarnate), plus the full set of play and board options used by the reference app
+- Responsive UI: complete with tabbed selection pages, grouped options controls, persistent results panel, bulk actions, filter row, sorting, and board layout preference controls
+- Launch URL generation: complete (`src/launchUrl.ts`); both Web Launch and Steam Launch URLs are generated and shown in the results panel
+- Forced highlighting and warnings: implemented to match the PRM result presentation, including additional-board warnings and forced item emphasis
+- Project verification: the latest Vitest run completed successfully with 5 test files passing and 61 tests passing
+
+## Reference UI review corrections
+The review against the Python PRM clarified the design in a few important ways:
+- The RPM exposes exactly 3 expansion checkboxes: Branch & Claw, Jagged Earth, and Nature Incarnate.
+- Feather & Flame and Horizons remain selectable through per-item tri-state selection rather than dedicated expansion switches.
+- Expansion toggles are not a local engine eligibility gate; eligibility is derived from item-level selection state.
+- Nature Incarnate requires Jagged Earth.
+- Use Events requires an active expansion.
+- Spirit bulk actions are visibility-aware: when filters are active, they operate only on the currently visible items.
 
 ## Outstanding work
-See [ui-implementation-plan.md](ui-implementation-plan.md) for the staged plan covering the remaining UI work.
-- Phase 2: exact RPM UI polish for the spirit tab (filter row + bulk-action toolbar: expansion/complexity/name filters, Clear All Filters, Collapse/Expand All, Base Only, Aspects Only, Select All, Deselect All), board bulk actions, adversary/scenario sorting, and preferred board-layout controls (forced-item highlighting is already done, see above)
-- Phase 3: PWA support (installable, offline-capable)
+- Phase 3 PWA support: installable/offline-capable app shell and data caching in the production build
 
 ## How to run
 1. Install dependencies:

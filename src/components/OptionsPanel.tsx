@@ -4,13 +4,11 @@ import { useAppState } from "../state/AppStateContext";
 import type { SettingsState } from "../persistence";
 
 export function OptionsPanel() {
-  const { settings, setSettings } = useAppState();
+  const { data, settings, setSettings } = useAppState();
   const savedStrictCompatibilityRef = useRef<boolean | null>(null);
   const totalBoards = settings
     ? settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0)
     : 0;
-  // PRM parity: strict compatibility is force-unchecked and disabled once total boards > 4,
-  // and its prior value is restored once the count drops back to 4 or fewer.
   const strictDisabledByBoardCount = totalBoards >= 5;
 
   useEffect(() => {
@@ -23,16 +21,13 @@ export function OptionsPanel() {
       savedStrictCompatibilityRef.current = null;
       setSettings({ ...settings, strictBoardCompatibility: saved });
     }
-    // Only re-run when the board count crosses the threshold, not on every settings change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalBoards, strictDisabledByBoardCount]);
 
-  if (!settings) return null;
+  if (!settings || !data) return null;
   const toggle = (key: keyof SettingsState) =>
     setSettings({ ...settings, [key]: !settings[key] });
 
-  // PRM parity: NI requires JE; Use Events requires any of the 3 expansion checkboxes,
-  // and is force-unchecked (not just disabled) when the requirement stops being met.
   const toggleExpansion = (
     key: "expansionBranchClaw" | "expansionJaggedEarth" | "expansionNatureIncarnate",
   ) => {
@@ -49,107 +44,140 @@ export function OptionsPanel() {
   const anyExpansion =
     settings.expansionBranchClaw || settings.expansionJaggedEarth || settings.expansionNatureIncarnate;
 
+  const boardCount = settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0);
+  const preferredLayoutForBoardCount = settings.preferredLayouts[String(boardCount)] ?? "";
+  const availableLayouts = data.layouts.filter((layout) =>
+    layout.validBoardCounts.includes(boardCount),
+  );
+
+  const setPreferredLayout = (layoutCanonicalName: string) => {
+    const next = { ...settings.preferredLayouts };
+    if (!layoutCanonicalName) {
+      delete next[String(boardCount)];
+    } else {
+      next[String(boardCount)] = layoutCanonicalName;
+    }
+    setSettings({ ...settings, preferredLayouts: next });
+  };
+
+  const checkboxRow = (label: string, checked: boolean, onChange: () => void, disabled = false, note?: string) => (
+    <label className={`option-check ${disabled ? "disabled" : ""}`}>
+      <input type="checkbox" checked={checked} disabled={disabled} onChange={onChange} />
+      <span>{label}</span>
+      {note && <em>{note}</em>}
+    </label>
+  );
+
   return (
     <section className="options-panel">
-      <h2>Options</h2>
-      <div className="option-grid">
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.expansionBranchClaw}
-            onChange={() => toggleExpansion("expansionBranchClaw")}
-          />{" "}
-          Branch &amp; Claw
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.expansionJaggedEarth}
-            onChange={() => toggleExpansion("expansionJaggedEarth")}
-          />{" "}
-          Jagged Earth
-        </label>
-        <label className={!settings.expansionJaggedEarth ? "disabled-option" : undefined}>
-          <input
-            type="checkbox"
-            checked={settings.expansionNatureIncarnate}
-            disabled={!settings.expansionJaggedEarth}
-            onChange={() => toggleExpansion("expansionNatureIncarnate")}
-          />{" "}
-          Nature Incarnate
-          {!settings.expansionJaggedEarth && <em> requires Jagged Earth</em>}
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.includeAdditionalBoard}
-            onChange={() => toggle("includeAdditionalBoard")}
-          />{" "}
-          Additional board
-        </label>
-        <label className={strictDisabledByBoardCount ? "disabled-option" : undefined}>
-          <input
-            type="checkbox"
-            checked={settings.strictBoardCompatibility}
-            disabled={strictDisabledByBoardCount}
-            onChange={() => toggle("strictBoardCompatibility")}
-          />{" "}
-          Strict board compatibility
-          {strictDisabledByBoardCount && <em> requires four boards or fewer</em>}
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.useThematicBoards}
-            onChange={() => toggle("useThematicBoards")}
-          />{" "}
-          Thematic boards
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.useAdversaries}
-            onChange={() => toggle("useAdversaries")}
-          />{" "}
-          Use adversary
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.useScenarios}
-            onChange={() => toggle("useScenarios")}
-          />{" "}
-          Use scenario
-        </label>
-        <label className={!anyExpansion ? "disabled-option" : undefined}>
-          <input
-            type="checkbox"
-            checked={settings.useEvents}
-            disabled={!anyExpansion}
-            onChange={() => toggle("useEvents")}
-          />{" "}
-          Use events
-          {!anyExpansion && <em> requires an expansion</em>}
+      <div className="panel-headline">
+        <h2>Options</h2>
+      </div>
+
+      <div className="option-section">
+        <h3>Expansions</h3>
+        <div className="option-grid">
+          {checkboxRow("Branch & Claw", settings.expansionBranchClaw, () => toggleExpansion("expansionBranchClaw"))}
+          {checkboxRow("Jagged Earth", settings.expansionJaggedEarth, () => toggleExpansion("expansionJaggedEarth"))}
+          {checkboxRow(
+            "Nature Incarnate",
+            settings.expansionNatureIncarnate,
+            () => toggleExpansion("expansionNatureIncarnate"),
+            !settings.expansionJaggedEarth,
+            !settings.expansionJaggedEarth ? "requires Jagged Earth" : undefined,
+          )}
+        </div>
+      </div>
+
+      <div className="option-section">
+        <h3>Board rules</h3>
+        <div className="option-grid">
+          {checkboxRow("Additional board", settings.includeAdditionalBoard, () => toggle("includeAdditionalBoard"))}
+          {checkboxRow(
+            "Strict board compatibility",
+            settings.strictBoardCompatibility,
+            () => toggle("strictBoardCompatibility"),
+            strictDisabledByBoardCount,
+            strictDisabledByBoardCount ? "requires four boards or fewer" : undefined,
+          )}
+          {checkboxRow("Thematic boards", settings.useThematicBoards, () => toggle("useThematicBoards"))}
+        </div>
+      </div>
+
+      <div className="option-section">
+        <h3>Game toggles</h3>
+        <div className="option-grid">
+          {checkboxRow("Use adversary", settings.useAdversaries, () => toggle("useAdversaries"))}
+          {checkboxRow("Use scenario", settings.useScenarios, () => toggle("useScenarios"))}
+          {checkboxRow(
+            "Use events",
+            settings.useEvents,
+            () => toggle("useEvents"),
+            !anyExpansion,
+            !anyExpansion ? "requires an expansion" : undefined,
+          )}
+        </div>
+      </div>
+
+      <div className="option-section slider-section">
+        <h3>Spirit count</h3>
+        <label className="spirits-slider">
+          <div className="slider-label">
+            <span>Number of spirits</span>
+            <strong>{settings.numSpirits}</strong>
+          </div>
+          <Slider.Root
+            className="slider-root"
+            min={1}
+            max={6}
+            step={1}
+            value={[settings.numSpirits]}
+            onValueChange={([numSpirits]) => setSettings({ ...settings, numSpirits })}
+          >
+            <Slider.Track className="slider-track">
+              <Slider.Range className="slider-range" />
+            </Slider.Track>
+            <Slider.Thumb className="slider-thumb" aria-label="Number of spirits" />
+          </Slider.Root>
         </label>
       </div>
-      <label className="spirits-slider">
-        Number of spirits: <strong>{settings.numSpirits}</strong>
-        <Slider.Root
-          className="slider-root"
-          min={1}
-          max={6}
-          step={1}
-          value={[settings.numSpirits]}
-          onValueChange={([numSpirits]) =>
-            setSettings({ ...settings, numSpirits })
-          }
-        >
-          <Slider.Track className="slider-track">
-            <Slider.Range className="slider-range" />
-          </Slider.Track>
-          <Slider.Thumb className="slider-thumb" aria-label="Number of spirits" />
-        </Slider.Root>
-      </label>
+
+      <div className="option-section">
+        <h3>Layout preference</h3>
+        <div className="layout-controls">
+          <label className="layout-select">
+            <span>Preferred layout</span>
+            <select
+              value={preferredLayoutForBoardCount}
+              onChange={(event) => setPreferredLayout(event.target.value)}
+              disabled={availableLayouts.length === 0}
+            >
+              <option value="">Random</option>
+              {availableLayouts.map((layout) => (
+                <option key={layout.canonicalName} value={layout.canonicalName}>
+                  {layout.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="option-check compact-option-check">
+            <input
+              type="checkbox"
+              checked={Boolean(preferredLayoutForBoardCount)}
+              disabled={availableLayouts.length === 0}
+              onChange={() => {
+                if (preferredLayoutForBoardCount) {
+                  setPreferredLayout("");
+                } else {
+                  setPreferredLayout(availableLayouts[0]?.canonicalName ?? "");
+                }
+              }}
+            />
+            <span>Preferred</span>
+          </label>
+        </div>
+      </div>
     </section>
   );
 }
