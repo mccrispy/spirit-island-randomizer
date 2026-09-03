@@ -17,7 +17,7 @@
     "jsdom": "^30.0.1",
     "typescript": "^5.6.2",
     "vite": "^8.2.1",
-    "vitest": "^1.6.1"
+    "vitest": "^5.0.0"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",
