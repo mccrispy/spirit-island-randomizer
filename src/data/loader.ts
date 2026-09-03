@@ -287,7 +287,8 @@ export async function loadAllData(): Promise<AppData> {
 
   const baseSpiritCanonicalByName: Record<string, string> = {};
   for (const baseSpirit of spiritsList) {
-    baseSpiritCanonicalByName[baseSpirit.name] = baseSpirit.canonicalName;
+    // Keyed case-insensitively so display-name casing mismatches in source data (e.g. "beneath" vs "Beneath") still resolve.
+    baseSpiritCanonicalByName[baseSpirit.name.toLowerCase()] = baseSpirit.canonicalName;
   }
 
   for (const aspect of aspects) {
@@ -297,7 +298,7 @@ export async function loadAllData(): Promise<AppData> {
     }
 
     const baseCanonicalName =
-      baseSpiritMap[baseName]?.spirit.canonicalName || baseSpiritCanonicalByName[baseName];
+      baseSpiritMap[baseName]?.spirit.canonicalName || baseSpiritCanonicalByName[baseName.toLowerCase()];
 
     if (baseCanonicalName && baseSpiritMap[baseCanonicalName]) {
       baseSpiritMap[baseCanonicalName].aspects.push(aspect);
