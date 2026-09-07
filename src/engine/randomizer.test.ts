@@ -212,6 +212,17 @@ describe("randomizer engine", () => {
         expect(first.layout?.canonicalName).toBe(second.layout?.canonicalName);
     });
 
+    it("keeps a zero seed deterministic without getting stuck at zero", () => {
+        const firstRng = createSeededRng(0);
+        const secondRng = createSeededRng(0);
+        const firstValues = [firstRng(), firstRng(), firstRng()];
+        const secondValues = [secondRng(), secondRng(), secondRng()];
+
+        expect(firstValues).toEqual(secondValues);
+        expect(new Set(firstValues).size).toBeGreaterThan(1);
+        expect(firstValues.every((value) => value !== 0)).toBe(true);
+    });
+
     it("does not return an aspect when only the base spirit is selected", () => {
         const result = runWithTrace(
             sampleData,

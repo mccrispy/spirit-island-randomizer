@@ -16,17 +16,19 @@ export function AboutTab() {
         <p>
           This application is an unofficial, fan-made tool created for personal,
           non-commercial use. It is not affiliated with, endorsed by, or
-          connected to Eric Reuss, Flat River Group, or Handelabra Games Inc.
+          connected to Eric Reuss, Lightning Heart Games LLC, Flat River Group,
+          or Handelabra Games Inc.
         </p>
       </div>
 
       <h3>Spirit Island Intellectual Property</h3>
       <p>
-        <em>Spirit Island</em> was designed by <strong>Eric Reuss</strong>
-        (&ldquo;Spirit Island: A Game by Eric Reuss&rdquo;).
+        <strong>Spirit Island</strong> was designed by{" "}
+        <strong>Eric Reuss</strong> (&ldquo;Spirit Island: A Game by Eric
+        Reuss&rdquo;).
       </p>
       <p>
-        <em>Spirit Island</em> is owned and licensed by{" "}
+        <strong>Spirit Island</strong> is owned and licensed by{" "}
         <strong>Lightning Heart Games LLC</strong>.
       </p>
       <p>

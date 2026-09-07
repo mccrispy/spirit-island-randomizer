@@ -26,7 +26,7 @@ const THEMATIC_BOARD_COMBINATIONS: Record<number, string[]> = {
 };
 
 export function createSeededRng(seed: number): RNG {
-    let state = seed >>> 0;
+    let state = (seed >>> 0) || 0x9e3779b9;
     return () => {
         state ^= state << 13;
         state ^= state >>> 17;
