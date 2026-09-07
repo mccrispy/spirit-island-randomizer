@@ -26,6 +26,10 @@ export function AboutTab() {
         (&ldquo;Spirit Island: A Game by Eric Reuss&rdquo;).
       </p>
       <p>
+        <em>Spirit Island</em> is owned and licensed by{" "}
+        <strong>Lightning Heart Games LLC</strong>.
+      </p>
+      <p>
         The <strong>Spirit Island board game</strong> is published by{" "}
         <strong>Flat River Group</strong>.
       </p>
