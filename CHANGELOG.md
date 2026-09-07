@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-09-07
+### Fixed
+- About tab now credits Lightning Heart Games LLC as the owner/licensor of Spirit Island, alongside the
+  existing designer and publisher credits.
+
 ## [1.1.0] - 2026-09-03
 ### Fixed
 - Boards list now sorts alphabetically (a board was previously appearing out of order at the end of the list).
