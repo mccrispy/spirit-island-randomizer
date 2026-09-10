@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.0] - 2026-09-10
 ### Added
 - **User Guide tab**: Dedicated tab providing an in-depth guide covering the tri-state selection system, spirit filtering vs. selection scope, board layout favourites by board count, game rules, and local saving.
 - **Issue reporting link**: A persistent header link now opens the project&rsquo;s GitHub Issues page for bug reports and suggestions.
