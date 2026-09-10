@@ -17,6 +17,7 @@ and generate a randomized setup for your next game — entirely client-side, wit
 - Generates both a plain-text summary and ready-to-use launch links for
   [Spirit Island Digital](http://play.spiritislanddigital.com)
 - Built-in User Guide tab with full instructions on the tri-state selector, filtering, board layout favourites, and game rules
+- Profiles tab for saving, loading, and deleting named selection/settings profiles, plus a reset to first-run defaults &mdash; all stored locally in your browser, with no files to save or upload
 - Header link to the project&rsquo;s GitHub Issues page for bug reports and suggestions
 - Your selections and settings are saved locally in your browser and restored on your next visit — nothing is
   sent to a server

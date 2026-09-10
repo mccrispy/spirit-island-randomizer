@@ -6,14 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.3.0] - 2026-09-10
 ### Added
 - **Named profiles**: A new Profiles tab lets you save your current spirit/board selections and settings under a name, then load or delete saved profiles later, all stored locally in your browser.
 - **Reset to default**: The Profiles tab also lets you reset your current selections and settings back to the app's first-run defaults (with a confirmation prompt).
 - **App version display**: The app version is now shown in the page footer and on the About tab.
-
-### Security
-- **Hardened local storage handling**: All data read back from browser local storage (selections, settings, and saved profiles) is now validated before use, so a corrupted or hand-edited value falls back to safe defaults instead of being trusted as-is.
-- **Profile name safety**: Profile names are restricted to a safe set of characters and length, and saved profiles are stored in a way that can't be used to tamper with the app's internal data structures.
 
 ## [1.2.0] - 2026-09-10
 ### Added
