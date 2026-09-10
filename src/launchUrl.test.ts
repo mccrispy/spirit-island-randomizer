@@ -135,7 +135,13 @@ describe("buildWebLaunchUrl", () => {
     });
 
     it("omits useTokens when no token-bearing expansions are present in settings or result", () => {
-        expect(buildWebLaunchUrl(makeResult(), defaultSettings())).not.toContain("useTokens");
+        const settings: SettingsState = {
+            ...defaultSettings(),
+            expansionBranchClaw: false,
+            expansionJaggedEarth: false,
+            expansionNatureIncarnate: false,
+        };
+        expect(buildWebLaunchUrl(makeResult(), settings)).not.toContain("useTokens");
     });
 
     it("adds useEvents=1 when useEvents is true, regardless of expansion state", () => {

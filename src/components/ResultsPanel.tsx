@@ -61,11 +61,14 @@ export function ResultsPanel() {
   const previewTotalBoards = settings
     ? settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0)
     : 0;
-  const preferredLayoutName =
-    settings?.preferredLayouts[String(previewTotalBoards)];
-  const previewLayout = preferredLayoutName
+  const currentLayoutName = settings
+    ? (settings.selectedLayouts[String(previewTotalBoards)] ??
+      settings.preferredLayouts[String(previewTotalBoards)] ??
+      "")
+    : "";
+  const previewLayout = currentLayoutName
     ? (data?.layouts.find(
-        (layout) => layout.canonicalName === preferredLayoutName,
+        (layout) => layout.canonicalName === currentLayoutName,
       ) ?? null)
     : null;
 

@@ -1,7 +1,9 @@
 import * as Tabs from "@radix-ui/react-tabs";
+import { MessageSquareWarning } from "lucide-react";
 import { useAppState } from "../../state/AppStateContext";
 import { SpiritPoolTab } from "../tabs/SpiritPoolTab";
 import { BoardsAdversariesScenariosTab } from "../tabs/BoardsAdversariesScenariosTab";
+import { UserGuideTab } from "../tabs/UserGuideTab";
 import { AboutTab } from "../tabs/AboutTab";
 import { OptionsPanel } from "../OptionsPanel";
 import { ResultsPanel } from "../ResultsPanel";
@@ -31,6 +33,15 @@ export function AppShell() {
           <p className="eyebrow">Spirit Island setup</p>
           <h1>Spirit Island Randomizer</h1>
         </div>
+        <a
+          className="issue-link"
+          href="https://github.com/mccrispy/spirit-island-randomizer/issues"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <MessageSquareWarning size={17} aria-hidden="true" />
+          Report an issue
+        </a>
       </header>
       {error && <p className="error">{error}</p>}
       <div className="app-layout">
@@ -41,6 +52,9 @@ export function AppShell() {
             </Tabs.Trigger>
             <Tabs.Trigger className="tab-trigger" value="boards">
               Boards &amp; adversaries
+            </Tabs.Trigger>
+            <Tabs.Trigger className="tab-trigger" value="guide">
+              User Guide
             </Tabs.Trigger>
             <Tabs.Trigger className="tab-trigger" value="about">
               About
@@ -57,6 +71,12 @@ export function AppShell() {
               <h2>Boards, adversaries &amp; scenarios</h2>
             </div>
             <BoardsAdversariesScenariosTab />
+          </Tabs.Content>
+          <Tabs.Content className="tab-content" value="guide">
+            <div className="content-heading">
+              <h2>User Guide</h2>
+            </div>
+            <UserGuideTab />
           </Tabs.Content>
           <Tabs.Content className="tab-content" value="about">
             <div className="content-heading">

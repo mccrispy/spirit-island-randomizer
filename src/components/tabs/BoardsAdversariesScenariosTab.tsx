@@ -5,14 +5,27 @@ import { TriStateCheckbox } from "../TriStateCheckbox";
 import { useAppState } from "../../state/AppStateContext";
 import type { Adversary, Board, Scenario } from "../../data/types";
 
-export function sortAdversaries(adversaries: Adversary[], sortMode: "name" | "difficulty" = "name") {
+export function sortAdversaries(
+  adversaries: Adversary[],
+  sortMode: "name" | "difficulty" = "name",
+) {
   return [...adversaries].sort((a, b) => {
     if (sortMode === "difficulty") {
       const difficultyA = Math.min(
-        ...a.levels.map((level) => Number((level as Record<string, unknown>).Difficulty ?? Number.MAX_SAFE_INTEGER)),
+        ...a.levels.map((level) =>
+          Number(
+            (level as Record<string, unknown>).Difficulty ??
+              Number.MAX_SAFE_INTEGER,
+          ),
+        ),
       );
       const difficultyB = Math.min(
-        ...b.levels.map((level) => Number((level as Record<string, unknown>).Difficulty ?? Number.MAX_SAFE_INTEGER)),
+        ...b.levels.map((level) =>
+          Number(
+            (level as Record<string, unknown>).Difficulty ??
+              Number.MAX_SAFE_INTEGER,
+          ),
+        ),
       );
       return difficultyA - difficultyB || a.name.localeCompare(b.name);
     }
@@ -33,10 +46,13 @@ export function applyBulkPoolSelection(
   items: Array<{ canonicalName: string }>,
   targetState: TriState,
 ) {
-  return items.reduce<Record<string, TriState>>((acc, item) => {
-    acc[item.canonicalName] = targetState;
-    return acc;
-  }, { ...selectionState });
+  return items.reduce<Record<string, TriState>>(
+    (acc, item) => {
+      acc[item.canonicalName] = targetState;
+      return acc;
+    },
+    { ...selectionState },
+  );
 }
 
 function Pool<T extends { canonicalName: string; name: string }>({
@@ -76,7 +92,9 @@ function Pool<T extends { canonicalName: string; name: string }>({
 
 export function BoardsAdversariesScenariosTab() {
   const { data, selectionState, setSelection } = useAppState();
-  const [adversarySort, setAdversarySort] = useState<"name" | "difficulty">("name");
+  const [adversarySort, setAdversarySort] = useState<"name" | "difficulty">(
+    "name",
+  );
 
   if (!data || !selectionState) return null;
 
@@ -87,11 +105,32 @@ export function BoardsAdversariesScenariosTab() {
     () => sortAdversaries(data.adversaries, adversarySort),
     [data.adversaries, adversarySort],
   );
-  const sortedScenarios = useMemo(() => sortScenarios(data.scenarios), [data.scenarios]);
+  const sortedScenarios = useMemo(
+    () => sortScenarios(data.scenarios),
+    [data.scenarios],
+  );
   const sortedBoards = useMemo(() => sortBoards(data.boards), [data.boards]);
 
   return (
     <div className="board-pool-layout">
+      <div
+        className="selection-legend-row compact"
+        aria-label="Tri-state selection legend"
+      >
+        <div className="selection-legend-item">
+          <span className="selection-legend-icon excluded">−</span>
+          <span>Excluded</span>
+        </div>
+        <div className="selection-legend-item">
+          <span className="selection-legend-icon in-pool">✓</span>
+          <span>In pool</span>
+        </div>
+        <div className="selection-legend-item">
+          <span className="selection-legend-icon forced">★</span>
+          <span>Forced</span>
+        </div>
+      </div>
+
       <Pool<Board>
         title="Boards"
         items={sortedBoards}
@@ -105,7 +144,11 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, sortedBoards, TriState.CHECKED),
+                  ...applyBulkPoolSelection(
+                    selectionState,
+                    sortedBoards,
+                    TriState.CHECKED,
+                  ),
                 })
               }
             >
@@ -117,7 +160,11 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, sortedBoards, TriState.UNCHECKED),
+                  ...applyBulkPoolSelection(
+                    selectionState,
+                    sortedBoards,
+                    TriState.UNCHECKED,
+                  ),
                 })
               }
             >
@@ -140,7 +187,11 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, sortedAdversaries, TriState.CHECKED),
+                  ...applyBulkPoolSelection(
+                    selectionState,
+                    sortedAdversaries,
+                    TriState.CHECKED,
+                  ),
                 })
               }
             >
@@ -152,7 +203,11 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, sortedAdversaries, TriState.UNCHECKED),
+                  ...applyBulkPoolSelection(
+                    selectionState,
+                    sortedAdversaries,
+                    TriState.UNCHECKED,
+                  ),
                 })
               }
             >
@@ -161,7 +216,9 @@ export function BoardsAdversariesScenariosTab() {
             <select
               className="sort-select"
               value={adversarySort}
-              onChange={(event) => setAdversarySort(event.target.value as "name" | "difficulty")}
+              onChange={(event) =>
+                setAdversarySort(event.target.value as "name" | "difficulty")
+              }
             >
               <option value="name">Sort: Name</option>
               <option value="difficulty">Sort: Difficulty</option>
@@ -183,7 +240,11 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, sortedScenarios, TriState.CHECKED),
+                  ...applyBulkPoolSelection(
+                    selectionState,
+                    sortedScenarios,
+                    TriState.CHECKED,
+                  ),
                 })
               }
             >
@@ -195,7 +256,11 @@ export function BoardsAdversariesScenariosTab() {
               onClick={() =>
                 setSelection({
                   ...selectionState,
-                  ...applyBulkPoolSelection(selectionState, sortedScenarios, TriState.UNCHECKED),
+                  ...applyBulkPoolSelection(
+                    selectionState,
+                    sortedScenarios,
+                    TriState.UNCHECKED,
+                  ),
                 })
               }
             >

@@ -8,12 +8,16 @@ and generate a randomized setup for your next game — entirely client-side, wit
 
 ## Features
 - Fine-grained selection of spirits, boards, adversaries, and scenarios, including aspect variants
-- Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result)
+- Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result), with left- and right-click controls
 - Full set of play and board options: player count, difficulty adjustments, thematic vs. random board layouts,
-  preferred layouts, and more
+  and per-board-count layout favourites (including Random)
+- Digital Game Play Options for expansion content and Event cards, plus shortcuts to include or skip adversary and scenario randomizers
+- First-run defaults include Base Game, Branch & Claw, Feather & Flame, and Jagged Earth content, with aspects excluded until selected
 - Board layout diagrams shown for the selected/generated layout, including numbered board positions
 - Generates both a plain-text summary and ready-to-use launch links for
   [Spirit Island Digital](http://play.spiritislanddigital.com)
+- Built-in User Guide tab with full instructions on the tri-state selector, filtering, board layout favourites, and game rules
+- Header link to the project&rsquo;s GitHub Issues page for bug reports and suggestions
 - Your selections and settings are saved locally in your browser and restored on your next visit — nothing is
   sent to a server
 

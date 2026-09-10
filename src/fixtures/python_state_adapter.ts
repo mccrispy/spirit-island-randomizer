@@ -27,6 +27,7 @@ export interface PythonSettingsState {
     use_adversaries?: boolean;
     use_scenarios?: boolean;
     preferred_layouts?: Record<string, string>;
+    selected_layouts?: Record<string, string>;
     [key: string]: unknown;
 }
 
@@ -91,5 +92,6 @@ export function mapPythonSettingsState(input: SettingsStateContainer): SettingsS
         spiritTreeExpanded: rawSettingsState.spirit_tree_expanded ?? true,
         localLaunch: rawSettingsState.local_launch ?? true,
         preferredLayouts: rawSettingsState.preferred_layouts ?? {},
+        selectedLayouts: rawSettingsState.selected_layouts ?? {},
     };
 }

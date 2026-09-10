@@ -16,23 +16,24 @@ export interface SettingsState {
     spiritTreeExpanded: boolean;
     localLaunch: boolean;
     preferredLayouts: Record<string, string>;
+    selectedLayouts: Record<string, string>;
 }
 
 const DEFAULT_SETTINGS: SettingsState = {
-    expansionBranchClaw: false,
-    expansionJaggedEarth: false,
-    expansionNatureIncarnate: false,
-    numSpirits: 3,
+    expansionBranchClaw: true,
+    expansionJaggedEarth: true,
+    expansionNatureIncarnate: true,
+    numSpirits: 1,
     includeAdditionalBoard: false,
     useThematicBoards: false,
     useAdversaries: true,
-    useScenarios: true,
-    // Matches PRM: disabled and unchecked until an expansion checkbox is checked.
-    useEvents: false,
+    useScenarios: false,
+    useEvents: true,
     strictBoardCompatibility: true,
     spiritTreeExpanded: true,
     localLaunch: true,
     preferredLayouts: {},
+    selectedLayouts: {},
 };
 
 // Returns the expansions[] array matching the PRM's 3 client-launch expansion flags.
@@ -55,12 +56,34 @@ const KEYS = {
 } as const;
 
 export function buildDefaultSelectionState(data: AppData): SelectionState {
+    const defaultExpansions = new Set([
+        "Base Game",
+        "Branch & Claw",
+        "Feather & Flame",
+        "Jagged Earth",
+    ]);
+    const isDefaultExpansion = (expansion: string) => defaultExpansions.has(expansion);
     const entries: [string, TriState][] = [
-        ...data.spirits.map((s) => [s.canonicalName, TriState.CHECKED] as [string, TriState]),
-        ...data.aspects.map((a) => [a.canonicalName, TriState.CHECKED] as [string, TriState]),
+        ...data.spirits.map((spirit) => [
+            spirit.canonicalName,
+            isDefaultExpansion(spirit.expansion)
+                ? TriState.CHECKED
+                : TriState.UNCHECKED,
+        ] as [string, TriState]),
+        ...data.aspects.map((aspect) => [aspect.canonicalName, TriState.UNCHECKED] as [string, TriState]),
         ...data.boards.map((b) => [b.canonicalName, TriState.CHECKED] as [string, TriState]),
-        ...data.adversaries.map((a) => [a.canonicalName, TriState.CHECKED] as [string, TriState]),
-        ...data.scenarios.map((s) => [s.canonicalName, TriState.CHECKED] as [string, TriState]),
+        ...data.adversaries.map((adversary) => [
+            adversary.canonicalName,
+            isDefaultExpansion(adversary.expansion)
+                ? TriState.CHECKED
+                : TriState.UNCHECKED,
+        ] as [string, TriState]),
+        ...data.scenarios.map((scenario) => [
+            scenario.canonicalName,
+            isDefaultExpansion(scenario.expansion)
+                ? TriState.CHECKED
+                : TriState.UNCHECKED,
+        ] as [string, TriState]),
     ];
     return Object.fromEntries(entries);
 }

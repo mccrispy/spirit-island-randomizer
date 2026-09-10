@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **User Guide tab**: Dedicated tab providing an in-depth guide covering the tri-state selection system, spirit filtering vs. selection scope, board layout favourites by board count, game rules, and local saving.
+- **Issue reporting link**: A persistent header link now opens the project&rsquo;s GitHub Issues page for bug reports and suggestions.
+
+### Fixed
+- **Random layout favourites**: Saving Random as a layout favourite now preserves that choice for its board count instead of replacing it with the first available layout.
+
+### Changed
+- **Tri-state guidance**: The User Guide now explains left-click, right-click, and keyboard selection controls, while saved layout favourites have a clearer visual state.
+- **Option grouping**: Digital Game Play Options now groups expansion ownership with Event cards, while adversary and scenario switches are clearly labelled as randomizer shortcuts.
+- **First-run setup**: New users now start with Base Game, Branch & Claw, Feather & Flame, and Jagged Earth content selected, no aspects selected, and a one-spirit game configured for adversary randomization.
 
 ## [1.1.2] - 2026-09-08
 ### Fixed

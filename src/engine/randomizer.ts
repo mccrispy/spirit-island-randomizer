@@ -527,11 +527,13 @@ function selectLayout(data: AppData, options: EngineOptions, rng: RNG) {
     const boardCount = (options.numSpirits ?? 1) + (options.includeAdditionalBoard ? 1 : 0);
     const layouts = data.layouts.filter((layout) => layout.validBoardCounts.includes(boardCount));
 
-    const preferredName = options.preferredLayouts?.[String(boardCount)];
-    if (preferredName) {
-        const preferred = layouts.find((layout) => layout.canonicalName === preferredName);
-        if (preferred) {
-            return preferred;
+    const selectedName =
+        options.selectedLayouts?.[String(boardCount)] ??
+        options.preferredLayouts?.[String(boardCount)];
+    if (selectedName) {
+        const selected = layouts.find((layout) => layout.canonicalName === selectedName);
+        if (selected) {
+            return selected;
         }
     }
 
