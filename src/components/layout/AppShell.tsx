@@ -3,6 +3,7 @@ import { MessageSquareWarning } from "lucide-react";
 import { useAppState } from "../../state/AppStateContext";
 import { SpiritPoolTab } from "../tabs/SpiritPoolTab";
 import { BoardsAdversariesScenariosTab } from "../tabs/BoardsAdversariesScenariosTab";
+import { ProfilesTab } from "../tabs/ProfilesTab";
 import { UserGuideTab } from "../tabs/UserGuideTab";
 import { AboutTab } from "../tabs/AboutTab";
 import { OptionsPanel } from "../OptionsPanel";
@@ -53,6 +54,9 @@ export function AppShell() {
             <Tabs.Trigger className="tab-trigger" value="boards">
               Boards &amp; adversaries
             </Tabs.Trigger>
+            <Tabs.Trigger className="tab-trigger" value="profiles">
+              Profiles
+            </Tabs.Trigger>
             <Tabs.Trigger className="tab-trigger" value="guide">
               User Guide
             </Tabs.Trigger>
@@ -72,6 +76,12 @@ export function AppShell() {
             </div>
             <BoardsAdversariesScenariosTab />
           </Tabs.Content>
+          <Tabs.Content className="tab-content" value="profiles">
+            <div className="content-heading">
+              <h2>Profiles</h2>
+            </div>
+            <ProfilesTab />
+          </Tabs.Content>
           <Tabs.Content className="tab-content" value="guide">
             <div className="content-heading">
               <h2>User Guide</h2>
@@ -90,6 +100,9 @@ export function AppShell() {
           <OptionsPanel />
         </div>
       </div>
+      <footer className="app-footer">
+        <span>v{__APP_VERSION__}</span>
+      </footer>
     </main>
   );
 }

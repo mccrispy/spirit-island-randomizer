@@ -176,6 +176,34 @@ export function UserGuideTab() {
       </section>
 
       <section className="guide-section">
+        <h3>Saving &amp; Loading Profiles</h3>
+        <p>
+          The <em>Profiles</em> tab lets you keep more than one saved setup, all
+          stored in your browser&rsquo;s local storage&mdash;no files are ever
+          saved to or uploaded from your device:
+        </p>
+        <ul>
+          <li>
+            <strong>Save Profile:</strong> Give your current selections and
+            settings a name to save them as a profile. Saving over an existing
+            name asks for confirmation before overwriting it.
+          </li>
+          <li>
+            <strong>Load:</strong> Loading a profile replaces your current
+            active selections and settings with the saved profile&rsquo;s.
+          </li>
+          <li>
+            <strong>Delete:</strong> Removes a saved profile after confirmation.
+          </li>
+          <li>
+            <strong>Reset to Default:</strong> Restores your current selections
+            and settings to the app&rsquo;s first-run defaults, after
+            confirmation. This does not affect any saved profiles.
+          </li>
+        </ul>
+      </section>
+
+      <section className="guide-section">
         <h3>Report an Issue</h3>
         <p>
           Use the <em>Report an issue</em> link in the page header to open this

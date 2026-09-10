@@ -12,6 +12,7 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Board Layouts &amp; Favourites");
     expect(html).toContain("Board Rules &amp; Digital Game Play Options");
     expect(html).toContain("Automatic Saving");
+    expect(html).toContain("Saving &amp; Loading Profiles");
     expect(html).toContain("Report an Issue");
 
     // Key concepts explained in guide
@@ -26,6 +27,8 @@ describe("UserGuideTab", () => {
     expect(html).toContain(
       "individual adversary and scenario pool selections unchanged",
     );
+    expect(html).toContain("Save Profile");
+    expect(html).toContain("Reset to Default");
     expect(html).toContain("project’s GitHub Issues page");
   });
 });
