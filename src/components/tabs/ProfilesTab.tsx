@@ -112,14 +112,18 @@ export function ProfilesTab() {
 
       <section className="profiles-reset">
         <h3>Reset</h3>
-        <p>Restore the current selections and settings to the app defaults.</p>
-        <button
-          type="button"
-          className="profile-pill profile-pill--danger"
-          onClick={handleReset}
-        >
-          Reset to Default
-        </button>
+        <div className="profiles-reset-row">
+          <p>
+            Restore the current selections and settings to the app defaults.
+          </p>
+          <button
+            type="button"
+            className="profile-pill profile-pill--danger"
+            onClick={handleReset}
+          >
+            Reset to Default
+          </button>
+        </div>
       </section>
     </div>
   );

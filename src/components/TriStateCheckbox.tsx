@@ -30,6 +30,19 @@ export function getPreviousTriState(value: TriState): TriState {
   }
 }
 
+export function TriStateIcon({
+  value,
+  size = 14,
+}: {
+  value: TriState;
+  size?: number;
+}) {
+  if (value === TriState.CHECKED) return <Check size={size} />;
+  if (value === TriState.INDETERMINATE)
+    return <Star size={size - 2} fill="currentColor" />;
+  return <Minus size={size} />;
+}
+
 export function TriStateCheckbox({ value, onChange, label }: Props) {
   const next = getNextTriState(value);
   const previous = getPreviousTriState(value);
@@ -64,11 +77,31 @@ export function TriStateCheckbox({ value, onChange, label }: Props) {
       aria-label={label}
       title={tooltip}
     >
-      {value === TriState.CHECKED && <Check size={14} />}
-      {value === TriState.INDETERMINATE && (
-        <Star size={12} fill="currentColor" />
-      )}
-      {value === TriState.UNCHECKED && <Minus size={14} />}
+      <TriStateIcon value={value} />
     </Checkbox.Root>
+  );
+}
+
+const LEGEND_ITEMS: { value: TriState; label: string }[] = [
+  { value: TriState.UNCHECKED, label: "Excluded" },
+  { value: TriState.CHECKED, label: "In pool" },
+  { value: TriState.INDETERMINATE, label: "Forced" },
+];
+
+export function TriStateLegend({ compact = false }: { compact?: boolean }) {
+  return (
+    <div
+      className={`selection-legend-row${compact ? " compact" : ""}`}
+      aria-label="Tri-state selection legend"
+    >
+      {LEGEND_ITEMS.map(({ value, label }) => (
+        <div className="selection-legend-item" key={value}>
+          <span className={`tri-state legend-swatch ${value.toLowerCase()}`}>
+            <TriStateIcon value={value} size={12} />
+          </span>
+          <span>{label}</span>
+        </div>
+      ))}
+    </div>
   );
 }

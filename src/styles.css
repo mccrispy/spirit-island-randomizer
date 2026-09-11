@@ -140,6 +140,16 @@ h1 {
   flex-wrap: wrap;
   gap: 10px;
 }
+.profiles-reset-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.profiles-reset-row p {
+  margin: 0;
+}
 .profile-pill-input {
   flex: 1 1 220px;
   min-height: 38px;
@@ -411,17 +421,11 @@ h1 {
   line-height: 1;
   font-weight: 900;
 }
-.selection-legend-icon.excluded {
-  background: #f7e8e5;
-  color: #a83d31;
-}
-.selection-legend-icon.in-pool {
-  background: #eaf7eb;
-  color: #2a7a32;
-}
-.selection-legend-icon.forced {
-  background: #fff2d9;
-  color: #b65d3b;
+.tri-state.legend-swatch {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  cursor: default;
 }
 .visible-list-row {
   display: flex;
@@ -843,15 +847,6 @@ h1 {
   flex-wrap: wrap;
   gap: 10px;
 }
-.version-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: #e4eadf;
-  color: #4a625b;
-  font: 700 0.72rem sans-serif;
-  letter-spacing: 0.02em;
-}
 .about-section {
   margin: 20px 0 24px;
 }
@@ -942,5 +937,11 @@ h1 {
   .app-layout {
     display: flex;
     flex-direction: column;
+  }
+  .spirit-control-grid {
+    grid-template-columns: 1fr;
+  }
+  .spirit-control-block.compact {
+    align-self: stretch;
   }
 }

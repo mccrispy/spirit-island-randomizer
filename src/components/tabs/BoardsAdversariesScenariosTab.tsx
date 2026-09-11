@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { TriState } from "../../engine/types";
-import { TriStateCheckbox } from "../TriStateCheckbox";
+import { TriStateCheckbox, TriStateLegend } from "../TriStateCheckbox";
 import { useAppState } from "../../state/AppStateContext";
 import type { Adversary, Board, Scenario } from "../../data/types";
 
@@ -113,23 +113,7 @@ export function BoardsAdversariesScenariosTab() {
 
   return (
     <div className="board-pool-layout">
-      <div
-        className="selection-legend-row compact"
-        aria-label="Tri-state selection legend"
-      >
-        <div className="selection-legend-item">
-          <span className="selection-legend-icon excluded">−</span>
-          <span>Excluded</span>
-        </div>
-        <div className="selection-legend-item">
-          <span className="selection-legend-icon in-pool">✓</span>
-          <span>In pool</span>
-        </div>
-        <div className="selection-legend-item">
-          <span className="selection-legend-icon forced">★</span>
-          <span>Forced</span>
-        </div>
-      </div>
+      <TriStateLegend compact />
 
       <Pool<Board>
         title="Boards"

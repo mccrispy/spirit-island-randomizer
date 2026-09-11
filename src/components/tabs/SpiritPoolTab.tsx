@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import type { BaseSpirit, Spirit } from "../../data/types";
 import { TriState } from "../../engine/types";
 import { useAppState } from "../../state/AppStateContext";
-import { TriStateCheckbox } from "../TriStateCheckbox";
+import { TriStateCheckbox, TriStateLegend } from "../TriStateCheckbox";
 
 export interface SpiritFilterState {
   expansions: Set<string>;
@@ -324,23 +324,7 @@ export function SpiritPoolTab() {
         </div>
       </div>
 
-      <div
-        className="selection-legend-row"
-        aria-label="Tri-state selection legend"
-      >
-        <div className="selection-legend-item">
-          <span className="selection-legend-icon excluded">−</span>
-          <span>Excluded</span>
-        </div>
-        <div className="selection-legend-item">
-          <span className="selection-legend-icon in-pool">✓</span>
-          <span>In pool</span>
-        </div>
-        <div className="selection-legend-item">
-          <span className="selection-legend-icon forced">★</span>
-          <span>Forced</span>
-        </div>
-      </div>
+      <TriStateLegend />
 
       <div className="visible-list-row">
         <span>

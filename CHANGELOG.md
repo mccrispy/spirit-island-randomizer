@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-11
+### Changed
+- **Tri-state legend**: The legend icons for Excluded/In pool/Forced now visually match the actual selection checkboxes, instead of using slightly different colours.
+- **Profiles reset layout**: The Reset section's description and button now sit on one line, matching the style of the other Profiles sections.
+- **About tab**: The page heading now includes the app version directly, and the introductory paragraph was removed since the same information is now covered by the User Guide.
+- **User Guide wording**: Clarified the explanation of Digital Game Play Options (expansion content vs. Events/Command Beasts).
+
+### Fixed
+- **Mobile layout**: Fixed an issue where the Spirit tab's filter and quick-picks panels could overlap and become unusable on narrow/mobile screens.
+
 ## [1.3.0] - 2026-09-10
 ### Added
 - **Named profiles**: A new Profiles tab lets you save your current spirit/board selections and settings under a name, then load or delete saved profiles later, all stored locally in your browser.

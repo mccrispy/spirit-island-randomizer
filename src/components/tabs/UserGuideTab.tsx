@@ -4,8 +4,8 @@ export function UserGuideTab() {
       <section className="guide-section">
         <h3>Quick Start</h3>
         <p>
-          Spirit Island Randomizer generates balanced, customized Spirit Island
-          setups based on your collection and preferences:
+          Spirit Island Randomizer generates, customized Spirit Island setups
+          based on your collection and preferences:
         </p>
         <ol className="guide-steps">
           <li>
@@ -34,8 +34,9 @@ export function UserGuideTab() {
           users can use Space or Enter to move forward:
         </p>
         <p>
-          Excluded to In Pool to Forced to Excluded is the forward order;
-          right-click uses that order in reverse.
+          <em>Excluded</em> to <em>In Pool</em> to <em>Forced</em> to{" "}
+          <em>Excluded</em> is the forward order; right-click uses that order in
+          reverse.
         </p>
         <div className="guide-legend-grid">
           <div className="guide-legend-item">
@@ -152,9 +153,11 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Digital Game Play Options:</strong> The expansion checkboxes
-            and <em>Use events</em> control match the content and Event cards
-            available in Spirit Island Digital. Events require at least one of
-            Branch &amp; Claw, Jagged Earth, or Nature Incarnate.
+            control whether Power, Fear, Event, and Blight cards from the{" "}
+            expansions are used - Spirits are always available.{" "}
+            <em>Use events</em> controls whether you use Events, or Command
+            Beasts when using expansions. Events require Branch &amp; Claw
+            and/or Jagged Earth.
           </li>
           <li>
             <strong>Randomizer Shortcuts:</strong>{" "}

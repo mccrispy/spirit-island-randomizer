@@ -2,20 +2,8 @@ export function AboutTab() {
   return (
     <div className="about-copy">
       <div className="about-heading">
-        <h2>About Spirit Island Randomizer</h2>
-        <span className="version-badge">v{__APP_VERSION__}</span>
+        <h2>About Spirit Island Randomizer v{__APP_VERSION__}</h2>
       </div>
-
-      <section className="about-section">
-        <p>
-          Spirit Island Randomizer creates complete Spirit Island setups from
-          the pools and options you choose.
-        </p>
-        <p>
-          Selections are kept in this browser, so returning to the app preserves
-          your preferred setup.
-        </p>
-      </section>
 
       <section className="about-section disclaimer">
         <h3>Unofficial Fan-Made Tool</h3>
