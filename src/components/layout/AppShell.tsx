@@ -46,6 +46,10 @@ export function AppShell() {
       </header>
       {error && <p className="error">{error}</p>}
       <div className="app-layout">
+        <div className="side-stack">
+          <ResultsPanel />
+          <OptionsPanel />
+        </div>
         <Tabs.Root className="workspace" defaultValue="spirits">
           <Tabs.List className="tab-list" aria-label="Setup sections">
             <Tabs.Trigger className="tab-trigger" value="spirits">
@@ -95,10 +99,6 @@ export function AppShell() {
             <AboutTab />
           </Tabs.Content>
         </Tabs.Root>
-        <div className="side-stack">
-          <ResultsPanel />
-          <OptionsPanel />
-        </div>
       </div>
       <footer className="app-footer">
         <span>v{__APP_VERSION__}</span>

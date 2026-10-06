@@ -17,6 +17,7 @@ export interface SettingsState {
     localLaunch: boolean;
     preferredLayouts: Record<string, string>;
     selectedLayouts: Record<string, string>;
+    excludedLayouts: Record<string, string[]>;
 }
 
 const DEFAULT_SETTINGS: SettingsState = {
@@ -34,6 +35,7 @@ const DEFAULT_SETTINGS: SettingsState = {
     localLaunch: true,
     preferredLayouts: {},
     selectedLayouts: {},
+    excludedLayouts: {},
 };
 
 // Returns the expansions[] array matching the PRM's 3 client-launch expansion flags.
@@ -117,6 +119,23 @@ function sanitizeStringRecord(value: unknown): Record<string, string> {
     return Object.fromEntries(entries);
 }
 
+function sanitizeStringArrayRecord(value: unknown): Record<string, string[]> {
+    if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
+    const entries = Object.entries(value)
+        .filter(([key, val]) =>
+            key.length <= 100 &&
+            Array.isArray(val) &&
+            val.length <= 100,
+        )
+        .map(([key, val]) => [
+            key,
+            [...new Set((val as unknown[]).filter(
+                (item): item is string => typeof item === "string" && item.length <= 100,
+            ))],
+        ] as [string, string[]]);
+    return Object.fromEntries(entries);
+}
+
 // Validates every field independently and falls back to that field's default on bad type/range,
 // rather than discarding the whole settings object for one corrupted field.
 export function sanitizeSettingsState(raw: unknown): SettingsState {
@@ -132,6 +151,13 @@ export function sanitizeSettingsState(raw: unknown): SettingsState {
             value.numSpirits <= 6
             ? value.numSpirits
             : base.numSpirits;
+    const preferredLayouts = sanitizeStringRecord(value.preferredLayouts);
+    const excludedLayouts = sanitizeStringArrayRecord(value.excludedLayouts);
+    for (const [boardCount, favourite] of Object.entries(preferredLayouts)) {
+        if (excludedLayouts[boardCount]?.includes(favourite)) {
+            delete preferredLayouts[boardCount];
+        }
+    }
     return {
         expansionBranchClaw: bool("expansionBranchClaw", base.expansionBranchClaw),
         expansionJaggedEarth: bool("expansionJaggedEarth", base.expansionJaggedEarth),
@@ -145,8 +171,9 @@ export function sanitizeSettingsState(raw: unknown): SettingsState {
         strictBoardCompatibility: bool("strictBoardCompatibility", base.strictBoardCompatibility),
         spiritTreeExpanded: bool("spiritTreeExpanded", base.spiritTreeExpanded),
         localLaunch: bool("localLaunch", base.localLaunch),
-        preferredLayouts: sanitizeStringRecord(value.preferredLayouts),
+        preferredLayouts,
         selectedLayouts: sanitizeStringRecord(value.selectedLayouts),
+        excludedLayouts,
     };
 }
 

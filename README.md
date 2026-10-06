@@ -9,14 +9,17 @@ and generate a randomized setup for your next game — entirely client-side, wit
 ## Features
 - Fine-grained selection of spirits, boards, adversaries, and scenarios, including aspect variants
 - Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result), with left- and right-click controls
-- Full set of play and board options: player count, difficulty adjustments, thematic vs. random board layouts,
-  and per-board-count layout favourites (including Random)
+- Full set of play and board options: player count, difficulty adjustments, thematic vs. modular board layouts,
+  per-board-count layout favourites and multiple layout exclusions, toggled for the selected layout; one-board
+  games use the sole Standard layout
+- Mobile-first action order with Results and Options before the selection tabs; desktop retains its workspace/sidebar layout
+- Results can be cleared back to a live layout preview without changing saved options or pool selections
 - Digital Game Play Options for expansion content and Event cards, plus shortcuts to include or skip adversary and scenario randomizers
 - First-run defaults include Base Game, Branch & Claw, Feather & Flame, and Jagged Earth content, with aspects excluded until selected
 - Board layout diagrams shown for the selected/generated layout, including numbered board positions
 - Generates both a plain-text summary and ready-to-use launch links for
   [Spirit Island Digital](http://play.spiritislanddigital.com)
-- Built-in User Guide tab with full instructions on the tri-state selector, filtering, board layout favourites, and game rules
+- Built-in User Guide tab with instructions on the mobile workflow, tri-state selector, filtering, board layout favourites/exclusions, and game rules
 - Profiles tab for saving, loading, and deleting named selection/settings profiles, plus a reset to first-run defaults &mdash; all stored locally in your browser, with no files to save or upload
 - Header link to the project&rsquo;s GitHub Issues page for bug reports and suggestions
 - Your selections and settings are saved locally in your browser and restored on your next visit — nothing is

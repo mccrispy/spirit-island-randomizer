@@ -525,7 +525,18 @@ function selectLayout(data: AppData, options: EngineOptions, rng: RNG) {
     }
 
     const boardCount = (options.numSpirits ?? 1) + (options.includeAdditionalBoard ? 1 : 0);
-    const layouts = data.layouts.filter((layout) => layout.validBoardCounts.includes(boardCount));
+    const excludedLayouts = new Set(options.excludedLayouts?.[String(boardCount)] ?? []);
+    const layouts = data.layouts.filter(
+        (layout) =>
+            layout.validBoardCounts.includes(boardCount) &&
+            !excludedLayouts.has(layout.canonicalName),
+    );
+    if (!layouts.length) {
+        const boardLabel = boardCount === 1 ? "board" : "boards";
+        throw new Error(
+            `All layouts are excluded for ${boardCount} ${boardLabel}. Re-enable at least one layout.`,
+        );
+    }
 
     const selectedName =
         options.selectedLayouts?.[String(boardCount)] ??

@@ -93,5 +93,6 @@ export function mapPythonSettingsState(input: SettingsStateContainer): SettingsS
         localLaunch: rawSettingsState.local_launch ?? true,
         preferredLayouts: rawSettingsState.preferred_layouts ?? {},
         selectedLayouts: rawSettingsState.selected_layouts ?? {},
+        excludedLayouts: {},
     };
 }

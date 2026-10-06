@@ -16,22 +16,128 @@ export function getBoardCountSelectedLayout(
   selectedLayouts: Record<string, string>,
   preferredLayouts: Record<string, string>,
   boardCount: number,
+  excludedLayouts: string[] = [],
 ): string {
-  const selectedLayout =
-    selectedLayouts[String(boardCount)] ??
-    getBoardCountFavouriteLayout(preferredLayouts, boardCount);
-  return selectedLayout === RANDOM_LAYOUT ? "" : selectedLayout;
+  const key = String(boardCount);
+  const selectedLayout = selectedLayouts[key];
+  if (selectedLayout !== undefined) {
+    return selectedLayout === RANDOM_LAYOUT ? "" : selectedLayout;
+  }
+  const favourite = getBoardCountFavouriteLayout(preferredLayouts, boardCount);
+  return favourite === RANDOM_LAYOUT || excludedLayouts.includes(favourite)
+    ? ""
+    : favourite;
 }
 
 export function isFavouriteLayoutSelection(
   selectedLayout: string,
   preferredLayouts: Record<string, string>,
   boardCount: number,
+  excludedLayouts: string[] = [],
+): boolean {
+  const favourite = getBoardCountFavouriteLayout(preferredLayouts, boardCount);
+  if (
+    boardCount === 1 &&
+    favourite === RANDOM_LAYOUT &&
+    selectedLayout &&
+    !excludedLayouts.includes(selectedLayout)
+  ) {
+    return true;
+  }
+  return (
+    !excludedLayouts.includes(favourite) &&
+    (selectedLayout || RANDOM_LAYOUT) === favourite
+  );
+}
+
+export function getLayoutSelectorValue(
+  boardCount: number,
+  selectedLayout: string,
+  availableLayoutNames: string[],
+  excludedLayoutNames: string[] = [],
+): string {
+  if (availableLayoutNames.includes(selectedLayout)) return selectedLayout;
+  if (boardCount === 1 && availableLayoutNames.length === 1) {
+    return availableLayoutNames[0];
+  }
+  const eligibleLayoutNames = availableLayoutNames.filter(
+    (name) => !excludedLayoutNames.includes(name),
+  );
+  return eligibleLayoutNames.length === 0
+    ? (availableLayoutNames[0] ?? "")
+    : "";
+}
+
+export function canExcludeLayout(
+  isExcluded: boolean,
+  eligibleLayoutCount: number,
+): boolean {
+  return isExcluded || eligibleLayoutCount > 1;
+}
+
+export function canFavouriteLayout(
+  boardCount: number,
+  selectedLayout: string,
+  availableLayoutCount: number,
+  useThematicBoards: boolean,
 ): boolean {
   return (
-    (selectedLayout || RANDOM_LAYOUT) ===
-    getBoardCountFavouriteLayout(preferredLayouts, boardCount)
+    !useThematicBoards &&
+    availableLayoutCount > 0 &&
+    (Boolean(selectedLayout) || boardCount > 1)
   );
+}
+
+export function setFavouriteLayoutForBoardCount(
+  settings: SettingsState,
+  boardCount: number,
+  layoutCanonicalName: string | null,
+): SettingsState {
+  const key = String(boardCount);
+  const preferredLayouts = { ...settings.preferredLayouts };
+  const excludedLayouts = {
+    ...settings.excludedLayouts,
+    [key]: [...(settings.excludedLayouts[key] ?? [])],
+  };
+
+  if (layoutCanonicalName === null) {
+    delete preferredLayouts[key];
+  } else {
+    preferredLayouts[key] = layoutCanonicalName;
+    const boardExclusions = excludedLayouts[key];
+    excludedLayouts[key] = boardExclusions.filter(
+      (name) => name !== layoutCanonicalName,
+    );
+    if (excludedLayouts[key].length === 0) {
+      delete excludedLayouts[key];
+    }
+  }
+
+  return { ...settings, preferredLayouts, excludedLayouts };
+}
+
+export function setLayoutExcludedForBoardCount(
+  settings: SettingsState,
+  boardCount: number,
+  layoutCanonicalName: string,
+  excluded: boolean,
+): SettingsState {
+  const key = String(boardCount);
+  const current = settings.excludedLayouts[key] ?? [];
+  const excludedLayouts = excluded
+    ? [...new Set([...current, layoutCanonicalName])]
+    : current.filter((name) => name !== layoutCanonicalName);
+  const preferredLayouts = { ...settings.preferredLayouts };
+
+  if (excluded && preferredLayouts[key] === layoutCanonicalName) {
+    delete preferredLayouts[key];
+  }
+
+  return {
+    ...settings,
+    preferredLayouts,
+    excludedLayouts: { ...settings.excludedLayouts, [key]: excludedLayouts },
+  };
 }
 
 export function withFavouriteLayoutForBoardCount(
@@ -42,9 +148,11 @@ export function withFavouriteLayoutForBoardCount(
     ...settings,
     selectedLayouts: {
       ...settings.selectedLayouts,
-      [String(boardCount)]: getBoardCountFavouriteLayout(
+      [String(boardCount)]: getBoardCountSelectedLayout(
+        {},
         settings.preferredLayouts,
         boardCount,
+        settings.excludedLayouts[String(boardCount)] ?? [],
       ),
     },
   };
@@ -103,6 +211,8 @@ export function OptionsPanel() {
 
   const boardCount =
     settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0);
+  const excludedLayouts =
+    settings.excludedLayouts[String(boardCount)] ?? [];
   const favouriteLayoutForBoardCount = getBoardCountFavouriteLayout(
     settings.preferredLayouts,
     boardCount,
@@ -111,14 +221,29 @@ export function OptionsPanel() {
     settings.selectedLayouts,
     settings.preferredLayouts,
     boardCount,
-  );
-  const isFavouriteSelection = isFavouriteLayoutSelection(
-    selectedLayoutForBoardCount,
-    settings.preferredLayouts,
-    boardCount,
+    excludedLayouts,
   );
   const availableLayouts = data.layouts.filter((layout) =>
     layout.validBoardCounts.includes(boardCount),
+  );
+  const eligibleLayouts = availableLayouts.filter(
+    (layout) => !excludedLayouts.includes(layout.canonicalName),
+  );
+  const layoutSelectorValue = getLayoutSelectorValue(
+    boardCount,
+    selectedLayoutForBoardCount,
+    availableLayouts.map((layout) => layout.canonicalName),
+    excludedLayouts,
+  );
+  const selectedLayoutName =
+    availableLayouts.find(
+      (layout) => layout.canonicalName === layoutSelectorValue,
+    )?.name ?? "Random";
+  const isFavouriteSelection = isFavouriteLayoutSelection(
+    layoutSelectorValue,
+    settings.preferredLayouts,
+    boardCount,
+    excludedLayouts,
   );
 
   const setSelectedLayout = (layoutCanonicalName: string) => {
@@ -132,22 +257,35 @@ export function OptionsPanel() {
   };
 
   const setFavouriteLayout = (layoutCanonicalName: string | null) => {
-    const nextFavouriteLayouts = { ...settings.preferredLayouts };
     const nextSelectedLayouts = { ...settings.selectedLayouts };
-
-    if (layoutCanonicalName === null) {
-      delete nextFavouriteLayouts[String(boardCount)];
-    } else {
-      nextFavouriteLayouts[String(boardCount)] = layoutCanonicalName;
-    }
-
     nextSelectedLayouts[String(boardCount)] = layoutCanonicalName ?? "";
 
     setSettings({
-      ...settings,
-      preferredLayouts: nextFavouriteLayouts,
+      ...setFavouriteLayoutForBoardCount(
+        settings,
+        boardCount,
+        layoutCanonicalName,
+      ),
       selectedLayouts: nextSelectedLayouts,
     });
+  };
+
+  const currentLayoutExcluded =
+    Boolean(layoutSelectorValue) &&
+    excludedLayouts.includes(layoutSelectorValue);
+  const canToggleCurrentLayoutExclusion =
+    Boolean(layoutSelectorValue) &&
+    canExcludeLayout(currentLayoutExcluded, eligibleLayouts.length);
+
+  const toggleCurrentLayoutExclusion = () => {
+    if (!layoutSelectorValue) return;
+    const updated = setLayoutExcludedForBoardCount(
+      settings,
+      boardCount,
+      layoutSelectorValue,
+      !currentLayoutExcluded,
+    );
+    setSettings(updated);
   };
 
   const checkboxRow = (
@@ -210,25 +348,34 @@ export function OptionsPanel() {
         </label>
       </div>
 
-      <div className="option-section">
-        <h3>Layout favourite</h3>
+      <div className="option-section board-layout-section">
+        <h3>Board &amp; layout</h3>
         <div className="layout-controls">
           <label className="layout-select">
-            <span>Favourite layout</span>
+            <span>Layout</span>
             <select
-              value={selectedLayoutForBoardCount}
+              value={layoutSelectorValue}
               onChange={(event) => setSelectedLayout(event.target.value)}
               disabled={
                 availableLayouts.length === 0 || settings.useThematicBoards
               }
-              aria-label={`Favourite layout for ${boardCount} boards`}
+              aria-label={`Layout for ${boardCount} boards`}
             >
-              <option value="">Random</option>
-              {availableLayouts.map((layout) => (
-                <option key={layout.canonicalName} value={layout.canonicalName}>
-                  {layout.name}
-                </option>
-              ))}
+              {boardCount !== 1 && <option value="">Random</option>}
+              {availableLayouts.map((layout) => {
+                const excluded = excludedLayouts.includes(
+                  layout.canonicalName,
+                );
+                return (
+                  <option
+                    key={layout.canonicalName}
+                    value={layout.canonicalName}
+                  >
+                    {layout.name}
+                    {excluded ? " (excluded)" : ""}
+                  </option>
+                );
+              })}
             </select>
           </label>
 
@@ -241,7 +388,12 @@ export function OptionsPanel() {
               type="checkbox"
               checked={isFavouriteSelection}
               disabled={
-                availableLayouts.length === 0 || settings.useThematicBoards
+                !canFavouriteLayout(
+                  boardCount,
+                  layoutSelectorValue,
+                  availableLayouts.length,
+                  settings.useThematicBoards,
+                )
               }
               onChange={() => {
                 if (isFavouriteSelection) {
@@ -249,11 +401,10 @@ export function OptionsPanel() {
                   return;
                 }
 
-                const nextSelected =
-                  selectedLayoutForBoardCount || RANDOM_LAYOUT;
+                const nextSelected = layoutSelectorValue || RANDOM_LAYOUT;
                 setFavouriteLayout(nextSelected);
               }}
-              aria-label={`Save favourite layout for ${boardCount} boards`}
+              aria-label={`Favourite ${selectedLayoutName} layout for ${boardCount} boards`}
             />
             <span>Favourite</span>
             {isFavouriteSelection && (
@@ -261,12 +412,41 @@ export function OptionsPanel() {
             )}
           </label>
 
+          <label
+            className={`option-check compact-option-check ${
+              currentLayoutExcluded ? "excluded-layout-active" : ""
+            } ${
+              !canToggleCurrentLayoutExclusion || settings.useThematicBoards
+                ? "disabled"
+                : ""
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={currentLayoutExcluded}
+              disabled={
+                !canToggleCurrentLayoutExclusion || settings.useThematicBoards
+              }
+              onChange={toggleCurrentLayoutExclusion}
+              aria-label={`Exclude ${selectedLayoutName} layout for ${boardCount} boards`}
+            />
+            <span>Exclude</span>
+          </label>
+
           {settings.useThematicBoards ? (
             <em>
               Thematic boards use a fixed island map; layouts are not used.
             </em>
-          ) : availableLayouts.length === 0 ? (
-            <em>No valid layouts are available for {boardCount} boards.</em>
+          ) : currentLayoutExcluded ? (
+            <em>
+              This layout is excluded from generation for {boardCount} boards.
+            </em>
+          ) : layoutSelectorValue && !canToggleCurrentLayoutExclusion ? (
+            <em>
+              At least one layout must remain available for {boardCount} boards.
+            </em>
+          ) : !layoutSelectorValue ? (
+            <em>Random selects from layouts that are not excluded.</em>
           ) : isFavouriteSelection ? (
             <em>
               ★ This layout is the saved favourite for {boardCount} boards.
@@ -283,10 +463,8 @@ export function OptionsPanel() {
             </em>
           )}
         </div>
-      </div>
 
-      <div className="option-section">
-        <h3>Board rules</h3>
+        <h4 className="option-subheading">Board rules</h4>
         <div className="option-grid">
           {checkboxRow(
             "Additional board",

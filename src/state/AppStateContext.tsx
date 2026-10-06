@@ -39,6 +39,7 @@ type Action =
   | { type: "savedSetsChanged"; savedSets: Map<string, SavedSet> }
   | { type: "generationStarted" }
   | { type: "generationSucceeded"; result: EngineResult }
+  | { type: "resultCleared" }
   | { type: "failed"; error: string };
 
 const initialState: AppState = {
@@ -51,7 +52,7 @@ const initialState: AppState = {
   running: false,
 };
 
-function reducer(state: AppState, action: Action): AppState {
+export function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "loaded":
       return { ...state, ...action, type: undefined } as AppState;
@@ -65,6 +66,8 @@ function reducer(state: AppState, action: Action): AppState {
       return { ...state, running: true, error: null };
     case "generationSucceeded":
       return { ...state, running: false, result: action.result };
+    case "resultCleared":
+      return { ...state, result: null };
     case "failed":
       return { ...state, running: false, error: action.error, result: null };
   }
@@ -74,6 +77,7 @@ interface AppStateContextValue extends AppState {
   setSelection: (selectionState: SelectionState) => void;
   setSettings: (settings: SettingsState) => void;
   generate: () => void;
+  clearResult: () => void;
   saveNamedSet: (name: string) => void;
   loadNamedSet: (name: string) => void;
   deleteNamedSet: (name: string) => void;
@@ -125,6 +129,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     setSelection: (selectionState) =>
       dispatch({ type: "selectionChanged", selectionState }),
     setSettings: (settings) => dispatch({ type: "settingsChanged", settings }),
+    clearResult: () => dispatch({ type: "resultCleared" }),
     saveNamedSet: (name) => {
       if (!state.selectionState || !state.settings) return;
       const savedSets = saveSavedSet(

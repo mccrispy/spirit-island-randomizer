@@ -7,9 +7,10 @@ describe("UserGuideTab", () => {
     const html = renderToString(<UserGuideTab />);
 
     expect(html).toContain("Quick Start");
+    expect(html).toContain("Clear result");
     expect(html).toContain("Tri-State Selection System");
     expect(html).toContain("Filtering vs. Selecting Spirits");
-    expect(html).toContain("Board Layouts &amp; Favourites");
+    expect(html).toContain("Board &amp; Layout");
     expect(html).toContain("Board Rules &amp; Digital Game Play Options");
     expect(html).toContain("Automatic Saving");
     expect(html).toContain("Saving &amp; Loading Profiles");
@@ -21,7 +22,10 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Forced");
     expect(html).toContain("Left-click moves forward and right-click moves");
     expect(html).toContain("Space or Enter to move forward");
-    expect(html).toContain("favourite layout for that board count");
+    expect(html).toContain("Favouriting a layout makes it the default");
+    expect(html).toContain("cannot be both favourite and excluded");
+    expect(html).toContain("(excluded)");
+    expect(html).toContain("there is no Random choice");
     expect(html).toContain("Thematic boards");
     expect(html).toContain("Randomizer Shortcuts");
     expect(html).toContain(

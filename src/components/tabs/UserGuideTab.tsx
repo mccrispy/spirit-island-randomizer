@@ -14,13 +14,19 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Configure game options:</strong> Adjust the spirit count,
-            layout preferences, and board rules in the <em>Options</em> panel on
-            the right.
+            layout preferences, and board rules in <em>Options</em>. On mobile,
+            Results and Options appear before the selection tabs.
           </li>
           <li>
             <strong>Generate setup:</strong> Click <strong>Generate</strong> in
             the <em>Results</em> panel to create your randomized game setup,
             complete with board layout diagrams and digital launch links.
+          </li>
+          <li>
+            <strong>Clear result:</strong> After generating, use{" "}
+            <em>Clear result</em> to return to the live layout preview. This
+            keeps your options and pool selections so you can explore another
+            board count before generating again.
           </li>
         </ol>
       </section>
@@ -34,9 +40,9 @@ export function UserGuideTab() {
           users can use Space or Enter to move forward:
         </p>
         <p>
-          <em>Excluded</em> to <em>In Pool</em> to <em>Forced</em> to{" "}
-          <em>Excluded</em> is the forward order; right-click uses that order in
-          reverse.
+          &ldquo;Excluded&rdquo; to &ldquo;In Pool&rdquo; to
+          &ldquo;Forced&rdquo; to &ldquo;Excluded&rdquo; is the forward order;
+          right-click uses that order in reverse.
         </p>
         <div className="guide-legend-grid">
           <div className="guide-legend-item">
@@ -75,7 +81,7 @@ export function UserGuideTab() {
       <section className="guide-section">
         <h3>Filtering vs. Selecting Spirits</h3>
         <p>
-          The Spirit Pool tab provides powerful tools to manage large
+          The Spirit Pool tab provides several tools to manage large
           collections:
         </p>
         <ul>
@@ -87,11 +93,11 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Quick Picks:</strong> <em>Base spirits</em> and{" "}
-            <em>Aspects</em> set the matching type across the pool.{" "}
-            <em>Select visible</em> and <em>Deselect visible</em> only affect
-            items shown by the current filters. For instance, if you filter by
-            &ldquo;Nature Incarnate&rdquo; and select visible, only Nature
-            Incarnate spirits are added to the active pool.
+            <em>Aspects</em> set the matching type across the pool, regardless
+            of visibility. <em>Select visible</em> and <em>Deselect visible</em>{" "}
+            only affect items shown by the current filters. For instance, if you
+            filter by &ldquo;Nature Incarnate&rdquo; and select visible, only
+            Nature Incarnate spirits are added to the active pool.
           </li>
           <li>
             <strong>Aspects:</strong> Click on a spirit row to expand its
@@ -102,34 +108,38 @@ export function UserGuideTab() {
       </section>
 
       <section className="guide-section">
-        <h3>Board Layouts &amp; Favourites</h3>
+        <h3>Board &amp; Layout</h3>
         <p>
-          Board layout configuration adapts dynamically to your chosen setup:
+          Layout and board rules are grouped together in Options. Layout
+          choices and exclusions are kept separately for each total board
+          count (Spirit Count + any Additional Board):
         </p>
         <ul>
           <li>
-            <strong>Board Count Dependency:</strong> Island layouts are specific
-            to the total number of boards in play (Spirit Count + Additional
-            Board). Changing the spirit count updates the list of valid layouts.
+            <strong>Choose a layout:</strong> Use the Layout menu to inspect or
+            select a layout. Excluded layouts remain in the menu marked
+            &ldquo;(excluded)&rdquo;, so you can restore them. One-board games
+            use the only available layout, Standard, so there is no Random
+            choice.
           </li>
           <li>
-            <strong>Layout Favourites:</strong> When you select a specific
-            layout in the Options panel, it is saved as your{" "}
-            <strong>favourite layout for that board count</strong>. Whenever you
-            switch back to that board count in future sessions, your favourite
-            layout is remembered and chosen by default.
+            <strong>Favourite and Exclude:</strong> The two checkboxes apply to
+            the layout currently shown in the menu and are saved independently
+            for each board count. Favouriting a layout makes it the default;
+            excluding it removes it from random generation. A layout cannot be
+            both favourite and excluded: checking either option clears the
+            other. Random can be favourited, but cannot be excluded.
           </li>
           <li>
-            <strong>Random Layouts:</strong> Select &ldquo;Random&rdquo; and
-            tick Favourite to remember a random layout choice for that board
-            count. The randomizer will then pick any valid layout whenever you
-            use it.
+            <strong>Last available layout:</strong> The currently selected
+            layout cannot be excluded if it is the only remaining choice.
           </li>
           <li>
             <strong>Thematic Boards:</strong> When &ldquo;Thematic boards&rdquo;
             is enabled, the game uses the fixed canonical island map designed
-            for that player count. Layout selection is disabled because thematic
-            boards do not use modular board layouts.
+            for that player count. Layout selection and exclusions are disabled
+            because thematic boards do not use modular board layouts; saved
+            exclusions apply again when thematic mode is turned off.
           </li>
         </ul>
       </section>
@@ -143,28 +153,33 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Additional Board:</strong> Adds +1 island board beyond the
-            number of spirits for an extra tactical challenge.
+            number of spirits for an extra challenge.
           </li>
           <li>
-            <strong>Strict Board Compatibility:</strong> Ensures island boards
-            are arranged so that matching edge letters/numbers connect
-            harmoniously. Per official rules, this is supported for games with 4
-            boards or fewer.
+            <strong>Strict Board Compatibility:</strong> Certain pairings of
+            boards (A+H, B+E, C+G, and D+F) may create games with very swingy
+            difficulties. The official rules support excluding these pairings in
+            games with four or fewer boards. Enabling &ldquo;Strict Board
+            Compatibility&rdquo; prevents these board pairings from being
+            included in your setup. If you consider island variety more
+            important than the increased chance of swingy difficulty, you can
+            disable Strict Board Compatibility.
           </li>
           <li>
             <strong>Digital Game Play Options:</strong> The expansion checkboxes
             control whether Power, Fear, Event, and Blight cards from the{" "}
             expansions are used - Spirits are always available.{" "}
-            <em>Use events</em> controls whether you use Events, or Command
+            <em>Use events</em> controls whether you use Events or Command
             Beasts when using expansions. Events require Branch &amp; Claw
-            and/or Jagged Earth.
+            and/or Jagged Earth; Nature Incarnate requires Jagged Earth. The app
+            will enforce these interrelated dependencies.
           </li>
           <li>
             <strong>Randomizer Shortcuts:</strong>{" "}
-            <em>Randomize an adversary</em>
-            and <em>Randomize a scenario</em> quickly include or skip those
-            randomizers for the next setup. They leave your individual adversary
-            and scenario pool selections unchanged.
+            <em>Randomize an adversary</em> and <em>Randomize a scenario</em>{" "}
+            quickly include or skip those randomizers for the next setup. They
+            leave your individual adversary and scenario pool selections
+            unchanged.
           </li>
         </ul>
       </section>
@@ -172,9 +187,9 @@ export function UserGuideTab() {
       <section className="guide-section">
         <h3>Automatic Saving</h3>
         <p>
-          All your pool selections, favourite layouts, and rule settings are
-          automatically saved in your browser&rsquo;s local storage. Your
-          choices will be preserved when you refresh or revisit the app.
+          All your pool selections, layout favourites and exclusions, and rule
+          settings are automatically saved in your browser&rsquo;s local storage.
+          Your choices will be preserved when you refresh or revisit the app.
         </p>
       </section>
 

@@ -55,22 +55,39 @@ function buildBoardPositionMap(
 }
 
 export function ResultsPanel() {
-  const { data, result, settings, running, generate } = useAppState();
+  const { data, result, settings, running, generate, clearResult } =
+    useAppState();
 
   // PRM parity: before Generate is pressed, preview the currently selected layout for the current board count.
   const previewTotalBoards = settings
     ? settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0)
     : 0;
-  const currentLayoutName = settings
+  const selectedLayoutName = settings
     ? (settings.selectedLayouts[String(previewTotalBoards)] ??
       settings.preferredLayouts[String(previewTotalBoards)] ??
       "")
     : "";
-  const previewLayout = currentLayoutName
-    ? (data?.layouts.find(
-        (layout) => layout.canonicalName === currentLayoutName,
-      ) ?? null)
-    : null;
+  const excludedLayouts = settings
+    ? new Set(settings.excludedLayouts[String(previewTotalBoards)] ?? [])
+    : new Set<string>();
+  const availablePreviewLayouts =
+    data?.layouts.filter(
+      (layout) =>
+        layout.validBoardCounts.includes(previewTotalBoards) &&
+        !excludedLayouts.has(layout.canonicalName),
+    ) ?? [];
+  const currentLayoutName =
+    availablePreviewLayouts.some(
+      (layout) => layout.canonicalName === selectedLayoutName,
+    )
+      ? selectedLayoutName
+      : previewTotalBoards === 1 && availablePreviewLayouts.length === 1
+        ? availablePreviewLayouts[0].canonicalName
+        : "";
+  const previewLayout =
+    data?.layouts.find(
+      (layout) => layout.canonicalName === currentLayoutName,
+    ) ?? null;
 
   return (
     <aside className="results-panel">
@@ -89,6 +106,15 @@ export function ResultsPanel() {
             ? "Regenerate setup"
             : "Generate setup"}
       </button>
+      {result && (
+        <button
+          className="clear-result-button"
+          onClick={clearResult}
+          disabled={running}
+        >
+          Clear result
+        </button>
+      )}
       {result && settings && data ? (
         <>
           <h3>Spirits &amp; Boards</h3>

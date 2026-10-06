@@ -68,7 +68,11 @@ h1 {
 .app-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  grid-template-areas: "workspace side";
   gap: 18px;
+}
+.workspace {
+  grid-area: workspace;
 }
 .workspace,
 .results-panel {
@@ -121,6 +125,7 @@ h1 {
   border-radius: 16px;
 }
 .side-stack {
+  grid-area: side;
   display: grid;
   align-content: start;
   gap: 18px;
@@ -518,6 +523,10 @@ h1 {
   border-color: #e2bb62;
   background: #fff8e8;
 }
+.compact-option-check.excluded-layout-active {
+  border-color: #b65d3b;
+  background: #fbefea;
+}
 .favourite-badge {
   margin-left: auto;
   border: 1px solid #e2bb62;
@@ -530,6 +539,11 @@ h1 {
 .layout-controls em {
   color: #82978a;
   font-size: 0.78em;
+}
+.option-subheading {
+  margin: 0 0 10px;
+  color: #526763;
+  font: 700 0.78rem/1.2 sans-serif;
 }
 .option-section {
   border: 1px solid #d2d9d0;
@@ -921,6 +935,30 @@ h1 {
   width: 100%;
   margin-bottom: 20px;
   text-align: center;
+}
+.clear-result-button {
+  display: block;
+  margin: -10px 0 16px auto;
+  border: 0;
+  background: transparent;
+  color: #526763;
+  padding: 4px 0;
+  font: 700 0.76rem sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.clear-result-button:hover,
+.clear-result-button:focus-visible {
+  color: #8b452e;
+}
+.clear-result-button:focus-visible {
+  outline: 2px solid #b65d3b;
+  outline-offset: 3px;
+}
+.clear-result-button:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
 .error {
   color: #a33f35;

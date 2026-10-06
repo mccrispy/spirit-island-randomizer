@@ -141,11 +141,27 @@ describe("sanitizeSettingsState", () => {
             useAdversaries: "yes",
             expansionBranchClaw: false,
             preferredLayouts: { "3": "layout-a", bad: 123 },
+            excludedLayouts: {
+                "3": ["layout-b", "layout-c", "layout-b", 12],
+                bad: "not-an-array",
+            },
         });
         expect(result.numSpirits).toBe(defaultSettings().numSpirits);
         expect(result.useAdversaries).toBe(defaultSettings().useAdversaries);
         expect(result.expansionBranchClaw).toBe(false);
         expect(result.preferredLayouts).toEqual({ "3": "layout-a" });
+        expect(result.excludedLayouts).toEqual({
+            "3": ["layout-b", "layout-c"],
+        });
+    });
+
+    it("drops a favourite that is also excluded for the same board count", () => {
+        const result = sanitizeSettingsState({
+            ...defaultSettings(),
+            preferredLayouts: { "2": "layout-a", "3": "layout-b" },
+            excludedLayouts: { "2": ["layout-a"], "3": ["layout-a"] },
+        });
+        expect(result.preferredLayouts).toEqual({ "3": "layout-b" });
     });
 
     it("returns defaults for non-object input", () => {
@@ -185,7 +201,10 @@ describe("localStorage-backed persistence", () => {
 
     it("saveSavedSet/loadSavedSets/deleteSavedSet round-trip through localStorage", () => {
         const selectionState = buildDefaultSelectionState(data);
-        const settings = defaultSettings();
+        const settings = {
+            ...defaultSettings(),
+            excludedLayouts: { "2": ["coastline", "fragment"] },
+        };
 
         const afterSave = saveSavedSet(new Map(), "My Profile", selectionState, settings);
         expect(afterSave.get("My Profile")).toEqual({ selectionState, settings });

@@ -316,9 +316,78 @@ describe("randomizer engine", () => {
                 numSpirits: 2,
                 selectionState: defaultSelectionState,
                 preferredLayouts: { "2": "layout-that-does-not-exist" },
+                excludedLayouts: { "2": ["layout-that-does-not-exist"] },
             },
             createSeededRng(7)
         );
+        expect(result.layout?.canonicalName).toBe("test-layout");
+    });
+
+    it("does not select excluded layouts and falls back to an eligible layout", () => {
+        const twoLayoutData: AppData = {
+            ...sampleData,
+            layouts: [
+                {
+                    ...sampleData.layouts[0],
+                    canonicalName: "layout-a",
+                    validBoardCounts: [2],
+                },
+                {
+                    ...sampleData.layouts[0],
+                    canonicalName: "layout-b",
+                    validBoardCounts: [2],
+                },
+            ],
+        };
+
+        for (const options of [
+            {
+                selectedLayouts: { "2": "layout-a" },
+                preferredLayouts: { "2": "layout-a" },
+            },
+            { preferredLayouts: { "2": "layout-a" } },
+        ]) {
+            const result = runWithTrace(
+                twoLayoutData,
+                {
+                    expansions: ["Base Game"],
+                    numSpirits: 2,
+                    selectionState: defaultSelectionState,
+                    excludedLayouts: { "2": ["layout-a"] },
+                    ...options,
+                },
+                createSeededRng(7),
+            );
+            expect(result.layout?.canonicalName).toBe("layout-b");
+        }
+    });
+
+    it("reports a clear error when every layout for the board count is excluded", () => {
+        expect(() =>
+            runWithTrace(
+                sampleData,
+                {
+                    expansions: ["Base Game"],
+                    numSpirits: 1,
+                    selectionState: defaultSelectionState,
+                    excludedLayouts: { "1": ["test-layout"] },
+                },
+                createSeededRng(7),
+            ),
+        ).toThrow("All layouts are excluded for 1 board");
+    });
+
+    it("uses the sole valid one-board layout without needing a random choice", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 1,
+                selectionState: defaultSelectionState,
+            },
+            createSeededRng(7),
+        );
+
         expect(result.layout?.canonicalName).toBe("test-layout");
     });
 
