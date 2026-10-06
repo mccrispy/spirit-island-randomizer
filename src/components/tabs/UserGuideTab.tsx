@@ -1,3 +1,6 @@
+import { TriState } from "../../engine/types";
+import { TriStateIcon } from "../TriStateCheckbox";
+
 export function UserGuideTab() {
   return (
     <div className="guide-copy">
@@ -46,7 +49,9 @@ export function UserGuideTab() {
         </p>
         <div className="guide-legend-grid">
           <div className="guide-legend-item">
-            <span className="legend-icon excluded">&#8722;</span>
+            <span className="tri-state legend-swatch unchecked">
+              <TriStateIcon value={TriState.UNCHECKED} />
+            </span>
             <div>
               <strong>Excluded (Unchecked)</strong>
               <p>
@@ -56,7 +61,9 @@ export function UserGuideTab() {
             </div>
           </div>
           <div className="guide-legend-item">
-            <span className="legend-icon in-pool">&#10003;</span>
+            <span className="tri-state legend-swatch checked">
+              <TriStateIcon value={TriState.CHECKED} />
+            </span>
             <div>
               <strong>In Pool (Checked)</strong>
               <p>
@@ -66,12 +73,16 @@ export function UserGuideTab() {
             </div>
           </div>
           <div className="guide-legend-item">
-            <span className="legend-icon forced">&#9733;</span>
+            <span className="tri-state legend-swatch indeterminate">
+              <TriStateIcon value={TriState.INDETERMINATE} />
+            </span>
             <div>
               <strong>Forced (Star)</strong>
               <p>
                 The item is guaranteed to appear in your generated setup,
-                provided player count and game constraints allow.
+                provided player count and game constraints allow. Only one
+                base spirit or aspect in a spirit family can be forced at a
+                time; forcing another moves the previous one to In Pool.
               </p>
             </div>
           </div>
@@ -92,17 +103,21 @@ export function UserGuideTab() {
             change whether a spirit is checked or unchecked for randomization.
           </li>
           <li>
-            <strong>Quick Picks:</strong> <em>Base spirits</em> and{" "}
-            <em>Aspects</em> set the matching type across the pool, regardless
-            of visibility. <em>Select visible</em> and <em>Deselect visible</em>{" "}
-            only affect items shown by the current filters. For instance, if you
-            filter by &ldquo;Nature Incarnate&rdquo; and select visible, only
-            Nature Incarnate spirits are added to the active pool.
+            <strong>Quick Picks:</strong> All four actions affect only spirits
+            and aspects matching the current filters; items outside the
+            filtered set remain unchanged. <em>Base spirits only</em> and{" "}
+            <em>Aspects only</em> select matching items of that type and
+            deselect matching items of the other type. <em>Select matching</em>{" "}
+            and <em>Deselect matching</em> include or exclude every matching
+            item. A base spirit shown only to contain a matching aspect is not
+            changed unless the base spirit itself matches the filters.
           </li>
           <li>
             <strong>Aspects:</strong> Click on a spirit row to expand its
             aspects. You can include base spirits, specific aspects, or both in
-            the pool.
+            the pool. A collapsed spirit row shows how many aspects are in
+            the pool (including forced aspects) and how many of those are
+            forced. The base spirit is not included in these counts.
           </li>
         </ul>
       </section>

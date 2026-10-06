@@ -42,7 +42,12 @@ const data: AppData = {
         { canonicalName: "jagged-scenario", name: "Jagged", expansion: "Jagged Earth" },
         { canonicalName: "horizons-scenario", name: "Horizons", expansion: "Horizons of Spirit Island" },
     ],
-    baseSpiritMap: {},
+    baseSpiritMap: {
+        "base-spirit": {
+            spirit: item("base-spirit", "Base Game"),
+            aspects: [item("base-aspect", "Base Game", "Aspect")],
+        },
+    },
     layouts: [],
 };
 
@@ -189,6 +194,44 @@ describe("localStorage-backed persistence", () => {
     it("loadSelectionState returns null for corrupted JSON", () => {
         localStorage.setItem("sirpy-web.selectionState", "{not json");
         expect(loadSelectionState(data)).toBeNull();
+    });
+
+    it("demotes older conflicting forced spirit-family selections on load", () => {
+        localStorage.setItem(
+            "sirpy-web.selectionState",
+            JSON.stringify({
+                "base-spirit": TriState.INDETERMINATE,
+                "base-aspect": TriState.INDETERMINATE,
+            }),
+        );
+
+        expect(loadSelectionState(data)).toEqual({
+            "base-spirit": TriState.INDETERMINATE,
+            "base-aspect": TriState.CHECKED,
+        });
+    });
+
+    it("normalizes conflicting forced selections in saved profiles", () => {
+        localStorage.setItem(
+            "sirpy-web.savedSets",
+            JSON.stringify([
+                [
+                    "Conflicting profile",
+                    {
+                        selectionState: {
+                            "base-spirit": TriState.INDETERMINATE,
+                            "base-aspect": TriState.INDETERMINATE,
+                        },
+                        settings: defaultSettings(),
+                    },
+                ],
+            ]),
+        );
+
+        expect(loadSavedSets(data).get("Conflicting profile")?.selectionState).toEqual({
+            "base-spirit": TriState.INDETERMINATE,
+            "base-aspect": TriState.CHECKED,
+        });
     });
 
     it("loadSettingsState sanitizes a stored value with a bad field", () => {

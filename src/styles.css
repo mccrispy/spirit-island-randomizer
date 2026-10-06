@@ -48,13 +48,6 @@ body {
   color: #8b452e;
   outline: none;
 }
-.eyebrow {
-  margin: 0 0 6px;
-  color: #b65d3b;
-  font: 700 0.75rem/1 sans-serif;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
 h1,
 h2,
 p {
@@ -314,6 +307,16 @@ h1 {
 }
 .spirit-control-block.compact {
   align-self: start;
+}
+.quick-picks-description {
+  margin: -4px 0 10px;
+  color: #526763;
+  font: 0.75rem/1.4 sans-serif;
+}
+.force-update-message {
+  margin: 8px 0;
+  color: #526763;
+  font: 0.8rem/1.4 sans-serif;
 }
 .block-header-row {
   display: flex;
@@ -669,12 +672,40 @@ h1 {
   display: flex;
   flex: 1;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   width: 100%;
   border: 0;
   background: transparent;
   padding: 0;
   text-align: left;
   cursor: pointer;
+}
+.family-name {
+  min-width: 0;
+}
+.aspect-status-summary {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  color: #526763;
+  font: 600 0.7rem/1.25 sans-serif;
+}
+.pool-item[data-state="open"] .aspect-status-summary {
+  display: none;
+}
+.aspect-status-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+.aspect-status-count.in-pool {
+  color: #187334;
+}
+.aspect-status-count.forced {
+  color: #b65d3b;
 }
 .aspect-row {
   padding-left: 28px;
@@ -697,6 +728,11 @@ h1 {
   background: #fbfaf5;
   color: #18332f;
   cursor: pointer;
+}
+.tri-state.checked {
+  border: 2px solid #187334;
+  background: #fff;
+  color: #187334;
 }
 .tri-state.indeterminate {
   border-color: #b65d3b;
@@ -825,32 +861,15 @@ h1 {
   color: #435b54;
   line-height: 1.45;
 }
-.legend-icon {
+.guide-legend-item .tri-state.legend-swatch {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 24px;
   width: 24px;
   height: 24px;
   border-radius: 6px;
-  font-weight: bold;
-  font-size: 0.95rem;
-  flex-shrink: 0;
   margin-top: 2px;
-}
-.legend-icon.excluded {
-  background: #fdf2f0;
-  border: 1px solid #eec4be;
-  color: #a83d31;
-}
-.legend-icon.in-pool {
-  background: #eef7ee;
-  border: 1px solid #b7deb8;
-  color: #27772b;
-}
-.legend-icon.forced {
-  background: #fef7ec;
-  border: 1px solid #f2cf9e;
-  color: #b65d3b;
 }
 .about-copy {
   max-width: 620px;
@@ -981,5 +1000,18 @@ h1 {
   }
   .spirit-control-block.compact {
     align-self: stretch;
+  }
+}
+@media (max-width: 420px) {
+  .family-name {
+    flex: 1 1 auto;
+  }
+  .aspect-status-summary {
+    order: 3;
+    flex: 1 0 100%;
+    padding-left: 2px;
+  }
+  .accordion-icon {
+    order: 2;
   }
 }

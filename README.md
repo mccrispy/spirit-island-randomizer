@@ -9,6 +9,8 @@ and generate a randomized setup for your next game — entirely client-side, wit
 ## Features
 - Fine-grained selection of spirits, boards, adversaries, and scenarios, including aspect variants
 - Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result), with left- and right-click controls
+- Spirit Quick Picks apply only to items matching the current filters; container spirits and hidden items remain unchanged
+- Collapsed spirit rows show how many aspects are in the pool, including forced aspects, and how many of those are forced; the base spirit is not included
 - Full set of play and board options: player count, difficulty adjustments, thematic vs. modular board layouts,
   per-board-count layout favourites and multiple layout exclusions, toggled for the selected layout; one-board
   games use the sole Standard layout

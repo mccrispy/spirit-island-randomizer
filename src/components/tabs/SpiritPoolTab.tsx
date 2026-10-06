@@ -4,7 +4,11 @@ import { useMemo, useState } from "react";
 import type { BaseSpirit, Spirit } from "../../data/types";
 import { TriState } from "../../engine/types";
 import { useAppState } from "../../state/AppStateContext";
-import { TriStateCheckbox, TriStateLegend } from "../TriStateCheckbox";
+import {
+  TriStateCheckbox,
+  TriStateIcon,
+  TriStateLegend,
+} from "../TriStateCheckbox";
 
 export interface SpiritFilterState {
   expansions: Set<string>;
@@ -16,9 +20,11 @@ export function getVisibleSpiritCollections(
   baseSpiritMap: Record<string, BaseSpirit>,
   filterState: SpiritFilterState,
 ): {
+  displayedBaseSpirits: BaseSpirit[];
   visibleBaseSpirits: BaseSpirit[];
   visibleAspects: Spirit[];
 } {
+  const displayedBaseSpirits: BaseSpirit[] = [];
   const visibleBaseSpirits: BaseSpirit[] = [];
   const visibleAspects: Spirit[] = [];
 
@@ -63,12 +69,13 @@ export function getVisibleSpiritCollections(
     );
 
     if (spiritVisible || matchingAspects.length > 0) {
-      visibleBaseSpirits.push(baseSpirit);
+      displayedBaseSpirits.push(baseSpirit);
+      if (spiritVisible) visibleBaseSpirits.push(baseSpirit);
       visibleAspects.push(...matchingAspects);
     }
   }
 
-  return { visibleBaseSpirits, visibleAspects };
+  return { displayedBaseSpirits, visibleBaseSpirits, visibleAspects };
 }
 
 export function applyBulkSelection({
@@ -124,6 +131,23 @@ export function applyBulkSelection({
   }
 }
 
+export function getAspectSelectionSummary(
+  aspects: Spirit[],
+  selectionState: Record<string, TriState>,
+): { inPool: number; forced: number } {
+  return aspects.reduce(
+    (summary, aspect) => {
+      const state = selectionState[aspect.canonicalName] ?? TriState.UNCHECKED;
+      if (state === TriState.CHECKED || state === TriState.INDETERMINATE) {
+        summary.inPool += 1;
+      }
+      if (state === TriState.INDETERMINATE) summary.forced += 1;
+      return summary;
+    },
+    { inPool: 0, forced: 0 },
+  );
+}
+
 export function SpiritPoolTab() {
   const { data, selectionState, setSelection } = useAppState();
   const [filters, setFilters] = useState<SpiritFilterState>({
@@ -132,6 +156,7 @@ export function SpiritPoolTab() {
     name: "",
   });
   const [expandedSpiritNames, setExpandedSpiritNames] = useState<string[]>([]);
+  const [forceUpdateMessage, setForceUpdateMessage] = useState("");
 
   if (!data || !selectionState) return null;
 
@@ -157,11 +182,37 @@ export function SpiritPoolTab() {
     [data.baseSpiritMap, filters],
   );
 
-  const { visibleBaseSpirits, visibleAspects } = visibleCollections;
+  const { displayedBaseSpirits, visibleBaseSpirits, visibleAspects } =
+    visibleCollections;
   const visibleCount = visibleBaseSpirits.length + visibleAspects.length;
 
-  const setValue = (canonicalName: string, value: TriState) =>
-    setSelection({ ...selectionState, [canonicalName]: value });
+  const setValue = (canonicalName: string, value: TriState) => {
+    const family = Object.values(data.baseSpiritMap).find(
+      ({ spirit, aspects }) =>
+        spirit.canonicalName === canonicalName ||
+        aspects.some((aspect) => aspect.canonicalName === canonicalName),
+    );
+    const displacedForcedMembers =
+      value === TriState.INDETERMINATE && family
+        ? [family.spirit, ...family.aspects].filter(
+            ({ canonicalName: memberName }) =>
+              memberName !== canonicalName &&
+              selectionState[memberName] === TriState.INDETERMINATE,
+          )
+        : [];
+
+    setForceUpdateMessage(
+      displacedForcedMembers.length > 0
+        ? `Forcing this item moved ${displacedForcedMembers
+            .map(({ name }) => name)
+            .join(", ")} to In Pool. Only one item in a spirit family can be forced.`
+        : "",
+    );
+    setSelection(
+      { ...selectionState, [canonicalName]: value },
+      value === TriState.INDETERMINATE ? canonicalName : undefined,
+    );
+  };
 
   const applyBulkAction = (
     mode: "base-only" | "aspects-only" | "select-all" | "deselect-all",
@@ -291,44 +342,54 @@ export function SpiritPoolTab() {
           <div className="block-header-row">
             <h3>Quick picks</h3>
           </div>
+          <p className="quick-picks-description">
+            Actions affect only spirits and aspects matching the current
+            filters. A base spirit shown only as an aspect&rsquo;s container is
+            left unchanged.
+          </p>
           <div className="spirit-toolbar compact-toolbar">
             <button
               type="button"
               className="toolbar-button"
               onClick={() => applyBulkAction("base-only")}
             >
-              Base spirits
+              Base spirits only
             </button>
             <button
               type="button"
               className="toolbar-button"
               onClick={() => applyBulkAction("aspects-only")}
             >
-              Aspects
+              Aspects only
             </button>
             <button
               type="button"
               className="toolbar-button"
               onClick={() => applyBulkAction("select-all")}
             >
-              Select visible
+              Select matching
             </button>
             <button
               type="button"
               className="toolbar-button"
               onClick={() => applyBulkAction("deselect-all")}
             >
-              Deselect visible
+              Deselect matching
             </button>
           </div>
         </div>
       </div>
 
       <TriStateLegend />
+      {forceUpdateMessage && (
+        <p className="force-update-message" role="status">
+          {forceUpdateMessage}
+        </p>
+      )}
 
       <div className="visible-list-row">
         <span>
-          Visible list: <strong>{visibleCount}</strong> spirits/aspects
+          Matching items: <strong>{visibleCount}</strong> spirits/aspects
         </span>
         <button
           type="button"
@@ -345,54 +406,85 @@ export function SpiritPoolTab() {
         value={expandedSpiritNames}
         onValueChange={setExpandedSpiritNames}
       >
-        {visibleBaseSpirits.map(({ spirit, aspects }) => (
-          <Accordion.Item
-            className="pool-item"
-            value={spirit.canonicalName}
-            key={spirit.canonicalName}
-          >
-            <Accordion.Header className="pool-row">
-              <TriStateCheckbox
-                label={spirit.name}
-                value={
-                  selectionState[spirit.canonicalName] ?? TriState.UNCHECKED
-                }
-                onChange={(value) => setValue(spirit.canonicalName, value)}
-              />
-              <Accordion.Trigger className="family-row">
-                <span>{spirit.name}</span>
-                <ChevronDown className="accordion-icon" size={17} />
-              </Accordion.Trigger>
-            </Accordion.Header>
-            <Accordion.Content className="aspect-list">
-              {aspects
-                .filter((aspect) =>
-                  visibleAspects.some(
-                    (visibleAspect) =>
-                      visibleAspect.canonicalName === aspect.canonicalName,
-                  ),
-                )
-                .map((aspect) => (
-                  <div
-                    className="pool-row aspect-row"
-                    key={aspect.canonicalName}
-                  >
-                    <TriStateCheckbox
-                      label={aspect.name}
-                      value={
-                        selectionState[aspect.canonicalName] ??
-                        TriState.UNCHECKED
-                      }
-                      onChange={(value) =>
-                        setValue(aspect.canonicalName, value)
-                      }
-                    />
-                    <span>{aspect.name}</span>
-                  </div>
-                ))}
-            </Accordion.Content>
-          </Accordion.Item>
-        ))}
+        {displayedBaseSpirits.map(({ spirit, aspects }) => {
+          const aspectSummary = getAspectSelectionSummary(
+            aspects,
+            selectionState,
+          );
+          const activeAspectCount = aspectSummary.inPool;
+          return (
+            <Accordion.Item
+              className="pool-item"
+              value={spirit.canonicalName}
+              key={spirit.canonicalName}
+            >
+              <Accordion.Header className="pool-row">
+                <TriStateCheckbox
+                  label={spirit.name}
+                  value={
+                    selectionState[spirit.canonicalName] ?? TriState.UNCHECKED
+                  }
+                  onChange={(value) => setValue(spirit.canonicalName, value)}
+                />
+                <Accordion.Trigger className="family-row">
+                  <span className="family-name">{spirit.name}</span>
+                  {activeAspectCount > 0 && (
+                    <span
+                      className="aspect-status-summary"
+                      role="img"
+                      aria-label={`${aspectSummary.inPool} aspects in pool, including ${aspectSummary.forced} forced`}
+                    >
+                      {aspectSummary.inPool > 0 && (
+                        <span className="aspect-status-count in-pool">
+                          <span>Aspects:</span>
+                          <TriStateIcon value={TriState.CHECKED} size={12} />
+                          {aspectSummary.inPool} in pool
+                        </span>
+                      )}
+                      {aspectSummary.forced > 0 && (
+                        <span className="aspect-status-count forced">
+                          <TriStateIcon
+                            value={TriState.INDETERMINATE}
+                            size={12}
+                          />
+                          {aspectSummary.forced} forced
+                        </span>
+                      )}
+                    </span>
+                  )}
+                  <ChevronDown className="accordion-icon" size={17} />
+                </Accordion.Trigger>
+              </Accordion.Header>
+              <Accordion.Content className="aspect-list">
+                {aspects
+                  .filter((aspect) =>
+                    visibleAspects.some(
+                      (visibleAspect) =>
+                        visibleAspect.canonicalName === aspect.canonicalName,
+                    ),
+                  )
+                  .map((aspect) => (
+                    <div
+                      className="pool-row aspect-row"
+                      key={aspect.canonicalName}
+                    >
+                      <TriStateCheckbox
+                        label={aspect.name}
+                        value={
+                          selectionState[aspect.canonicalName] ??
+                          TriState.UNCHECKED
+                        }
+                        onChange={(value) =>
+                          setValue(aspect.canonicalName, value)
+                        }
+                      />
+                      <span>{aspect.name}</span>
+                    </div>
+                  ))}
+              </Accordion.Content>
+            </Accordion.Item>
+          );
+        })}
       </Accordion.Root>
     </div>
   );

@@ -31,7 +31,6 @@ export function AppShell() {
     <main className="app-shell">
       <header className="app-header">
         <div>
-          <p className="eyebrow">Spirit Island setup</p>
           <h1>Spirit Island Randomizer</h1>
         </div>
         <a

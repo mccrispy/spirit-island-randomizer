@@ -20,9 +20,15 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Excluded");
     expect(html).toContain("In Pool");
     expect(html).toContain("Forced");
+    expect(html).toContain("Only one");
+    expect(html).toContain("moves the previous one to In Pool");
     expect(html).toContain("Left-click moves forward and right-click moves");
     expect(html).toContain("Space or Enter to move forward");
     expect(html).toContain("Favouriting a layout makes it the default");
+    expect(html).toContain("matching the current filters");
+    expect(html).toContain("Select matching");
+    expect(html).toContain("A collapsed spirit row shows how many aspects are in");
+    expect(html).toContain("The base spirit is not included in these counts");
     expect(html).toContain("cannot be both favourite and excluded");
     expect(html).toContain("(excluded)");
     expect(html).toContain("there is no Random choice");

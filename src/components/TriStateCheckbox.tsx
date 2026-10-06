@@ -37,7 +37,8 @@ export function TriStateIcon({
   value: TriState;
   size?: number;
 }) {
-  if (value === TriState.CHECKED) return <Check size={size} />;
+  if (value === TriState.CHECKED)
+    return <Check size={size + 2} strokeWidth={3.5} />;
   if (value === TriState.INDETERMINATE)
     return <Star size={size - 2} fill="currentColor" />;
   return <Minus size={size} />;

@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { loadAllData } from "../data/loader";
 import type { AppData } from "../data/types";
 import { createSeededRng, generateSetup } from "../engine/randomizer";
+import { normalizeForcedSpiritSelections } from "../engine/selection";
 import type { EngineResult, SelectionState } from "../engine/types";
 import {
   buildDefaultSelectionState,
@@ -74,7 +75,10 @@ export function reducer(state: AppState, action: Action): AppState {
 }
 
 interface AppStateContextValue extends AppState {
-  setSelection: (selectionState: SelectionState) => void;
+  setSelection: (
+    selectionState: SelectionState,
+    preferredForcedName?: string,
+  ) => void;
   setSettings: (settings: SettingsState) => void;
   generate: () => void;
   clearResult: () => void;
@@ -126,8 +130,17 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
 
   const value: AppStateContextValue = {
     ...state,
-    setSelection: (selectionState) =>
-      dispatch({ type: "selectionChanged", selectionState }),
+    setSelection: (selectionState, preferredForcedName) =>
+      dispatch({
+        type: "selectionChanged",
+        selectionState: state.data
+          ? normalizeForcedSpiritSelections(
+              selectionState,
+              state.data.baseSpiritMap,
+              preferredForcedName,
+            )
+          : selectionState,
+      }),
     setSettings: (settings) => dispatch({ type: "settingsChanged", settings }),
     clearResult: () => dispatch({ type: "resultCleared" }),
     saveNamedSet: (name) => {

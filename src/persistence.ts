@@ -1,6 +1,7 @@
 import type { AppData } from "./data/types";
 import { TriState } from "./engine/types";
 import type { SelectionState } from "./engine/types";
+import { normalizeForcedSpiritSelections } from "./engine/selection";
 
 export interface SettingsState {
     expansionBranchClaw: boolean;
@@ -222,7 +223,10 @@ export function loadSelectionState(data: AppData): SelectionState | null {
     if (!raw) return null;
     try {
         const parsed = JSON.parse(raw);
-        const sanitized = sanitizeSelectionState(parsed, buildValidNames(data));
+        const sanitized = normalizeForcedSpiritSelections(
+            sanitizeSelectionState(parsed, buildValidNames(data)),
+            data.baseSpiritMap,
+        );
         return Object.keys(sanitized).length > 0 ? sanitized : null;
     } catch {
         return null;
@@ -268,7 +272,10 @@ export function loadSavedSets(data: AppData): Map<string, SavedSet> {
             if (typeof savedSet !== "object" || savedSet === null) continue;
             const candidate = savedSet as Record<string, unknown>;
             result.set(name.trim(), {
-                selectionState: sanitizeSelectionState(candidate.selectionState, validNames),
+                selectionState: normalizeForcedSpiritSelections(
+                    sanitizeSelectionState(candidate.selectionState, validNames),
+                    data.baseSpiritMap,
+                ),
                 settings: sanitizeSettingsState(candidate.settings),
             });
         }
