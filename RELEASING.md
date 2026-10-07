@@ -12,9 +12,8 @@ Import [`.github/rulesets/protect-main.json`](.github/rulesets/protect-main.json
 from **Settings → Rules → Rulesets → New branch ruleset → Import a ruleset**.
 It requires changes to `main` to arrive through pull requests, allows squash
 merges without requiring an approval, and blocks force-pushes and branch
-deletion. It does not yet require a CI status check: after the
-**Dependabot updates** workflow is merged to `main` and has reported its
-**Validate pull request** check, edit the ruleset to require that check.
+deletion. It also requires the **Validate pull request** status check, which
+runs the test suite and production build.
 
 ## Dependency update pull requests
 

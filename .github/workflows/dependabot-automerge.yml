@@ -45,7 +45,7 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
       - name: Deploy merged update to GitHub Pages
         if: steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh workflow run deploy.yml --ref main
+        run: gh workflow run deploy.yml --ref main --repo mccrispy/spirit-island-randomizer
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Leave major updates for review

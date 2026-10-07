@@ -210,6 +210,50 @@ export function UserGuideTab() {
         </p>
       </section>
 
+      <section className="guide-section" id="pwa-installation">
+        <h3>Install &amp; Use Offline</h3>
+        <p>
+          Install the randomizer to launch it from your device&rsquo;s home
+          screen or app launcher. Installation requires a supported browser and
+          an internet connection for the initial visit so the app can load and
+          prepare its offline files. Once those files are cached, the core
+          randomizer works offline.
+        </p>
+        <ul>
+          <li>
+            <strong>Chrome or Edge:</strong> When the browser offers an Install
+            button, use it to add the app. Otherwise, open the browser menu and
+            choose its install option, such as <em>Install app</em> or{" "}
+            <em>Apps &gt; Install this site as an app</em>.
+          </li>
+          <li>
+            <strong>Safari on iPhone or iPad:</strong> Open the Share menu and
+            choose <em>Add to Home Screen</em>.
+          </li>
+          <li>
+            <strong>Other browsers:</strong> Check the browser&rsquo;s menu for
+            an install or <em>Add to Home Screen</em> option; availability and
+            wording vary by browser and platform.
+          </li>
+          <li>
+            <strong>Offline use:</strong> After the app has loaded online and
+            cached its files, launch it from the installed shortcut or revisit
+            it in the same browser to generate setups, view layouts, and use
+            saved settings without a connection.
+          </li>
+          <li>
+            <strong>What still needs internet:</strong> The initial visit and
+            downloading files for offline use need a connection. Links that
+            open external Spirit Island apps or websites also need internet
+            access.
+          </li>
+          <li>
+            <strong>Updates:</strong> The app checks for updates when online;
+            reload after reconnecting if a new version is not yet visible.
+          </li>
+        </ul>
+      </section>
+
       <section className="guide-section">
         <h3>Saving &amp; Loading Profiles</h3>
         <p>
