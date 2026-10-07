@@ -13,6 +13,11 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Board &amp; Layout");
     expect(html).toContain("Board Rules &amp; Digital Game Play Options");
     expect(html).toContain("Automatic Saving");
+    expect(html).toContain('id="pwa-installation"');
+    expect(html).toContain("Install &amp; Use Offline");
+    expect(html).toContain("Add to Home Screen");
+    expect(html).toContain("initial visit");
+    expect(html).toContain("What still needs internet");
     expect(html).toContain("Saving &amp; Loading Profiles");
     expect(html).toContain("Report an Issue");
 

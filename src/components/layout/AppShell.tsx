@@ -1,3 +1,4 @@
+import { useState } from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { MessageSquareWarning } from "lucide-react";
 import { useAppState } from "../../state/AppStateContext";
@@ -8,100 +9,113 @@ import { UserGuideTab } from "../tabs/UserGuideTab";
 import { AboutTab } from "../tabs/AboutTab";
 import { OptionsPanel } from "../OptionsPanel";
 import { ResultsPanel } from "../ResultsPanel";
+import { PwaInstallNotice } from "../PwaInstallNotice";
 
 export function AppShell() {
   const { data, error } = useAppState();
+  const [activeTab, setActiveTab] = useState("spirits");
 
-  if (error && !data)
-    return (
-      <main className="app-shell">
-        <h1>Spirit Island Randomizer</h1>
-        <p className="error">{error}</p>
-      </main>
-    );
-  if (!data)
-    return (
-      <main className="app-shell">
-        <h1>Spirit Island Randomizer</h1>
-        <p>Loading game data...</p>
-      </main>
-    );
+  const showPwaGuide = () => {
+    setActiveTab("guide");
+    window.requestAnimationFrame(() => {
+      document
+        .getElementById("pwa-installation")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
 
   return (
     <main className="app-shell">
-      <header className="app-header">
-        <div>
-          <h1>Spirit Island Randomizer</h1>
-        </div>
-        <a
-          className="issue-link"
-          href="https://github.com/mccrispy/spirit-island-randomizer/issues"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <MessageSquareWarning size={17} aria-hidden="true" />
-          Report an issue
-        </a>
-      </header>
-      {error && <p className="error">{error}</p>}
-      <div className="app-layout">
-        <div className="side-stack">
-          <ResultsPanel />
-          <OptionsPanel />
-        </div>
-        <Tabs.Root className="workspace" defaultValue="spirits">
-          <Tabs.List className="tab-list" aria-label="Setup sections">
-            <Tabs.Trigger className="tab-trigger" value="spirits">
-              Spirits
-            </Tabs.Trigger>
-            <Tabs.Trigger className="tab-trigger" value="boards">
-              Boards &amp; adversaries
-            </Tabs.Trigger>
-            <Tabs.Trigger className="tab-trigger" value="profiles">
-              Profiles
-            </Tabs.Trigger>
-            <Tabs.Trigger className="tab-trigger" value="guide">
-              User Guide
-            </Tabs.Trigger>
-            <Tabs.Trigger className="tab-trigger" value="about">
-              About
-            </Tabs.Trigger>
-          </Tabs.List>
-          <Tabs.Content className="tab-content" value="spirits">
-            <div className="content-heading">
-              <h2>Spirit pool</h2>
+        <header className="app-header">
+          <div>
+            <h1>Spirit Island Randomizer</h1>
+          </div>
+          {data && (
+            <a
+              className="issue-link"
+              href="https://github.com/mccrispy/spirit-island-randomizer/issues"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageSquareWarning size={17} aria-hidden="true" />
+              Report an issue
+            </a>
+          )}
+        </header>
+        <PwaInstallNotice onLearnMore={showPwaGuide} />
+        {!data ? (
+          error ? (
+            <p className="error">{error}</p>
+          ) : (
+            <p>Loading game data...</p>
+          )
+        ) : (
+          <>
+            {error && <p className="error">{error}</p>}
+            <div className="app-layout">
+              <div className="side-stack">
+                <ResultsPanel />
+                <OptionsPanel />
+              </div>
+              <Tabs.Root
+                className="workspace"
+                value={activeTab}
+                onValueChange={setActiveTab}
+              >
+                <Tabs.List className="tab-list" aria-label="Setup sections">
+                  <Tabs.Trigger className="tab-trigger" value="spirits">
+                    Spirits
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="tab-trigger" value="boards">
+                    Boards &amp; adversaries
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="tab-trigger" value="profiles">
+                    Profiles
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="tab-trigger" value="guide">
+                    User Guide
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="tab-trigger" value="about">
+                    About
+                  </Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content className="tab-content" value="spirits">
+                  <div className="content-heading">
+                    <h2>Spirit pool</h2>
+                  </div>
+                  <SpiritPoolTab />
+                </Tabs.Content>
+                <Tabs.Content className="tab-content" value="boards">
+                  <div className="content-heading">
+                    <h2>Boards, adversaries &amp; scenarios</h2>
+                  </div>
+                  <BoardsAdversariesScenariosTab />
+                </Tabs.Content>
+                <Tabs.Content className="tab-content" value="profiles">
+                  <div className="content-heading">
+                    <h2>Profiles</h2>
+                  </div>
+                  <ProfilesTab />
+                </Tabs.Content>
+                <Tabs.Content className="tab-content" value="guide">
+                  <div className="content-heading">
+                    <h2>User Guide</h2>
+                  </div>
+                  <UserGuideTab />
+                </Tabs.Content>
+                <Tabs.Content className="tab-content" value="about">
+                  <div className="content-heading">
+                    <h2>About</h2>
+                  </div>
+                  <AboutTab />
+                </Tabs.Content>
+              </Tabs.Root>
             </div>
-            <SpiritPoolTab />
-          </Tabs.Content>
-          <Tabs.Content className="tab-content" value="boards">
-            <div className="content-heading">
-              <h2>Boards, adversaries &amp; scenarios</h2>
-            </div>
-            <BoardsAdversariesScenariosTab />
-          </Tabs.Content>
-          <Tabs.Content className="tab-content" value="profiles">
-            <div className="content-heading">
-              <h2>Profiles</h2>
-            </div>
-            <ProfilesTab />
-          </Tabs.Content>
-          <Tabs.Content className="tab-content" value="guide">
-            <div className="content-heading">
-              <h2>User Guide</h2>
-            </div>
-            <UserGuideTab />
-          </Tabs.Content>
-          <Tabs.Content className="tab-content" value="about">
-            <div className="content-heading">
-              <h2>About</h2>
-            </div>
-            <AboutTab />
-          </Tabs.Content>
-        </Tabs.Root>
-      </div>
-      <footer className="app-footer">
-        <span>v{__APP_VERSION__}</span>
-      </footer>
+            <footer className="app-footer">
+              <span>v{__APP_VERSION__}</span>
+            </footer>
+          </>
+        )}
     </main>
   );
 }

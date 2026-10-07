@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-10-07
+### Added
+- **Installable PWA**: Added a GitHub Pages-scoped web app manifest, service-worker precaching for offline use,
+  and standard/maskable app icons.
+- **PWA installation guidance**: The User Guide now explains installation prerequisites, platform-specific
+  installation, offline behavior, and network-dependent features. Supported browsers can show a dismissible
+  install notice when their native install prompt is available.
+
 ## [1.5.0] - 2026-10-07
 ### Changed
 - **Aspect status summaries**: Collapsed spirit rows explicitly label their counts as aspects; forced aspects are included in the in-pool count, while the base spirit is excluded.
