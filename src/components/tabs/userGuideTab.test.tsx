@@ -27,8 +27,9 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Favouriting a layout makes it the default");
     expect(html).toContain("matching the current filters");
     expect(html).toContain("Select matching");
-    expect(html).toContain("A collapsed spirit row shows how many aspects are in");
-    expect(html).toContain("The base spirit is not included in these counts");
+    expect(html).toContain("an aspect-only summary");
+    expect(html).toContain("Aspects: 2 in pool, 1 forced");
+    expect(html).toContain("the base spirit is not included");
     expect(html).toContain("cannot be both favourite and excluded");
     expect(html).toContain("(excluded)");
     expect(html).toContain("there is no Random choice");

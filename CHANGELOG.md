@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-10-07
+### Changed
+- **Aspect status summaries**: Collapsed spirit rows explicitly label their counts as aspects; forced aspects are included in the in-pool count, while the base spirit is excluded.
+- **Forced spirit-family selection**: Only one base spirit or aspect in a family can be forced at a time. Forcing another moves the previous forced item to In Pool; older saved conflicts are normalized.
+- **Page header**: Removed the redundant “Spirit Island setup” eyebrow, leaving “Spirit Island Randomizer” as the single main title.
+- **Mobile spirit pool polish**: Clarified the aspect-only status summary and surfaced an accessible status message when the forced choice changes.
+- **Project licence**: Original project work is now licensed under CC BY-NC-SA 4.0, allowing non-commercial adaptations with attribution and share-alike terms.
+
 ## [1.4.0] - 2026-09-11
 ### Changed
 - **Tri-state legend**: The legend icons for Excluded/In pool/Forced now visually match the actual selection checkboxes, instead of using slightly different colours.

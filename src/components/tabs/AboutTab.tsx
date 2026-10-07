@@ -8,10 +8,9 @@ export function AboutTab() {
       <section className="about-section disclaimer">
         <h3>Unofficial Fan-Made Tool</h3>
         <p>
-          This application is an unofficial, fan-made tool created for personal,
-          non-commercial use. It is not affiliated with, endorsed by, or
-          connected to Eric Reuss, Lightning Heart Games LLC, Flat River Group,
-          or Handelabra Games Inc.
+          This application is an unofficial, fan-made tool. It is not
+          affiliated with, endorsed by, or connected to Eric Reuss, Lightning
+          Heart Games LLC, Flat River Group, or Handelabra Games Inc.
         </p>
       </section>
 
@@ -132,18 +131,20 @@ export function AboutTab() {
         <p>
           This application is released under the{" "}
           <a
-            href="https://creativecommons.org/licenses/by-nc-nd/4.0/"
+            href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
             target="_blank"
             rel="noreferrer"
           >
-            Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
-            International (CC BY-NC-ND 4.0)
+            Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+            International (CC BY-NC-SA 4.0)
           </a>{" "}
           licence.
         </p>
         <p>
-          You may share this software freely with attribution. You may not use
-          it for commercial purposes or distribute modified versions.
+          You may share and adapt this software for non-commercial purposes with
+          attribution. Adaptations must be distributed under the same licence.
+          Spirit Island intellectual property and other third-party materials
+          remain subject to their respective rights holders and licence terms.
         </p>
       </section>
     </div>

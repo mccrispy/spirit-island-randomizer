@@ -115,9 +115,11 @@ export function UserGuideTab() {
           <li>
             <strong>Aspects:</strong> Click on a spirit row to expand its
             aspects. You can include base spirits, specific aspects, or both in
-            the pool. A collapsed spirit row shows how many aspects are in
-            the pool (including forced aspects) and how many of those are
-            forced. The base spirit is not included in these counts.
+            the pool. Only one base spirit or aspect in a family can be forced
+            at a time; forcing another moves the previous one to In Pool. A
+            collapsed spirit row shows an aspect-only summary, for example
+            &ldquo;Aspects: 2 in pool, 1 forced.&rdquo; Forced aspects are
+            included in the in-pool count, and the base spirit is not included.
           </li>
         </ul>
       </section>
