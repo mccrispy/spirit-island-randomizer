@@ -19,7 +19,7 @@
     "typescript": "^5.6.2",
     "vite": "^8.3.4",
     "vite-plugin-pwa": "^2.0.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.20",
