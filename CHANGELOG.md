@@ -6,9 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.7.0] - 2026-10-31
 ### Added
-- Board pool entries display incompatibility tags (for example, “(no H)”) regardless of the strict-compatibility setting.
-- Boards, adversaries, and scenarios use compact responsive multi-column lists, with expansion indicators in each pool.
+- Board pool entries show incompatibility tags (for example, “(no H)”) regardless of the Strict Board Compatibility setting.
+- Boards, adversaries, and scenarios use compact responsive multi-column lists with expansion indicators.
+
+### Changed
+- Spirit pool entries show spirit complexity, aspect complexity modifiers, and expansion indicators again. Expansion and complexity filters use compact abbreviated pills with full labels available on hover or focus.
+- Improved the hierarchy and layout of spirit filters, placing complexity and name filters below expansion filters.
+- Updated pool labels and the User Guide to explain expansion and board incompatibility indicators.
+
+### Security
+- Overrode Workbox's vulnerable transitive `glob` and `minimatch` dependencies with patched versions. Production dependencies have no reported vulnerabilities; the full audit still reports low-severity findings in Workbox's build-only dependency chain.
 
 ## [1.6.1] - 2026-10-31
 ### Changed
