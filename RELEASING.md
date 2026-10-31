@@ -17,6 +17,13 @@ runs the test suite and production build.
 
 ## Dependency update pull requests
 
+The [Dependabot configuration](.github/dependabot.yml) checks npm dependencies
+weekly and groups patch/minor updates. For npm, `package.json` declares direct
+dependency ranges, while `package-lock.json` records the exact resolved
+dependency tree installed by `npm ci`; Dependabot updates these files in its
+pull requests. The configuration controls the update schedule and grouping,
+not the lockfile.
+
 Dependabot pull requests run the **Dependabot updates** workflow. It installs
 from the lockfile, runs the complete test suite, and builds the production app.
 After validation, identified patch and minor updates are squash-merged
