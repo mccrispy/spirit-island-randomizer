@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { TriState } from "../../engine/types";
 import {
     applyBulkPoolSelection,
+    getBoardIncompatibilityLabel,
     sortAdversaries,
+    sortBoards,
     sortScenarios,
 } from "./BoardsAdversariesScenariosTab";
 
@@ -31,6 +33,22 @@ describe("BoardsAdversariesScenariosTab helpers", () => {
             "alpha",
             "zeta",
         ]);
+    });
+
+    it("labels incompatible boards by display name", () => {
+        const boards = [
+            { canonicalName: "A", name: "Board A", incompatibleBoards: ["H"] },
+            { canonicalName: "H", name: "Board H", incompatibleBoards: ["A"] },
+        ] as any;
+
+        expect(
+            getBoardIncompatibilityLabel(sortBoards(boards)[0]),
+        ).toBe("(no H)");
+        expect(
+            getBoardIncompatibilityLabel(
+                { ...boards[0], incompatibleBoards: [] },
+            ),
+        ).toBeNull();
     });
 
     it("selects all board items when requested", () => {

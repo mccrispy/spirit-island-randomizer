@@ -4,6 +4,7 @@ import { TriState } from "../../engine/types";
 import { TriStateCheckbox, TriStateLegend } from "../TriStateCheckbox";
 import { useAppState } from "../../state/AppStateContext";
 import type { Adversary, Board, Scenario } from "../../data/types";
+import { getExpansionIndicator } from "../../data/formatters";
 
 export function sortAdversaries(
   adversaries: Adversary[],
@@ -41,6 +42,14 @@ export function sortBoards(boards: Board[]) {
   return [...boards].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+export function getBoardIncompatibilityLabel(
+  board: Board,
+): string | null {
+  if (!board.incompatibleBoards.length) return null;
+
+  return `(no ${board.incompatibleBoards.join(", ")})`;
+}
+
 export function applyBulkPoolSelection(
   selectionState: Record<string, TriState>,
   items: Array<{ canonicalName: string }>,
@@ -55,18 +64,32 @@ export function applyBulkPoolSelection(
   );
 }
 
-function Pool<T extends { canonicalName: string; name: string }>({
+interface PoolItem {
+  canonicalName: string;
+  name: string;
+  expansion?: string;
+  expansions?: string[];
+  incompatibleBoards?: string[];
+}
+
+function Pool<T extends PoolItem>({
   title,
   items,
   selectionState,
   setValue,
   headerAction,
+  listClassName,
+  rowClassName,
+  getCompatibilityLabel,
 }: {
   title: string;
   items: T[];
   selectionState: Record<string, TriState>;
   setValue: (name: string, value: TriState) => void;
   headerAction?: ReactNode;
+  listClassName?: string;
+  rowClassName?: string;
+  getCompatibilityLabel?: (item: T) => string | null;
 }) {
   return (
     <section className="pool-section">
@@ -74,17 +97,56 @@ function Pool<T extends { canonicalName: string; name: string }>({
         <h3>{title}</h3>
         {headerAction}
       </div>
-      <div className="pool-list compact-list">
-        {items.map((item) => (
-          <div className="pool-row" key={item.canonicalName}>
-            <TriStateCheckbox
-              label={item.name}
-              value={selectionState[item.canonicalName] ?? TriState.UNCHECKED}
-              onChange={(value) => setValue(item.canonicalName, value)}
-            />
-            <span>{item.name}</span>
-          </div>
-        ))}
+      <div
+        className={`pool-list compact-list${listClassName ? ` ${listClassName}` : ""}`}
+      >
+        {items.map((item) => {
+          const expansionIndicator = getExpansionIndicator(
+            item.expansions ?? item.expansion ?? [],
+          );
+          const compatibilityTag = getCompatibilityLabel?.(item);
+          const checkboxLabel = [
+            item.name,
+            expansionIndicator?.label,
+            compatibilityTag,
+          ]
+            .filter(Boolean)
+            .join(" ");
+
+          return (
+            <div
+              className={`pool-row${rowClassName ? ` ${rowClassName}` : ""}`}
+              key={item.canonicalName}
+            >
+              <TriStateCheckbox
+                label={checkboxLabel}
+                value={selectionState[item.canonicalName] ?? TriState.UNCHECKED}
+                onChange={(value) => setValue(item.canonicalName, value)}
+              />
+              <span className="pool-item-label" title={item.name}>
+                <span className="pool-item-name">{item.name}</span>
+                {expansionIndicator && (
+                  <span
+                    className="pool-expansion-indicator"
+                    title={expansionIndicator.title}
+                    aria-label={expansionIndicator.title}
+                  >
+                    {expansionIndicator.label}
+                  </span>
+                )}
+                {compatibilityTag && (
+                  <span
+                    className="board-incompatibility-tag"
+                    title={`Incompatible with board${item.incompatibleBoards?.length === 1 ? "" : "s"}: ${item.incompatibleBoards?.join(", ")}`}
+                    aria-label={`Incompatible with board${item.incompatibleBoards?.length === 1 ? "" : "s"}: ${item.incompatibleBoards?.join(", ")}`}
+                  >
+                    {compatibilityTag}
+                  </span>
+                )}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
@@ -110,7 +172,6 @@ export function BoardsAdversariesScenariosTab() {
     [data.scenarios],
   );
   const sortedBoards = useMemo(() => sortBoards(data.boards), [data.boards]);
-
   return (
     <div className="board-pool-layout">
       <TriStateLegend compact />
@@ -120,6 +181,9 @@ export function BoardsAdversariesScenariosTab() {
         items={sortedBoards}
         selectionState={selectionState}
         setValue={setValue}
+        listClassName="board-pool-list"
+        rowClassName="compact-pool-row board-pool-row"
+        getCompatibilityLabel={getBoardIncompatibilityLabel}
         headerAction={
           <div className="pool-toolbar inline-toolbar">
             <button
@@ -163,6 +227,8 @@ export function BoardsAdversariesScenariosTab() {
         items={sortedAdversaries}
         selectionState={selectionState}
         setValue={setValue}
+        listClassName="compact-pool-list"
+        rowClassName="compact-pool-row"
         headerAction={
           <div className="pool-toolbar inline-toolbar">
             <button
@@ -216,6 +282,8 @@ export function BoardsAdversariesScenariosTab() {
         items={sortedScenarios}
         selectionState={selectionState}
         setValue={setValue}
+        listClassName="compact-pool-list"
+        rowClassName="compact-pool-row"
         headerAction={
           <div className="pool-toolbar inline-toolbar">
             <button

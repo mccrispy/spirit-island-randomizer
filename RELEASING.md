@@ -36,16 +36,45 @@ tag.
 
 ## Release steps
 
-1. Start from an up-to-date `main` branch with a clean working tree. Create a
-   release branch and review all changes intended for release, ensuring
-   unrelated or generated files are not included.
+1. Start from an up-to-date `main` branch with a clean working tree. First
+   inspect your current branch and changes. Do not discard uncommitted work:
+   either commit it on its existing branch, or, if `git status` shows
+   uncommitted changes, stash them (including untracked files) before switching
+   branches:
 
    ```bash
+   git status --short --branch
+   # Run this only when there are uncommitted changes to preserve.
+   git stash push --include-untracked -m "work before release"
+   ```
+
+   If the changes to release are already committed on another branch, note the
+   commit hashes; you can cherry-pick the intended commits onto the release
+   branch below instead of stashing them. Fetch the latest remote state, switch
+   to `main`, fast-forward it, and verify that it is clean before creating the
+   release branch:
+
+   ```bash
+   git fetch origin
    git switch main
    git pull --ff-only origin main
+   git status --short --branch
    git switch -c release/vX.Y.Z
    git status --short
    ```
+
+   The status after pulling should show `main` tracking `origin/main` with no
+   modified or untracked files. If switching or pulling is blocked, stop and
+   resolve that state without resetting or deleting work. If you stashed
+   changes, restore them only after creating the release branch:
+
+   ```bash
+   git stash pop
+   ```
+
+   Alternatively, cherry-pick only the intended commits from their existing
+   branch. Review the release branch with `git status --short` and `git diff`
+   and leave unrelated or generated files out of the release.
 
 2. Run the release checks locally:
 

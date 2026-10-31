@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Spirit Island Randomizer</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<h1 id="spirit-island-randomizer">Spirit Island Randomizer</h1>
+<p><strong><a href="https://mccrispy.github.io/spirit-island-randomizer/">Play it live</a></strong></p>
+<p>A browser-based randomizer for <a href="https://greaterthangames.com/spirit-island">Spirit Island</a>, the cooperative
+board game. Pick which expansions, spirits, boards, adversaries, and scenarios you own, set your preferences,
+and generate a randomized setup for your next game — entirely client-side, with no server or account needed.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Fine-grained selection of spirits, boards, adversaries, and scenarios, including aspect variants</li>
+<li>Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result), with left- and right-click controls</li>
+<li>Spirit Quick Picks apply only to items matching the current filters; container spirits and hidden items remain unchanged</li>
+<li>Collapsed spirit rows show an aspect-only summary of in-pool and forced aspects (for example,
+“Aspects: 2 in pool, 1 forced”); the base spirit is not included, and forced aspects count as in pool</li>
+<li>Only one base spirit or aspect per spirit family can be forced at a time; forcing another moves the previous one to In Pool</li>
+<li>Full set of play and board options: player count, difficulty adjustments, thematic vs. modular board layouts,
+per-board-count layout favourites and multiple layout exclusions, toggled for the selected layout; one-board
+games use the sole Standard layout</li>
+<li>Mobile-first action order with Results and Options before the selection tabs; desktop retains its workspace/sidebar layout</li>
+<li>Results can be cleared back to a live layout preview without changing saved options or pool selections</li>
+<li>Digital Game Play Options for expansion content and Event cards, plus shortcuts to include or skip adversary and scenario randomizers</li>
+<li>First-run defaults include Base Game, Branch &amp; Claw, Feather &amp; Flame, and Jagged Earth content, with aspects excluded until selected</li>
+<li>Board layout diagrams shown for the selected/generated layout, including numbered board positions</li>
+<li>Generates both a plain-text summary and ready-to-use launch links for
+<a href="http://play.spiritislanddigital.com">Spirit Island Digital</a></li>
+<li>Built-in User Guide tab with instructions on the mobile workflow, tri-state selector, filtering, aspect-family forcing, board layout favourites/exclusions, and game rules</li>
+<li>Profiles tab for saving, loading, and deleting named selection/settings profiles, plus a reset to first-run defaults — all stored locally in your browser, with no files to save or upload</li>
+<li>Header link to the project’s GitHub Issues page for bug reports and suggestions</li>
+<li>Your selections and settings are saved locally in your browser and restored on your next visit — nothing is
+sent to a server</li>
+</ul>
+<h2 id="how-to-run-locally">How to run locally</h2>
+<ol>
+<li>
+<p>Install dependencies:</p>
+<pre><code class="language-bash">npm install
+</code></pre>
+</li>
+<li>
+<p>Start the dev server:</p>
+<pre><code class="language-bash">npm run dev
+</code></pre>
+</li>
+<li>
+<p>Open the printed local URL in your browser, choose your options, and click &quot;Generate&quot;.</p>
+</li>
+</ol>
+<h2 id="running-tests">Running tests</h2>
+<pre><code class="language-bash">npm <span class="hljs-built_in">test</span>
+</code></pre>
+<h2 id="contributing--development-notes">Contributing / development notes</h2>
+<ul>
+<li>Built with React, Vite, and TypeScript.</li>
+<li><code>src/engine/randomizer.ts</code> contains the randomization logic; <code>src/data/loader.ts</code> loads and normalizes the
+game data under <code>public/data/</code>.</li>
+<li>Fixture files under <code>src/fixtures/python_state/</code> are used by <code>randomizer.test.ts</code> to validate the engine
+against known-good reference state; they aren't wired into the live UI.</li>
+</ul>
+<h2 id="license">License</h2>
+<p>The original work in this project is licensed under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International licence (CC BY-NC-SA
+4.0)</a>. You may share and
+adapt that work for non-commercial purposes, with attribution; adaptations must
+be shared under the same licence.</p>
+<p>This licence does not apply to Spirit Island names, artwork, game content, or
+other third-party material in this project. Those remain subject to their
+respective rights holders and licence terms. Spirit Island is a trademark of
+Flat River Group. This project is an unofficial, fan-made tool and is not
+affiliated with or endorsed by the rights holders.</p>
+
+            
+            
+        </body>
+        </html>

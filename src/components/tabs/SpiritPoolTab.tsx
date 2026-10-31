@@ -1,6 +1,11 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
 import { useMemo, useState } from "react";
+import {
+  formatSpiritPoolLabel,
+  getComplexityAbbreviation,
+  getExpansionAbbreviation,
+} from "../../data/formatters";
 import type { BaseSpirit, Spirit } from "../../data/types";
 import { TriState } from "../../engine/types";
 import { useAppState } from "../../state/AppStateContext";
@@ -205,7 +210,9 @@ export function SpiritPoolTab() {
       displacedForcedMembers.length > 0
         ? `Forcing this item moved ${displacedForcedMembers
             .map(({ name }) => name)
-            .join(", ")} to In Pool. Only one item in a spirit family can be forced.`
+            .join(
+              ", ",
+            )} to In Pool. Only one item in a spirit family can be forced.`
         : "",
     );
     setSelection(
@@ -260,71 +267,77 @@ export function SpiritPoolTab() {
             )}
           </div>
           <div className="spirit-filter-row">
-            <div className="filter-group">
-              <span className="filter-label">Expansion</span>
-              <div className="pill-group">
-                {allExpansions.map((expansion) => {
-                  const active = filters.expansions.has(expansion);
-                  return (
-                    <button
-                      key={expansion}
-                      type="button"
-                      className={`filter-pill ${active ? "active" : ""}`}
-                      onClick={() => {
-                        setFilters((current) => {
-                          const next = new Set(current.expansions);
-                          if (next.has(expansion)) next.delete(expansion);
-                          else next.add(expansion);
-                          return { ...current, expansions: next };
-                        });
-                      }}
-                    >
-                      {expansion}
-                    </button>
-                  );
-                })}
+            <div className="spirit-filter-groups">
+              <div className="filter-group">
+                <span className="filter-label">Expansion</span>
+                <div className="pill-group">
+                  {allExpansions.map((expansion) => {
+                    const active = filters.expansions.has(expansion);
+                    return (
+                      <button
+                        key={expansion}
+                        type="button"
+                        className={`filter-pill ${active ? "active" : ""}`}
+                        title={`Expansion: ${expansion}`}
+                        aria-label={`Expansion: ${expansion}`}
+                        onClick={() => {
+                          setFilters((current) => {
+                            const next = new Set(current.expansions);
+                            if (next.has(expansion)) next.delete(expansion);
+                            else next.add(expansion);
+                            return { ...current, expansions: next };
+                          });
+                        }}
+                      >
+                        {getExpansionAbbreviation(expansion)}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            <div className="filter-group">
-              <span className="filter-label">Complexity</span>
-              <div className="pill-group">
-                {allComplexities.map((complexity) => {
-                  const active = filters.complexity.has(complexity);
-                  return (
-                    <button
-                      key={complexity}
-                      type="button"
-                      className={`filter-pill ${active ? "active" : ""}`}
-                      onClick={() => {
-                        setFilters((current) => {
-                          const next = new Set(current.complexity);
-                          if (next.has(complexity)) next.delete(complexity);
-                          else next.add(complexity);
-                          return { ...current, complexity: next };
-                        });
-                      }}
-                    >
-                      {complexity}
-                    </button>
-                  );
-                })}
+              <div className="filter-group">
+                <span className="filter-label">Complexity</span>
+                <div className="pill-group">
+                  {allComplexities.map((complexity) => {
+                    const active = filters.complexity.has(complexity);
+                    return (
+                      <button
+                        key={complexity}
+                        type="button"
+                        className={`filter-pill ${active ? "active" : ""}`}
+                        title={`Complexity: ${complexity}`}
+                        aria-label={`Complexity: ${complexity}`}
+                        onClick={() => {
+                          setFilters((current) => {
+                            const next = new Set(current.complexity);
+                            if (next.has(complexity)) next.delete(complexity);
+                            else next.add(complexity);
+                            return { ...current, complexity: next };
+                          });
+                        }}
+                      >
+                        {getComplexityAbbreviation(complexity)}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            <div className="filter-group name-filter-group">
-              <span className="filter-label">Name</span>
-              <input
-                value={filters.name}
-                onChange={(event) =>
-                  setFilters((current) => ({
-                    ...current,
-                    name: event.target.value,
-                  }))
-                }
-                placeholder="Search spirits"
-                className="name-filter-input"
-              />
+              <div className="filter-group name-filter-group">
+                <span className="filter-label">Name</span>
+                <input
+                  value={filters.name}
+                  onChange={(event) =>
+                    setFilters((current) => ({
+                      ...current,
+                      name: event.target.value,
+                    }))
+                  }
+                  placeholder="Search spirits"
+                  className="name-filter-input"
+                />
+              </div>
             </div>
 
             <button
@@ -367,14 +380,14 @@ export function SpiritPoolTab() {
               className="toolbar-button"
               onClick={() => applyBulkAction("select-all")}
             >
-              Select matching
+              Select filtered
             </button>
             <button
               type="button"
               className="toolbar-button"
               onClick={() => applyBulkAction("deselect-all")}
             >
-              Deselect matching
+              Deselect filtered
             </button>
           </div>
         </div>
@@ -420,14 +433,16 @@ export function SpiritPoolTab() {
             >
               <Accordion.Header className="pool-row">
                 <TriStateCheckbox
-                  label={spirit.name}
+                  label={formatSpiritPoolLabel(spirit)}
                   value={
                     selectionState[spirit.canonicalName] ?? TriState.UNCHECKED
                   }
                   onChange={(value) => setValue(spirit.canonicalName, value)}
                 />
                 <Accordion.Trigger className="family-row">
-                  <span className="family-name">{spirit.name}</span>
+                  <span className="family-name">
+                    {formatSpiritPoolLabel(spirit)}
+                  </span>
                   {activeAspectCount > 0 && (
                     <span
                       className="aspect-status-summary"
@@ -469,7 +484,7 @@ export function SpiritPoolTab() {
                       key={aspect.canonicalName}
                     >
                       <TriStateCheckbox
-                        label={aspect.name}
+                        label={formatSpiritPoolLabel(aspect)}
                         value={
                           selectionState[aspect.canonicalName] ??
                           TriState.UNCHECKED
@@ -478,7 +493,7 @@ export function SpiritPoolTab() {
                           setValue(aspect.canonicalName, value)
                         }
                       />
-                      <span>{aspect.name}</span>
+                      <span>{formatSpiritPoolLabel(aspect)}</span>
                     </div>
                   ))}
               </Accordion.Content>
