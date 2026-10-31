@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-10-31
+### Changed
+- Updated npm dependencies to their latest releases, including React 19 and the latest TypeScript/Vitest toolchain, and refreshed the lockfile.
+- Configured weekly Dependabot version updates with grouped patch and minor updates.
+
 ## [1.6.0] - 2026-10-07
 ### Added
 - **Installable PWA**: Added a GitHub Pages-scoped web app manifest, service-worker precaching for offline use,
