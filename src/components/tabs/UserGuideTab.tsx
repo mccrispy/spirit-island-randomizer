@@ -180,7 +180,10 @@ export function UserGuideTab() {
             Compatibility&rdquo; prevents these board pairings from being
             included in your setup. If you consider island variety more
             important than the increased chance of swingy difficulty, you can
-            disable Strict Board Compatibility.
+            disable Strict Board Compatibility. The Boards pool marks each
+            affected board with a tag such as &ldquo;(no H)&rdquo;, identifying
+            the board it should not be paired with. These tags are informational
+            and remain visible whether strict compatibility is enabled or not.
           </li>
           <li>
             <strong>Digital Game Play Options:</strong> The expansion checkboxes

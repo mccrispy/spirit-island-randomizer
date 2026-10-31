@@ -16,6 +16,8 @@ and generate a randomized setup for your next game — entirely client-side, wit
 - Full set of play and board options: player count, difficulty adjustments, thematic vs. modular board layouts,
   per-board-count layout favourites and multiple layout exclusions, toggled for the selected layout; one-board
   games use the sole Standard layout
+- Responsive multi-column Boards, Adversaries, and Scenarios pools with expansion indicators; board entries
+  show incompatibility tags such as “(no H)” regardless of the strict-compatibility setting
 - Mobile-first action order with Results and Options before the selection tabs; desktop retains its workspace/sidebar layout
 - Results can be cleared back to a live layout preview without changing saved options or pool selections
 - Digital Game Play Options for expansion content and Event cards, plus shortcuts to include or skip adversary and scenario randomizers
