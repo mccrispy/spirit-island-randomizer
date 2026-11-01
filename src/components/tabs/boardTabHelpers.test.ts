@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { TriState } from "../../engine/types";
 import {
     applyBulkPoolSelection,
+    getBoardCompatibilityPairClass,
     getBoardIncompatibilityLabel,
     sortAdversaries,
     sortBoards,
@@ -48,6 +49,38 @@ describe("BoardsAdversariesScenariosTab helpers", () => {
             getBoardIncompatibilityLabel(
                 { ...boards[0], incompatibleBoards: [] },
             ),
+        ).toBeNull();
+    });
+
+    it("assigns the same color class to reciprocal board pairings", () => {
+        for (const [firstBoard, secondBoard, className] of [
+            ["A", "H", "board-pair-ah"],
+            ["B", "E", "board-pair-be"],
+            ["C", "G", "board-pair-cg"],
+            ["D", "F", "board-pair-df"],
+        ]) {
+            expect(
+                getBoardCompatibilityPairClass({
+                    canonicalName: firstBoard,
+                    name: firstBoard,
+                    incompatibleBoards: [secondBoard],
+                } as any),
+            ).toBe(className);
+            expect(
+                getBoardCompatibilityPairClass({
+                    canonicalName: secondBoard,
+                    name: secondBoard,
+                    incompatibleBoards: [firstBoard],
+                } as any),
+            ).toBe(className);
+        }
+
+        expect(
+            getBoardCompatibilityPairClass({
+                canonicalName: "A",
+                name: "A",
+                incompatibleBoards: [],
+            } as any),
         ).toBeNull();
     });
 

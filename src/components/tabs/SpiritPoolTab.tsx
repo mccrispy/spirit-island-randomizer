@@ -21,6 +21,36 @@ export interface SpiritFilterState {
   name: string;
 }
 
+const COMPLEXITY_ORDER = new Map(
+  ["Low", "Moderate", "High", "Very High"].map((complexity, index) => [
+    complexity,
+    index,
+  ]),
+);
+
+export function sortComplexities(complexities: string[]): string[] {
+  return [...complexities].sort(
+    (a, b) =>
+      (COMPLEXITY_ORDER.get(a) ?? Number.MAX_SAFE_INTEGER) -
+        (COMPLEXITY_ORDER.get(b) ?? Number.MAX_SAFE_INTEGER) ||
+      a.localeCompare(b),
+  );
+}
+
+export function getMaxSpiritNameLength(
+  baseSpiritMap: Record<string, BaseSpirit>,
+): number {
+  return Object.values(baseSpiritMap).reduce(
+    (maxLength, { spirit, aspects }) =>
+      Math.max(
+        maxLength,
+        spirit.name.length,
+        ...aspects.map((aspect) => aspect.name.length),
+      ),
+    0,
+  );
+}
+
 export function getVisibleSpiritCollections(
   baseSpiritMap: Record<string, BaseSpirit>,
   filterState: SpiritFilterState,
@@ -173,6 +203,7 @@ export function SpiritPoolTab() {
       ]),
     ),
   ).sort((a, b) => a.localeCompare(b));
+  const maxSpiritNameLength = getMaxSpiritNameLength(data.baseSpiritMap);
 
   const allComplexities = Array.from(
     new Set(
@@ -180,7 +211,8 @@ export function SpiritPoolTab() {
         .map(({ spirit }) => spirit.complexityRating)
         .filter((value): value is string => Boolean(value)),
     ),
-  ).sort((a, b) => a.localeCompare(b));
+  );
+  const sortedComplexities = sortComplexities(allComplexities);
 
   const visibleCollections = useMemo(
     () => getVisibleSpiritCollections(data.baseSpiritMap, filters),
@@ -299,7 +331,7 @@ export function SpiritPoolTab() {
               <div className="filter-group">
                 <span className="filter-label">Complexity</span>
                 <div className="pill-group">
-                  {allComplexities.map((complexity) => {
+                  {sortedComplexities.map((complexity) => {
                     const active = filters.complexity.has(complexity);
                     return (
                       <button
@@ -328,6 +360,7 @@ export function SpiritPoolTab() {
                 <span className="filter-label">Name</span>
                 <input
                   value={filters.name}
+                  maxLength={maxSpiritNameLength}
                   onChange={(event) =>
                     setFilters((current) => ({
                       ...current,
@@ -366,14 +399,14 @@ export function SpiritPoolTab() {
               className="toolbar-button"
               onClick={() => applyBulkAction("base-only")}
             >
-              Base spirits only
+              Select base only
             </button>
             <button
               type="button"
               className="toolbar-button"
               onClick={() => applyBulkAction("aspects-only")}
             >
-              Aspects only
+              Select aspects only
             </button>
             <button
               type="button"
@@ -394,6 +427,10 @@ export function SpiritPoolTab() {
       </div>
 
       <TriStateLegend />
+      <p className="family-selection-note">
+        A setup includes at most one spirit or aspect from each family. When
+        one is forced, the others remain alternatives.
+      </p>
       {forceUpdateMessage && (
         <p className="force-update-message" role="status">
           {forceUpdateMessage}
@@ -425,6 +462,24 @@ export function SpiritPoolTab() {
             selectionState,
           );
           const activeAspectCount = aspectSummary.inPool;
+          const forcedFamilyMember = [spirit, ...aspects].find(
+            ({ canonicalName }) =>
+              selectionState[canonicalName] === TriState.INDETERMINATE,
+          );
+          const forcedAspect = aspects.find(
+            ({ canonicalName }) =>
+              selectionState[canonicalName] === TriState.INDETERMINATE,
+          );
+          const forcedMemberLabel = forcedFamilyMember
+            ? formatSpiritPoolLabel(forcedFamilyMember)
+            : "";
+          const isBaseSpiritAlternative = Boolean(
+            forcedFamilyMember &&
+              forcedFamilyMember.canonicalName !== spirit.canonicalName &&
+              (selectionState[spirit.canonicalName] === TriState.CHECKED ||
+                selectionState[spirit.canonicalName] ===
+                  TriState.INDETERMINATE),
+          );
           return (
             <Accordion.Item
               className="pool-item"
@@ -432,37 +487,51 @@ export function SpiritPoolTab() {
               key={spirit.canonicalName}
             >
               <Accordion.Header className="pool-row">
-                <TriStateCheckbox
-                  label={formatSpiritPoolLabel(spirit)}
-                  value={
-                    selectionState[spirit.canonicalName] ?? TriState.UNCHECKED
+                <span
+                  className={
+                    isBaseSpiritAlternative ? "family-member-alternative" : ""
                   }
-                  onChange={(value) => setValue(spirit.canonicalName, value)}
-                />
+                >
+                  <TriStateCheckbox
+                    label={formatSpiritPoolLabel(spirit)}
+                    value={
+                      selectionState[spirit.canonicalName] ?? TriState.UNCHECKED
+                    }
+                    onChange={(value) => setValue(spirit.canonicalName, value)}
+                  />
+                </span>
                 <Accordion.Trigger className="family-row">
                   <span className="family-name">
                     {formatSpiritPoolLabel(spirit)}
                   </span>
+                  {isBaseSpiritAlternative && (
+                    <span
+                      className="family-alternative"
+                      title={`Alternative while ${forcedMemberLabel} is forced`}
+                    >
+                      Alternative
+                    </span>
+                  )}
                   {activeAspectCount > 0 && (
                     <span
                       className="aspect-status-summary"
                       role="img"
-                      aria-label={`${aspectSummary.inPool} aspects in pool, including ${aspectSummary.forced} forced`}
+                      aria-label={`${aspectSummary.inPool} aspects in pool${forcedAspect ? `; ${formatSpiritPoolLabel(forcedAspect)} forced` : ""}`}
                     >
-                      {aspectSummary.inPool > 0 && (
-                        <span className="aspect-status-count in-pool">
-                          <span>Aspects:</span>
-                          <TriStateIcon value={TriState.CHECKED} size={12} />
-                          {aspectSummary.inPool} in pool
-                        </span>
-                      )}
-                      {aspectSummary.forced > 0 && (
+                      {forcedAspect && (
                         <span className="aspect-status-count forced">
                           <TriStateIcon
                             value={TriState.INDETERMINATE}
                             size={12}
                           />
-                          {aspectSummary.forced} forced
+                          Forced: {formatSpiritPoolLabel(forcedAspect)}
+                        </span>
+                      )}
+                      {!forcedAspect && aspectSummary.inPool > 0 && (
+                        <span className="aspect-status-count in-pool">
+                          <span>Aspects:</span>
+                          <TriStateIcon value={TriState.CHECKED} size={12} />
+                          {aspectSummary.inPool} in pool
                         </span>
                       )}
                     </span>
@@ -471,6 +540,12 @@ export function SpiritPoolTab() {
                 </Accordion.Trigger>
               </Accordion.Header>
               <Accordion.Content className="aspect-list">
+                {forcedFamilyMember && (
+                  <p className="family-force-note">
+                    Only {formatSpiritPoolLabel(forcedFamilyMember)} will be
+                    selected from this family while forced.
+                  </p>
+                )}
                 {aspects
                   .filter((aspect) =>
                     visibleAspects.some(
@@ -478,24 +553,43 @@ export function SpiritPoolTab() {
                         visibleAspect.canonicalName === aspect.canonicalName,
                     ),
                   )
-                  .map((aspect) => (
-                    <div
-                      className="pool-row aspect-row"
-                      key={aspect.canonicalName}
-                    >
-                      <TriStateCheckbox
-                        label={formatSpiritPoolLabel(aspect)}
-                        value={
-                          selectionState[aspect.canonicalName] ??
-                          TriState.UNCHECKED
-                        }
-                        onChange={(value) =>
-                          setValue(aspect.canonicalName, value)
-                        }
-                      />
-                      <span>{formatSpiritPoolLabel(aspect)}</span>
-                    </div>
-                  ))}
+                  .map((aspect) => {
+                    const isAlternative = Boolean(
+                      forcedFamilyMember &&
+                        forcedFamilyMember.canonicalName !==
+                          aspect.canonicalName &&
+                        (selectionState[aspect.canonicalName] ===
+                          TriState.CHECKED ||
+                          selectionState[aspect.canonicalName] ===
+                            TriState.INDETERMINATE),
+                    );
+                    return (
+                      <div
+                        className={`pool-row aspect-row${isAlternative ? " family-member-alternative" : ""}`}
+                        key={aspect.canonicalName}
+                      >
+                        <TriStateCheckbox
+                          label={formatSpiritPoolLabel(aspect)}
+                          value={
+                            selectionState[aspect.canonicalName] ??
+                            TriState.UNCHECKED
+                          }
+                          onChange={(value) =>
+                            setValue(aspect.canonicalName, value)
+                          }
+                        />
+                        <span>{formatSpiritPoolLabel(aspect)}</span>
+                        {isAlternative && (
+                          <span
+                            className="family-alternative"
+                            title={`Alternative while ${forcedMemberLabel} is forced`}
+                          >
+                            Alternative
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
               </Accordion.Content>
             </Accordion.Item>
           );

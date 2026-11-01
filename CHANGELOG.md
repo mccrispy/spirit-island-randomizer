@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-11-01
+### Changed
+- Spirit complexity filters now follow the logical Low, Moderate, High, Very High order, and Quick Picks clarify their base-only and aspect-only actions.
+- Board incompatibility tags use matching colors for reciprocal pairings, remain visible in either compatibility mode, and are emphasized when strict compatibility is active.
+- Adversary and scenario pools use one column on narrow phones, two at typical widths, and three on wide desktop screens.
+- The User Guide and About tabs now use the full workspace without the Results and Options pane. The User Guide explains the updated filter, Quick Picks, and board compatibility indicators.
+
 ## [1.7.0] - 2026-10-31
 ### Added
 - Board pool entries show incompatibility tags (for example, “(no H)”) regardless of the Strict Board Compatibility setting.

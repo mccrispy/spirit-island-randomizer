@@ -9,15 +9,16 @@ and generate a randomized setup for your next game — entirely client-side, wit
 ## Features
 - Fine-grained selection of spirits, boards, adversaries, and scenarios, including aspect variants
 - Tri-state selection per item: unchecked / included / forced (guaranteed to appear in the result), with left- and right-click controls
-- Spirit Quick Picks apply only to items matching the current filters; container spirits and hidden items remain unchanged
+- Complexity filters follow the logical Low, Moderate, High, Very High order
+- Spirit Quick Picks apply only to items matching the current filters; Select base only and Select aspects only choose one type and deselect the other, while filtered-out and container-only spirits remain unchanged
 - Collapsed spirit rows show an aspect-only summary of in-pool and forced aspects (for example,
   “Aspects: 2 in pool, 1 forced”); the base spirit is not included, and forced aspects count as in pool
 - Only one base spirit or aspect per spirit family can be forced at a time; forcing another moves the previous one to In Pool
 - Full set of play and board options: player count, difficulty adjustments, thematic vs. modular board layouts,
   per-board-count layout favourites and multiple layout exclusions, toggled for the selected layout; one-board
   games use the sole Standard layout
-- Responsive multi-column Boards, Adversaries, and Scenarios pools with expansion indicators; board entries
-  show incompatibility tags such as “(no H)” regardless of the strict-compatibility setting
+- Responsive Boards, Adversaries, and Scenarios pools with expansion indicators; adversary and scenario pools use one column on narrow phones, two at typical widths, and three on wide desktops
+- Board entries always show color-matched reciprocal incompatibility tags such as “(no H)”; tags are emphasized when strict compatibility is active and subdued as informational guidance when it is off
 - Mobile-first action order with Results and Options before the selection tabs; desktop retains its workspace/sidebar layout
 - Results can be cleared back to a live layout preview without changing saved options or pool selections
 - Digital Game Play Options for expansion content and Event cards, plus shortcuts to include or skip adversary and scenario randomizers

@@ -52,7 +52,9 @@ export function AppShell() {
         ) : (
           <>
             {error && <p className="error">{error}</p>}
-            <div className="app-layout">
+            <div
+              className={`app-layout${activeTab === "guide" || activeTab === "about" ? " app-layout-reading" : ""}`}
+            >
               <div className="side-stack">
                 <ResultsPanel />
                 <OptionsPanel />
