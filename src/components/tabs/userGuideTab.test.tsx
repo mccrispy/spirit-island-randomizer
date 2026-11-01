@@ -31,7 +31,10 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Space or Enter to move forward");
     expect(html).toContain("Favouriting a layout makes it the default");
     expect(html).toContain("matching the current filters");
-    expect(html).toContain("Select matching");
+    expect(html).toContain("Select base only");
+    expect(html).toContain("Select aspects only");
+    expect(html).toContain("Select filtered");
+    expect(html).toContain("Very High");
     expect(html).toContain("an aspect-only summary");
     expect(html).toContain("Aspects: 2 in pool, 1 forced");
     expect(html).toContain("the base spirit is not included");
@@ -39,6 +42,8 @@ describe("UserGuideTab", () => {
     expect(html).toContain("(excluded)");
     expect(html).toContain("there is no Random choice");
     expect(html).toContain("Thematic boards");
+    expect(html).toContain("Reciprocal pairings share a color");
+    expect(html).toContain("informational rather than restrictions");
     expect(html).toContain("Randomizer Shortcuts");
     expect(html).toContain(
       "individual adversary and scenario pool selections unchanged",

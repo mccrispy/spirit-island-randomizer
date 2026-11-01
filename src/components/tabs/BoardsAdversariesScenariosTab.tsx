@@ -42,12 +42,30 @@ export function sortBoards(boards: Board[]) {
   return [...boards].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+const BOARD_COMPATIBILITY_PAIR_CLASSES: Record<string, string> = {
+  "A:H": "board-pair-ah",
+  "B:E": "board-pair-be",
+  "C:G": "board-pair-cg",
+  "D:F": "board-pair-df",
+};
+
 export function getBoardIncompatibilityLabel(
   board: Board,
 ): string | null {
   if (!board.incompatibleBoards.length) return null;
 
   return `(no ${board.incompatibleBoards.join(", ")})`;
+}
+
+export function getBoardCompatibilityPairClass(board: Board): string | null {
+  for (const incompatibleBoard of board.incompatibleBoards) {
+    const pair = [board.canonicalName, incompatibleBoard]
+      .sort((a, b) => a.localeCompare(b))
+      .join(":");
+    const pairClass = BOARD_COMPATIBILITY_PAIR_CLASSES[pair];
+    if (pairClass) return pairClass;
+  }
+  return null;
 }
 
 export function applyBulkPoolSelection(
@@ -81,6 +99,8 @@ function Pool<T extends PoolItem>({
   listClassName,
   rowClassName,
   getCompatibilityLabel,
+  getCompatibilityClass,
+  strictCompatibility,
 }: {
   title: string;
   items: T[];
@@ -90,6 +110,8 @@ function Pool<T extends PoolItem>({
   listClassName?: string;
   rowClassName?: string;
   getCompatibilityLabel?: (item: T) => string | null;
+  getCompatibilityClass?: (item: T) => string | null;
+  strictCompatibility?: boolean;
 }) {
   return (
     <section className="pool-section">
@@ -105,6 +127,14 @@ function Pool<T extends PoolItem>({
             item.expansions ?? item.expansion ?? [],
           );
           const compatibilityTag = getCompatibilityLabel?.(item);
+          const compatibilityClass = getCompatibilityClass?.(item);
+          const compatibilityTagClasses = [
+            "board-incompatibility-tag",
+            compatibilityClass,
+            strictCompatibility ? "strict" : "relaxed",
+          ]
+            .filter(Boolean)
+            .join(" ");
           const checkboxLabel = [
             item.name,
             expansionIndicator?.label,
@@ -136,7 +166,7 @@ function Pool<T extends PoolItem>({
                 )}
                 {compatibilityTag && (
                   <span
-                    className="board-incompatibility-tag"
+                    className={compatibilityTagClasses}
                     title={`Incompatible with board${item.incompatibleBoards?.length === 1 ? "" : "s"}: ${item.incompatibleBoards?.join(", ")}`}
                     aria-label={`Incompatible with board${item.incompatibleBoards?.length === 1 ? "" : "s"}: ${item.incompatibleBoards?.join(", ")}`}
                   >
@@ -153,12 +183,15 @@ function Pool<T extends PoolItem>({
 }
 
 export function BoardsAdversariesScenariosTab() {
-  const { data, selectionState, setSelection } = useAppState();
+  const { data, selectionState, settings, setSelection } = useAppState();
   const [adversarySort, setAdversarySort] = useState<"name" | "difficulty">(
     "name",
   );
 
-  if (!data || !selectionState) return null;
+  if (!data || !selectionState || !settings) return null;
+  const strictCompatibility =
+    settings.strictBoardCompatibility &&
+    settings.numSpirits + Number(settings.includeAdditionalBoard) < 5;
 
   const setValue = (name: string, value: TriState) =>
     setSelection({ ...selectionState, [name]: value });
@@ -184,6 +217,8 @@ export function BoardsAdversariesScenariosTab() {
         listClassName="board-pool-list"
         rowClassName="compact-pool-row board-pool-row"
         getCompatibilityLabel={getBoardIncompatibilityLabel}
+        getCompatibilityClass={getBoardCompatibilityPairClass}
+        strictCompatibility={strictCompatibility}
         headerAction={
           <div className="pool-toolbar inline-toolbar">
             <button

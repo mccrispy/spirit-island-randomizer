@@ -3,7 +3,9 @@ import { TriState } from "../../engine/types";
 import {
     applyBulkSelection,
     getAspectSelectionSummary,
+    getMaxSpiritNameLength,
     getVisibleSpiritCollections,
+    sortComplexities,
     type SpiritFilterState,
 } from "./SpiritPoolTab";
 
@@ -57,6 +59,24 @@ const baseSpiritMap = {
 } as any;
 
 describe("SpiritPoolTab helpers", () => {
+    it("sorts complexities in logical order and unknown labels alphabetically last", () => {
+        expect(
+            sortComplexities([
+                "Very High",
+                "Custom B",
+                "High",
+                "Low",
+                "Custom A",
+                "Moderate",
+            ]),
+        ).toEqual(["Low", "Moderate", "High", "Very High", "Custom A", "Custom B"]);
+    });
+
+    it("gets the maximum name length across base spirits and aspects", () => {
+        expect(getMaxSpiritNameLength(baseSpiritMap)).toBe("Alternate Form".length);
+        expect(getMaxSpiritNameLength({})).toBe(0);
+    });
+
     it("summarizes included and forced aspects and ignores excluded aspects", () => {
         expect(
             getAspectSelectionSummary(baseSpiritMap.alpha.aspects, {

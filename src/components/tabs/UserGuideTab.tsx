@@ -81,7 +81,9 @@ export function UserGuideTab() {
               <p>
                 The item is guaranteed to appear in your generated setup,
                 provided player count and game constraints allow. Only one
-                base spirit or aspect in a spirit family can be forced at a
+                member of a spirit family can appear in a setup. When one is
+                forced, other family members remain in the pool as alternatives
+                and will not be selected. Only one member can be forced at a
                 time; forcing another moves the previous one to In Pool.
               </p>
             </div>
@@ -101,25 +103,30 @@ export function UserGuideTab() {
             pills, complexity pills, or typing in the search box alters which
             spirits are <em>visible</em> on screen. Filtering does <em>not</em>{" "}
             change whether a spirit is checked or unchecked for randomization.
+            Complexity pills are ordered from Low through Moderate and High to
+            Very High.
           </li>
           <li>
             <strong>Quick Picks:</strong> All four actions affect only spirits
             and aspects matching the current filters; items outside the
-            filtered set remain unchanged. <em>Base spirits only</em> and{" "}
-            <em>Aspects only</em> select matching items of that type and
-            deselect matching items of the other type. <em>Select matching</em>{" "}
-            and <em>Deselect matching</em> include or exclude every matching
+            filtered set remain unchanged. <em>Select base only</em> and{" "}
+            <em>Select aspects only</em> select matching items of that type and
+            deselect matching items of the other type. <em>Select filtered</em>{" "}
+            and <em>Deselect filtered</em> include or exclude every matching
             item. A base spirit shown only to contain a matching aspect is not
             changed unless the base spirit itself matches the filters.
           </li>
           <li>
             <strong>Aspects:</strong> Click on a spirit row to expand its
             aspects. You can include base spirits, specific aspects, or both in
-            the pool. Only one base spirit or aspect in a family can be forced
-            at a time; forcing another moves the previous one to In Pool. A
-            collapsed spirit row shows an aspect-only summary, for example
-            &ldquo;Aspects: 2 in pool, 1 forced.&rdquo; Forced aspects are
-            included in the in-pool count, and the base spirit is not included.
+            the pool, but a setup can include only one member of a family. When
+            a family member is forced, its name appears in the collapsed row;
+            the other members are marked as alternatives and will not be
+            selected. Forcing another member moves the previous one to In Pool.
+            A collapsed spirit row also shows an aspect-only summary, for
+            example &ldquo;Aspects: 2 in pool, 1 forced.&rdquo; Forced aspects
+            are included in the in-pool count, and the base spirit is not
+            included.
           </li>
         </ul>
       </section>
@@ -182,8 +189,11 @@ export function UserGuideTab() {
             important than the increased chance of swingy difficulty, you can
             disable Strict Board Compatibility. The Boards pool marks each
             affected board with a tag such as &ldquo;(no H)&rdquo;, identifying
-            the board it should not be paired with. These tags are informational
-            and remain visible whether strict compatibility is enabled or not.
+            the board it should not be paired with. These tags remain visible
+            in either mode. Reciprocal pairings share a color, and tags are
+            emphasized when strict compatibility is active and subdued when it
+            is off. With strict compatibility off, the tags are informational
+            rather than restrictions.
           </li>
           <li>
             <strong>Digital Game Play Options:</strong> The expansion checkboxes
