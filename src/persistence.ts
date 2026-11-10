@@ -60,7 +60,9 @@ export interface SavedSet {
 
 const KEYS = {
     selectionState: "sirpy-web.selectionState",
+    selectionStateBackup: "sirpy-web.selectionStateBackup",
     settingsState: "sirpy-web.settingsState",
+    settingsStateBackup: "sirpy-web.settingsStateBackup",
     savedSets: "sirpy-web.savedSets",
 } as const;
 
@@ -219,36 +221,46 @@ export function buildDefaultSelectionState(data: AppData): SelectionState {
 }
 
 export function loadSelectionState(data: AppData): SelectionState | null {
-    const raw = readRaw(KEYS.selectionState);
-    if (!raw) return null;
-    try {
-        const parsed = JSON.parse(raw);
-        const sanitized = normalizeForcedSpiritSelections(
-            sanitizeSelectionState(parsed, buildValidNames(data)),
-            data.baseSpiritMap,
-        );
-        return Object.keys(sanitized).length > 0 ? sanitized : null;
-    } catch {
-        return null;
+    for (const key of [KEYS.selectionState, KEYS.selectionStateBackup]) {
+        const raw = readRaw(key);
+        if (!raw) continue;
+        try {
+            const parsed = JSON.parse(raw);
+            const sanitized = normalizeForcedSpiritSelections(
+                sanitizeSelectionState(parsed, buildValidNames(data)),
+                data.baseSpiritMap,
+            );
+            if (Object.keys(sanitized).length > 0) return sanitized;
+        } catch {
+            continue;
+        }
     }
+    return null;
 }
 
 export function saveSelectionState(state: SelectionState): void {
-    localStorage.setItem(KEYS.selectionState, JSON.stringify(state));
+    const serialized = JSON.stringify(state);
+    localStorage.setItem(KEYS.selectionState, serialized);
+    localStorage.setItem(KEYS.selectionStateBackup, serialized);
 }
 
 export function loadSettingsState(): SettingsState | null {
-    const raw = readRaw(KEYS.settingsState);
-    if (!raw) return null;
-    try {
-        return sanitizeSettingsState(JSON.parse(raw));
-    } catch {
-        return null;
+    for (const key of [KEYS.settingsState, KEYS.settingsStateBackup]) {
+        const raw = readRaw(key);
+        if (!raw) continue;
+        try {
+            return sanitizeSettingsState(JSON.parse(raw));
+        } catch {
+            continue;
+        }
     }
+    return null;
 }
 
 export function saveSettingsState(state: SettingsState): void {
-    localStorage.setItem(KEYS.settingsState, JSON.stringify(state));
+    const serialized = JSON.stringify(state);
+    localStorage.setItem(KEYS.settingsState, serialized);
+    localStorage.setItem(KEYS.settingsStateBackup, serialized);
 }
 
 export function defaultSettings(): SettingsState {
