@@ -96,8 +96,7 @@ request. If changes remain, review them; they were not included in the commit.
 
 ### Push and merge the pull request
 
-When you want a GitHub backup or are ready to propose the work, push the branch
-and open a pull request targeting `main`:
+Push your branch to GitHub when you want a backup. When the work is ready to merge into main, open a pull request targeting `main`:
 
 ```powershell
 git push -u origin maintenance/short-description
