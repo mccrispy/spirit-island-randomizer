@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.1] - 2026-11-10
+### Fixed
+- Recover saved selections and settings from their last-known-good local backups when the primary saved values are corrupted.
+
 ## [1.8.0] - 2026-11-01
 ### Changed
 - Spirit complexity filters now follow the logical Low, Moderate, High, Very High order, and Quick Picks clarify their base-only and aspect-only actions.
