@@ -60,6 +60,12 @@ npm test
 - Fixture files under `src/fixtures/python_state/` are used by `randomizer.test.ts` to validate the engine
   against known-good reference state; they aren't wired into the live UI.
 
+## Playbooks
+- [Development and release workflow](./playbooks/RELEASING.md) — the primary guide for feature branches,
+  local commits, pull requests, and production releases.
+- [Updating a feature branch with uncommitted work](./playbooks/LOCAL-REPO-UPDATE.md) — an exception for
+  when you need to bring a branch up to date but cannot make a local commit yet.
+
 ## License
 The original work in this project is licensed under the [Creative Commons
 Attribution-NonCommercial-ShareAlike 4.0 International licence (CC BY-NC-SA

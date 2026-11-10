@@ -193,7 +193,13 @@ export function SpiritPoolTab() {
   const [expandedSpiritNames, setExpandedSpiritNames] = useState<string[]>([]);
   const [forceUpdateMessage, setForceUpdateMessage] = useState("");
 
-  if (!data || !selectionState) return null;
+  const visibleCollections = useMemo(
+    () =>
+      data ? getVisibleSpiritCollections(data.baseSpiritMap, filters) : null,
+    [data, filters],
+  );
+
+  if (!data || !selectionState || !visibleCollections) return null;
 
   const allExpansions = Array.from(
     new Set(
@@ -213,11 +219,6 @@ export function SpiritPoolTab() {
     ),
   );
   const sortedComplexities = sortComplexities(allComplexities);
-
-  const visibleCollections = useMemo(
-    () => getVisibleSpiritCollections(data.baseSpiritMap, filters),
-    [data.baseSpiritMap, filters],
-  );
 
   const { displayedBaseSpirits, visibleBaseSpirits, visibleAspects } =
     visibleCollections;
@@ -390,8 +391,7 @@ export function SpiritPoolTab() {
           </div>
           <p className="quick-picks-description">
             Actions affect only spirits and aspects matching the current
-            filters. A base spirit shown only as an aspect&rsquo;s container is
-            left unchanged.
+            filters.
           </p>
           <div className="spirit-toolbar compact-toolbar">
             <button
@@ -428,8 +428,8 @@ export function SpiritPoolTab() {
 
       <TriStateLegend />
       <p className="family-selection-note">
-        A setup includes at most one spirit or aspect from each family. When
-        one is forced, the others remain alternatives.
+        A setup includes at most one spirit or aspect from each family. When one
+        is forced, the others remain alternatives.
       </p>
       {forceUpdateMessage && (
         <p className="force-update-message" role="status">
@@ -475,10 +475,9 @@ export function SpiritPoolTab() {
             : "";
           const isBaseSpiritAlternative = Boolean(
             forcedFamilyMember &&
-              forcedFamilyMember.canonicalName !== spirit.canonicalName &&
-              (selectionState[spirit.canonicalName] === TriState.CHECKED ||
-                selectionState[spirit.canonicalName] ===
-                  TriState.INDETERMINATE),
+            forcedFamilyMember.canonicalName !== spirit.canonicalName &&
+            (selectionState[spirit.canonicalName] === TriState.CHECKED ||
+              selectionState[spirit.canonicalName] === TriState.INDETERMINATE),
           );
           return (
             <Accordion.Item
@@ -556,12 +555,12 @@ export function SpiritPoolTab() {
                   .map((aspect) => {
                     const isAlternative = Boolean(
                       forcedFamilyMember &&
-                        forcedFamilyMember.canonicalName !==
-                          aspect.canonicalName &&
-                        (selectionState[aspect.canonicalName] ===
-                          TriState.CHECKED ||
-                          selectionState[aspect.canonicalName] ===
-                            TriState.INDETERMINATE),
+                      forcedFamilyMember.canonicalName !==
+                        aspect.canonicalName &&
+                      (selectionState[aspect.canonicalName] ===
+                        TriState.CHECKED ||
+                        selectionState[aspect.canonicalName] ===
+                          TriState.INDETERMINATE),
                     );
                     return (
                       <div

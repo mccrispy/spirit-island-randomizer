@@ -196,6 +196,28 @@ describe("localStorage-backed persistence", () => {
         expect(loadSelectionState(data)).toBeNull();
     });
 
+    it("recovers selections from the last-known-good copy when the active value is corrupted", () => {
+        localStorage.setItem("sirpy-web.selectionState", "{not json");
+        localStorage.setItem(
+            "sirpy-web.selectionStateBackup",
+            JSON.stringify({ "base-spirit": TriState.CHECKED }),
+        );
+
+        expect(loadSelectionState(data)).toEqual({
+            "base-spirit": TriState.CHECKED,
+        });
+    });
+
+    it("keeps the selection backup in sync when saving", () => {
+        const selection = { "base-spirit": TriState.CHECKED };
+
+        saveSelectionState(selection);
+
+        expect(localStorage.getItem("sirpy-web.selectionStateBackup")).toBe(
+            JSON.stringify(selection),
+        );
+    });
+
     it("demotes older conflicting forced spirit-family selections on load", () => {
         localStorage.setItem(
             "sirpy-web.selectionState",
@@ -240,6 +262,17 @@ describe("localStorage-backed persistence", () => {
             JSON.stringify({ ...defaultSettings(), numSpirits: "six" }),
         );
         expect(loadSettingsState()?.numSpirits).toBe(defaultSettings().numSpirits);
+    });
+
+    it("recovers settings from the last-known-good copy when the active value is corrupted", () => {
+        const settings = { ...defaultSettings(), useAdversaries: false };
+        localStorage.setItem("sirpy-web.settingsState", "{not json");
+        localStorage.setItem(
+            "sirpy-web.settingsStateBackup",
+            JSON.stringify(settings),
+        );
+
+        expect(loadSettingsState()).toEqual(settings);
     });
 
     it("saveSavedSet/loadSavedSets/deleteSavedSet round-trip through localStorage", () => {
