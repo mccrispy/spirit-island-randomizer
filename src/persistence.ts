@@ -13,6 +13,10 @@ export interface SettingsState {
     useAdversaries: boolean;
     useScenarios: boolean;
     useEvents: boolean;
+    practiceNoBlightCard: boolean;
+    practiceStartOfGameGrowth: boolean;
+    practiceSkipInitialInvaderActions: boolean;
+    practiceUnlimitedUndo: boolean;
     strictBoardCompatibility: boolean;
     spiritTreeExpanded: boolean;
     localLaunch: boolean;
@@ -31,6 +35,10 @@ const DEFAULT_SETTINGS: SettingsState = {
     useAdversaries: true,
     useScenarios: false,
     useEvents: true,
+    practiceNoBlightCard: false,
+    practiceStartOfGameGrowth: false,
+    practiceSkipInitialInvaderActions: false,
+    practiceUnlimitedUndo: false,
     strictBoardCompatibility: true,
     spiritTreeExpanded: true,
     localLaunch: true,
@@ -170,7 +178,24 @@ export function sanitizeSettingsState(raw: unknown): SettingsState {
         useThematicBoards: bool("useThematicBoards", base.useThematicBoards),
         useAdversaries: bool("useAdversaries", base.useAdversaries),
         useScenarios: bool("useScenarios", base.useScenarios),
-        useEvents: bool("useEvents", base.useEvents),
+        useEvents:
+            bool("useEvents", base.useEvents) &&
+            !bool("practiceNoBlightCard", base.practiceNoBlightCard),
+        practiceNoBlightCard:
+            bool("practiceNoBlightCard", base.practiceNoBlightCard) &&
+            !bool("useEvents", base.useEvents),
+        practiceStartOfGameGrowth: bool(
+            "practiceStartOfGameGrowth",
+            base.practiceStartOfGameGrowth,
+        ),
+        practiceSkipInitialInvaderActions: bool(
+            "practiceSkipInitialInvaderActions",
+            base.practiceSkipInitialInvaderActions,
+        ),
+        practiceUnlimitedUndo: bool(
+            "practiceUnlimitedUndo",
+            base.practiceUnlimitedUndo,
+        ),
         strictBoardCompatibility: bool("strictBoardCompatibility", base.strictBoardCompatibility),
         spiritTreeExpanded: bool("spiritTreeExpanded", base.spiritTreeExpanded),
         localLaunch: bool("localLaunch", base.localLaunch),

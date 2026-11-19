@@ -45,6 +45,11 @@ describe("UserGuideTab", () => {
     expect(html).toContain("Reciprocal pairings share a color");
     expect(html).toContain("informational rather than restrictions");
     expect(html).toContain("Randomizer Shortcuts");
+    expect(html).toContain("Practice Modes");
+    expect(html).toContain("No Blight Card and Use Events are mutually exclusive");
+    expect(html).toContain(
+      "selecting spirits, aspects, boards, adversaries, or scenarios from an expansion does not enable that expansion",
+    );
     expect(html).toContain(
       "individual adversary and scenario pool selections unchanged",
     );

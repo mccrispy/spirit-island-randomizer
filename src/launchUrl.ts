@@ -17,6 +17,13 @@ const EXPANSION_DATA_NAME_TO_URL_ID: Record<string, string> = {
     "Nature Incarnate": "NatureIncarnate",
 };
 
+const PRACTICE_MODE_SETTINGS: Array<[keyof SettingsState, string]> = [
+    ["practiceNoBlightCard", "NoBlightCard"],
+    ["practiceStartOfGameGrowth", "StartOfGameGrowth"],
+    ["practiceSkipInitialInvaderActions", "SkipInitialInvaderActions"],
+    ["practiceUnlimitedUndo", "UnlimitedUndo"],
+];
+
 // Collects expansion IDs present in the result content (spirits, boards, adversary, scenario).
 function expansionsFromResult(result: EngineResult): Set<string> {
     const ids = new Set<string>();
@@ -66,21 +73,26 @@ export function buildWebLaunchUrl(result: EngineResult, settings: SettingsState)
     if (result.adversary) parts.push(`adversary=${result.adversary.canonicalName}`);
     if (result.scenario) parts.push(`scenario=${result.scenario.canonicalName}`);
 
-    // Union settings flags with result-content expansions so the URL is valid even before UI controls exist.
     const expansionIds = new Set(
         EXPANSION_FLAG_TO_URL_ID
             .filter(([key]) => settings[key as keyof SettingsState])
             .map(([, id]) => id)
     );
-    for (const id of expansionsFromResult(result)) expansionIds.add(id);
 
     const sortedExpansionIds = [...expansionIds].sort();
     if (sortedExpansionIds.length) parts.push(`useExpansions=${sortedExpansionIds.join(",")}`);
 
     // Tokens come from Branch & Claw and Jagged Earth content.
-    if (expansionIds.has("BranchAndClaw") || expansionIds.has("JaggedEarth")) parts.push("useTokens=1");
+    const tokenExpansionIds = new Set([...expansionIds, ...expansionsFromResult(result)]);
+    if (tokenExpansionIds.has("BranchAndClaw") || tokenExpansionIds.has("JaggedEarth")) parts.push("useTokens=1");
 
-    if (settings.useEvents) parts.push("useEvents=1");
+    const noBlightCard = settings.practiceNoBlightCard;
+    if (settings.useEvents && !noBlightCard) parts.push("useEvents=1");
+
+    const practiceModes = PRACTICE_MODE_SETTINGS
+        .filter(([key]) => settings[key])
+        .map(([, id]) => id);
+    if (practiceModes.length) parts.push(`practiceModes=${practiceModes.join(",")}`);
 
     if (aspects.length) parts.push(`aspects=${aspects.join(",")}`);
 

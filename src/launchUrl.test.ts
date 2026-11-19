@@ -113,20 +113,66 @@ describe("buildWebLaunchUrl", () => {
         expect(buildWebLaunchUrl(makeResult(), settings)).toContain("useTokens=1");
     });
 
-    it("adds useTokens=1 when result contains Branch & Claw content", () => {
+    it("does not enable useExpansions based on selected content", () => {
         const result = makeResult({
-            selectedSpirits: [{
-                spirit: {
-                    name: "Sharp Fangs",
-                    canonicalName: "SharpFangsBehindTheLeaves",
-                    spiritType: "Base Spirit",
-                    expansion: "Branch & Claw",
+            selectedSpirits: [
+                {
+                    spirit: {
+                        name: "Sharp Fangs",
+                        canonicalName: "SharpFangsBehindTheLeaves",
+                        spiritType: "Base Spirit",
+                        expansion: "Branch & Claw",
+                    },
+                    forced: false,
+                },
+                {
+                    spirit: {
+                        name: "Nature Aspect",
+                        canonicalName: "NatureAspect",
+                        spiritType: "Aspect",
+                        expansion: "Nature Incarnate",
+                        baseSpiritName: "BaseSpirit",
+                    },
+                    forced: false,
+                },
+            ],
+            selectedBoards: [{
+                board: {
+                    name: "Jagged Board",
+                    canonicalName: "JaggedBoard",
+                    sides: [],
+                    expansions: ["Jagged Earth"],
+                    incompatibleBoards: [],
+                },
+                boardSide: {
+                    sideType: "standard",
+                    identifier: "A",
+                    canonicalName: "JaggedBoard-standard",
+                    lands: [],
                 },
                 forced: false,
             }],
+            adversary: {
+                name: "Nature Adversary",
+                canonicalName: "NatureAdversary",
+                expansion: "Nature Incarnate",
+                levels: [],
+            },
+            scenario: {
+                name: "Branch Scenario",
+                canonicalName: "BranchScenario",
+                expansion: "Branch & Claw",
+            },
         });
-        expect(buildWebLaunchUrl(result, defaultSettings())).toContain("useTokens=1");
-        expect(buildWebLaunchUrl(result, defaultSettings())).toContain("useExpansions=BranchAndClaw");
+        const settings: SettingsState = {
+            ...defaultSettings(),
+            expansionBranchClaw: false,
+            expansionJaggedEarth: false,
+            expansionNatureIncarnate: false,
+        };
+        const url = buildWebLaunchUrl(result, settings);
+        expect(url).not.toContain("useExpansions=");
+        expect(url).toContain("useTokens=1");
     });
 
     it("adds useTokens=1 when Jagged Earth is enabled via settings", () => {
@@ -152,6 +198,36 @@ describe("buildWebLaunchUrl", () => {
     it("omits useEvents when useEvents is false", () => {
         const settings: SettingsState = { ...defaultSettings(), useEvents: false };
         expect(buildWebLaunchUrl(makeResult(), settings)).not.toContain("useEvents");
+    });
+
+    it("includes enabled practice modes using their canonical identifiers", () => {
+        const settings: SettingsState = {
+            ...defaultSettings(),
+            useEvents: false,
+            practiceNoBlightCard: true,
+            practiceStartOfGameGrowth: true,
+            practiceSkipInitialInvaderActions: true,
+            practiceUnlimitedUndo: true,
+        };
+        expect(buildWebLaunchUrl(makeResult(), settings)).toContain(
+            "practiceModes=NoBlightCard,StartOfGameGrowth,SkipInitialInvaderActions,UnlimitedUndo",
+        );
+    });
+
+    it("omits practiceModes when no practice modes are selected", () => {
+        expect(buildWebLaunchUrl(makeResult(), defaultSettings())).not.toContain(
+            "practiceModes=",
+        );
+    });
+
+    it("omits useEvents when No Blight Card is enabled", () => {
+        const settings: SettingsState = {
+            ...defaultSettings(),
+            practiceNoBlightCard: true,
+        };
+        const url = buildWebLaunchUrl(makeResult(), settings);
+        expect(url).toContain("practiceModes=NoBlightCard");
+        expect(url).not.toContain("useEvents=1");
     });
 
     it("uses thematic side canonical name for boards in thematic mode", () => {

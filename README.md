@@ -21,7 +21,10 @@ and generate a randomized setup for your next game — entirely client-side, wit
 - Board entries always show color-matched reciprocal incompatibility tags such as “(no H)”; tags are emphasized when strict compatibility is active and subdued as informational guidance when it is off
 - Mobile-first action order with Results and Options before the selection tabs; desktop retains its workspace/sidebar layout
 - Results can be cleared back to a live layout preview without changing saved options or pool selections
-- Digital Game Play Options for expansion content and Event cards, plus shortcuts to include or skip adversary and scenario randomizers
+- Digital Game Play Options for expansion content, Event cards, and four Practice Modes (No Blight
+  Card, Bonus Spirit Growth, Omit Initial Explore, and Unlimited Undo), plus shortcuts to include or
+  skip adversary and scenario randomizers; launch expansion settings follow the explicit expansion
+  toggles, not selected content
 - First-run defaults include Base Game, Branch & Claw, Feather & Flame, and Jagged Earth content, with aspects excluded until selected
 - Board layout diagrams shown for the selected/generated layout, including numbered board positions
 - Generates both a plain-text summary and ready-to-use launch links for
@@ -29,8 +32,8 @@ and generate a randomized setup for your next game — entirely client-side, wit
 - Built-in User Guide tab with instructions on the mobile workflow, tri-state selector, filtering, aspect-family forcing, board layout favourites/exclusions, and game rules
 - Profiles tab for saving, loading, and deleting named selection/settings profiles, plus a reset to first-run defaults &mdash; all stored locally in your browser, with no files to save or upload
 - Header link to the project&rsquo;s GitHub Issues page for bug reports and suggestions
-- Your selections and settings are saved locally in your browser and restored on your next visit — nothing is
-  sent to a server
+- Your selections and settings are saved locally in your browser and restored on your next visit, with local
+  backups to recover from corrupted saved values — nothing is sent to a server
 
 ## How to run locally
 1. Install dependencies:
