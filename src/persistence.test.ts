@@ -80,6 +80,10 @@ describe("first-run defaults", () => {
             expansionBranchClaw: true,
             expansionJaggedEarth: true,
             expansionNatureIncarnate: true,
+            practiceNoBlightCard: false,
+            practiceStartOfGameGrowth: false,
+            practiceSkipInitialInvaderActions: false,
+            practiceUnlimitedUndo: false,
             preferredLayouts: {},
             selectedLayouts: {},
         });
@@ -172,6 +176,28 @@ describe("sanitizeSettingsState", () => {
     it("returns defaults for non-object input", () => {
         expect(sanitizeSettingsState(null)).toEqual(defaultSettings());
         expect(sanitizeSettingsState("bad")).toEqual(defaultSettings());
+    });
+
+    it("defaults newly introduced practice modes off for older saved settings", () => {
+        expect(sanitizeSettingsState({ useEvents: true })).toMatchObject({
+            practiceNoBlightCard: false,
+            practiceStartOfGameGrowth: false,
+            practiceSkipInitialInvaderActions: false,
+            practiceUnlimitedUndo: false,
+        });
+    });
+
+    it("normalizes conflicting Use Events and No Blight Card settings", () => {
+        expect(
+            sanitizeSettingsState({
+                ...defaultSettings(),
+                useEvents: true,
+                practiceNoBlightCard: true,
+            }),
+        ).toMatchObject({
+            useEvents: false,
+            practiceNoBlightCard: false,
+        });
     });
 });
 

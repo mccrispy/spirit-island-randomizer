@@ -197,12 +197,21 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Digital Game Play Options:</strong> The expansion checkboxes
-            control whether Power, Fear, Event, and Blight cards from the{" "}
-            expansions are used - Spirits are always available.{" "}
+            control which expansions the launched digital game uses; selecting
+            spirits, aspects, boards, adversaries, or scenarios from an
+            expansion does not enable that expansion.{" "}
             <em>Use events</em> controls whether you use Events or Command
             Beasts when using expansions. Events require Branch &amp; Claw
             and/or Jagged Earth; Nature Incarnate requires Jagged Earth. The app
-            will enforce these interrelated dependencies.
+            will enforce these interrelated dependencies. Practice Modes are
+            passed to the digital game separately. Use Events and No Blight Card
+            cannot be enabled together.
+          </li>
+          <li>
+            <strong>Practice Modes:</strong> Choose No Blight Card, Bonus Spirit
+            Growth, Omit Initial Explore, and/or Unlimited Undo to customize
+            practice games. These modes are independent except that No Blight
+            Card and Use Events are mutually exclusive.
           </li>
           <li>
             <strong>Randomizer Shortcuts:</strong>{" "}

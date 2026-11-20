@@ -164,6 +164,38 @@ GitHub Pages deployment workflow explicitly, because merges performed with
 dependency updates do not by themselves create a product release or version
 tag.
 
+### If release work is already on a maintenance branch
+
+Treat committed maintenance work as an everyday change first, not as a release
+branch. For example, if `main` has moved forward with Dependabot updates since
+you created your maintenance branch:
+
+1. Confirm the working tree is clean and you are on the intended maintenance
+   branch. Commit any work you want included before updating the branch.
+2. Fetch and merge the latest `main` into the maintenance branch:
+
+   ```powershell
+   git fetch origin
+   git switch maintenance/short-description
+   git merge origin/main
+   ```
+
+   Resolve any conflicts, run the relevant checks, and push the updated branch.
+   The `Protect main` ruleset requires pull request branches to be up to date
+   with `main`, so repeat this update if `main` advances again before the PR is
+   merged.
+3. Open a maintenance pull request targeting `main`. Wait for **Validate pull
+   request** to pass, then squash-merge it. Do not push or commit directly to
+   protected `main`.
+4. After GitHub confirms the maintenance PR is merged, update local `main`
+   using [After the pull request is merged](#after-the-pull-request-is-merged).
+   Create `release/vX.Y.Z` from that updated `main`, then continue with the
+   release steps below.
+
+The maintenance PR merges the actual feature or fix. The later release PR
+contains the changelog and version changes; it is a separate PR and also
+targets `main`.
+
 ## Release steps
 
 1. Start a release branch from up-to-date `main`, following

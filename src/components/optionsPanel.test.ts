@@ -9,6 +9,7 @@ import {
     RANDOM_LAYOUT,
     setFavouriteLayoutForBoardCount,
     setLayoutExcludedForBoardCount,
+    toggleDigitalOption,
     withFavouriteLayoutForBoardCount,
 } from "./OptionsPanel";
 import { defaultSettings } from "../persistence";
@@ -128,4 +129,46 @@ describe("layout favourite behaviour", () => {
             selectedLayouts: { "2": "coastline", "3": "" },
         });
     });
+
+describe("digital gameplay option behaviour", () => {
+    it("turns off No Blight Card when Use Events is enabled", () => {
+        const settings = {
+            ...defaultSettings(),
+            useEvents: false,
+            practiceNoBlightCard: true,
+        };
+
+        expect(toggleDigitalOption(settings, "useEvents")).toMatchObject({
+            useEvents: true,
+            practiceNoBlightCard: false,
+        });
+    });
+
+    it("turns off Use Events when No Blight Card is enabled", () => {
+        const settings = {
+            ...defaultSettings(),
+            useEvents: true,
+        };
+
+        expect(
+            toggleDigitalOption(settings, "practiceNoBlightCard"),
+        ).toMatchObject({
+            useEvents: false,
+            practiceNoBlightCard: true,
+        });
+    });
+
+    it("does not toggle the conflicting option when disabling one", () => {
+        const settings = {
+            ...defaultSettings(),
+            useEvents: true,
+            practiceNoBlightCard: false,
+        };
+
+        expect(toggleDigitalOption(settings, "useEvents")).toMatchObject({
+            useEvents: false,
+            practiceNoBlightCard: false,
+        });
+    });
+});
 });

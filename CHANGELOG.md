@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Four Digital Game Play Practice Modes: No Blight Card, Bonus Spirit Growth, Omit Initial Explore, and Unlimited Undo. No Blight Card and Use Events are mutually exclusive.
+
+### Changed
+- Digital launch links include selected Practice Modes and derive `useExpansions` only from the expansion toggles, not from selected spirits/aspects, boards, adversaries, or scenarios.
 
 ## [1.8.1] - 2026-11-10
 ### Fixed

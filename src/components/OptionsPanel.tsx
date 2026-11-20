@@ -88,6 +88,22 @@ export function canFavouriteLayout(
   );
 }
 
+export function toggleDigitalOption(
+  settings: SettingsState,
+  key: "useEvents" | "practiceNoBlightCard",
+): SettingsState {
+  const enabled = !settings[key];
+  return {
+    ...settings,
+    [key]: enabled,
+    ...(enabled
+      ? {
+          [key === "useEvents" ? "practiceNoBlightCard" : "useEvents"]: false,
+        }
+      : {}),
+  };
+}
+
 export function setFavouriteLayoutForBoardCount(
   settings: SettingsState,
   boardCount: number,
@@ -533,9 +549,35 @@ export function OptionsPanel() {
           {checkboxRow(
             "Use events",
             settings.useEvents,
-            () => toggle("useEvents"),
+            () => setSettings(toggleDigitalOption(settings, "useEvents")),
             !anyExpansion,
             !anyExpansion ? "requires an expansion" : undefined,
+          )}
+        </div>
+        <h4 className="option-subheading">Practice Modes</h4>
+        <div className="option-grid">
+          {checkboxRow(
+            "No Blight Card",
+            settings.practiceNoBlightCard,
+            () =>
+              setSettings(
+                toggleDigitalOption(settings, "practiceNoBlightCard"),
+              ),
+          )}
+          {checkboxRow(
+            "Bonus Spirit Growth",
+            settings.practiceStartOfGameGrowth,
+            () => toggle("practiceStartOfGameGrowth"),
+          )}
+          {checkboxRow(
+            "Omit Initial Explore",
+            settings.practiceSkipInitialInvaderActions,
+            () => toggle("practiceSkipInitialInvaderActions"),
+          )}
+          {checkboxRow(
+            "Unlimited Undo",
+            settings.practiceUnlimitedUndo,
+            () => toggle("practiceUnlimitedUndo"),
           )}
         </div>
       </div>
