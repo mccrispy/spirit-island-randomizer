@@ -909,6 +909,127 @@ describe("randomizer engine", () => {
         );
     });
 
+    it("can place the additional board in the first layout position", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                numSpirits: 1,
+                includeAdditionalBoard: true,
+                selectionState: {
+                    "test-spirit": TriState.CHECKED,
+                },
+            },
+            () => 0.25
+        );
+
+        expect(result.boardPositions).not.toBeNull();
+        expect(result.boardPositions?.[1]?.canonicalName).toBe(
+            result.selectedAdditionalBoard?.board.canonicalName
+        );
+        expect(result.boardPositions?.[2]?.canonicalName).toBe(
+            result.selectedBoards[0]?.board.canonicalName
+        );
+    });
+
+    it("can place the additional board in a randomized thematic position", async () => {
+        const data = await loadAllData();
+        const selectionState = buildDefaultSelectionState(data);
+        const result = runWithTrace(
+            data,
+            {
+                numSpirits: 1,
+                includeAdditionalBoard: true,
+                useThematicBoards: true,
+                selectionState,
+            },
+            () => 0.25
+        );
+
+        expect(result.selectedAdditionalBoard).not.toBeNull();
+        expect(result.boardPositions).not.toBeNull();
+        const extraPosition = Object.entries(result.boardPositions ?? {}).find(
+            ([, board]) =>
+                board.canonicalName === result.selectedAdditionalBoard?.board.canonicalName
+        )?.[0];
+        expect(Number(extraPosition)).toBeGreaterThanOrEqual(1);
+        expect(Number(extraPosition)).toBeLessThanOrEqual(2);
+    });
+
+    it("generates thematic results with an additional board for 4 and 5 spirits", async () => {
+        const data = await loadAllData();
+
+        for (const numSpirits of [4, 5]) {
+            const selectionState = buildDefaultSelectionState(data);
+            const result = runWithTrace(
+                data,
+                {
+                    numSpirits,
+                    includeAdditionalBoard: true,
+                    useThematicBoards: true,
+                    selectionState,
+                },
+                createSeededRng(950 + numSpirits)
+            );
+
+            expect(result.selectedAdditionalBoard).not.toBeNull();
+            expect(result.selectedBoards).toHaveLength(numSpirits);
+            expect(result.boardPositions).not.toBeNull();
+            expect(Object.keys(result.boardPositions ?? {})).toHaveLength(numSpirits + 1);
+        }
+    });
+
+    it("generates fixed thematic maps from the real board pool for 4 through 6 spirits", async () => {
+        const data = await loadAllData();
+
+        for (const numSpirits of [4, 5, 6]) {
+            for (const includeAdditionalBoard of [false, true]) {
+                const selectionState = buildDefaultSelectionState(data);
+                const result = runWithTrace(
+                    data,
+                    {
+                        numSpirits,
+                        includeAdditionalBoard,
+                        useThematicBoards: true,
+                        strictBoardCompatibility: false,
+                        selectionState,
+                    },
+                    createSeededRng(1200 + numSpirits)
+                );
+
+                expect(result.additionalBoardDroppedWarning).toBe(numSpirits === 6 && includeAdditionalBoard);
+                expect(result.selectedBoards).toHaveLength(
+                    numSpirits === 6 && includeAdditionalBoard ? 6 : numSpirits
+                );
+            }
+        }
+    });
+
+    it("uses fixed thematic board identities even when the board tri-state pool excludes them", async () => {
+        const data = await loadAllData();
+        const selectionState = buildDefaultSelectionState(data);
+        for (const board of data.boards) {
+            selectionState[board.canonicalName] = TriState.UNCHECKED;
+        }
+
+        const result = runWithTrace(
+            data,
+            {
+                numSpirits: 5,
+                includeAdditionalBoard: true,
+                useThematicBoards: true,
+                strictBoardCompatibility: false,
+                selectionState,
+            },
+            createSeededRng(1301)
+        );
+
+        expect(result.selectedBoards).toHaveLength(5);
+        expect(result.selectedAdditionalBoard).not.toBeNull();
+        expect(result.boardPositions).not.toBeNull();
+        expect(Object.keys(result.boardPositions ?? {})).toHaveLength(6);
+    });
+
     it("throws when strict compatibility cannot find a compatible additional board", () => {
         const strictData: AppData = {
             ...sampleData,

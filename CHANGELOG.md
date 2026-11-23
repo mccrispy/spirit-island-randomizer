@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- no unreleased changes
+### Changed
+- The additional board may now appear in any randomized layout position instead of always following the spirit boards.
+
+### Fixed
+- Thematic board generation now uses its fixed six-board identities regardless of individual board pool exclusions and no longer fails for 5- or 6-board thematic setups.
 
 ## [1.9.0]-202-11-20
 ### Added

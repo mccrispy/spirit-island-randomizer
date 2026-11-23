@@ -60,12 +60,31 @@ export function buildWebLaunchUrl(result: EngineResult, settings: SettingsState)
 
     // Thematic mode uses the thematic side canonical name; non-thematic uses board canonical name.
     const boardNames: string[] = [];
-    for (const { board, boardSide } of result.selectedBoards) {
-        boardNames.push(settings.useThematicBoards ? boardSide.canonicalName : board.canonicalName);
-    }
-    if (result.selectedAdditionalBoard) {
-        const { board, boardSide } = result.selectedAdditionalBoard;
-        boardNames.push(settings.useThematicBoards ? boardSide.canonicalName : board.canonicalName);
+    const boardSideByCanonicalName = new Map<string, string>(
+        [
+            ...result.selectedBoards,
+            ...(result.selectedAdditionalBoard ? [result.selectedAdditionalBoard] : []),
+        ].map(({ board, boardSide }) => [board.canonicalName, boardSide.canonicalName] as [string, string]),
+    );
+
+    if (result.boardPositions) {
+        for (let position = 1; position <= Object.keys(result.boardPositions).length; position += 1) {
+            const board = result.boardPositions[position];
+            if (!board) continue;
+            boardNames.push(
+                settings.useThematicBoards
+                    ? (boardSideByCanonicalName.get(board.canonicalName) ?? board.canonicalName)
+                    : board.canonicalName,
+            );
+        }
+    } else {
+        for (const { board, boardSide } of result.selectedBoards) {
+            boardNames.push(settings.useThematicBoards ? boardSide.canonicalName : board.canonicalName);
+        }
+        if (result.selectedAdditionalBoard) {
+            const { board, boardSide } = result.selectedAdditionalBoard;
+            boardNames.push(settings.useThematicBoards ? boardSide.canonicalName : board.canonicalName);
+        }
     }
     if (boardNames.length) parts.push(`boards=${boardNames.join(",")}`);
 
