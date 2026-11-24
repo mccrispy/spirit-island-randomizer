@@ -1,6 +1,7 @@
 import type { AppData } from "../data/types";
 import { getExpansionAbbreviation } from "../data/formatters";
 import type { SelectedBoard, SelectedSpirit } from "../engine/types";
+import { TriState } from "../engine/types";
 import { buildSteamLaunchUrl, buildWebLaunchUrl } from "../launchUrl";
 import { LayoutDisplay } from "./LayoutDisplay";
 import { useAppState } from "../state/AppStateContext";
@@ -43,8 +44,22 @@ function buildBoardPositionMap(
 }
 
 export function ResultsPanel() {
-  const { data, result, settings, running, generate, clearResult } =
-    useAppState();
+  const {
+    data,
+    selectionState,
+    result,
+    settings,
+    running,
+    generate,
+    clearResult,
+  } = useAppState();
+  const hasForcedBoardSelection = Boolean(
+    settings?.useThematicBoards &&
+      data?.boards.some(
+        (board) =>
+          selectionState?.[board.canonicalName] === TriState.INDETERMINATE,
+      ),
+  );
 
   // PRM parity: before Generate is pressed, preview the currently selected layout for the current board count.
   const previewTotalBoards = settings
@@ -102,6 +117,12 @@ export function ResultsPanel() {
         >
           Clear result
         </button>
+      )}
+      {hasForcedBoardSelection && (
+        <p className="result-line warning-line">
+          ⚠ Forced board selections are ignored when Thematic Boards is enabled;
+          thematic setups use fixed boards.
+        </p>
       )}
       {result && settings && data ? (
         <>

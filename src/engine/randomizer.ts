@@ -331,7 +331,12 @@ function selectBoards(
     data: AppData,
     options: EngineOptions,
     rng: RNG
-): { selectedBoards: SelectedBoard[]; selectedAdditionalBoard: SelectedBoard | null; additionalBoardDroppedWarning: boolean } {
+): {
+    selectedBoards: SelectedBoard[];
+    selectedAdditionalBoard: SelectedBoard | null;
+    additionalBoardPosition: number | null;
+    additionalBoardDroppedWarning: boolean;
+} {
     const numBoards = options.numSpirits ?? 1;
     const includeAdditionalBoard = Boolean(options.includeAdditionalBoard);
     const useThematicBoards = Boolean(options.useThematicBoards);
@@ -339,12 +344,12 @@ function selectBoards(
     const expansionFilteredBoards = filterByExpansion(data.boards, options.expansions);
     const boards = filterEligibleBySelectionState(expansionFilteredBoards, options.selectionState);
 
-    if (!boards.length) {
+    if (!boards.length && !useThematicBoards) {
         throw new Error("No boards available for the current selection state.");
     }
 
     const forcedBoards = boards.filter((board) => isForcedState(options.selectionState?.[board.canonicalName]));
-    if (forcedBoards.length > numBoards) {
+    if (!useThematicBoards && forcedBoards.length > numBoards) {
         throw new Error(`Too many forced boards (${forcedBoards.length}) for spirit count (${numBoards}).`);
     }
 
@@ -356,16 +361,23 @@ function selectBoards(
         totalBoards = numBoards;
     }
 
-    if (boards.length < totalBoards) {
+    if (!useThematicBoards && boards.length < totalBoards) {
         throw new Error(`Not enough boards available for selected expansions: need ${totalBoards}, have ${boards.length}`);
     }
 
     const strictCompatibility = Boolean(options.strictBoardCompatibility && totalBoards < 5);
 
     if (useThematicBoards) {
-        const selectedThematicBoards = selectThematicBoards(totalBoards, boards, strictCompatibility);
-        const spiritBoards = selectedThematicBoards.slice(0, numBoards);
-        const additionalBoard = effectiveIncludeAdditionalBoard ? selectedThematicBoards[numBoards] ?? null : null;
+        const selectedThematicBoards = selectThematicBoards(totalBoards, data.boards, strictCompatibility);
+        const selectableBoards = [...selectedThematicBoards];
+        let additionalBoard: Board | null = null;
+        let additionalBoardPosition: number | null = null;
+        if (effectiveIncludeAdditionalBoard) {
+            const selectedPosition = Math.floor(rng() * selectableBoards.length);
+            additionalBoardPosition = selectedPosition;
+            additionalBoard = selectableBoards.splice(selectedPosition, 1)[0] ?? null;
+        }
+        const spiritBoards = selectableBoards;
 
         return {
             selectedBoards: spiritBoards.map((board) => {
@@ -386,6 +398,7 @@ function selectBoards(
                     forced: false,
                 }
                 : null,
+            additionalBoardPosition,
             additionalBoardDroppedWarning,
         };
     }
@@ -430,6 +443,7 @@ function selectBoards(
             return { board, boardSide, forced: isForcedState(options.selectionState?.[board.canonicalName]) };
         }),
         selectedAdditionalBoard,
+        additionalBoardPosition: null,
         additionalBoardDroppedWarning,
     };
 }
@@ -601,7 +615,12 @@ export function generateSetup(
     const mergedOptions = { ...DEFAULT_ENGINE_OPTIONS, ...options };
     const engineRng = rng;
 
-    const { selectedBoards, selectedAdditionalBoard, additionalBoardDroppedWarning } = selectBoards(data, mergedOptions, engineRng);
+    const {
+        selectedBoards,
+        selectedAdditionalBoard,
+        additionalBoardPosition,
+        additionalBoardDroppedWarning,
+    } = selectBoards(data, mergedOptions, engineRng);
     const selectedSpirits = selectSpirits(data, mergedOptions, engineRng);
     const adversary = selectAdversary(data, mergedOptions, engineRng);
     const adversaryForced = adversary !== null && isForcedState(mergedOptions.selectionState?.[adversary.canonicalName]);
@@ -615,17 +634,31 @@ export function generateSetup(
 
     let boardPositions: Record<number, Board> | null = null;
     let layoutUrlString: string | null = null;
-    if (layout?.templates?.length) {
-        const allBoards = [
-            ...selectedBoards.map((selected) => selected.board),
-            ...(selectedAdditionalBoard ? [selectedAdditionalBoard.board] : []),
-        ];
+    const allBoards: Board[] = [
+        ...selectedBoards.map((selected) => selected.board),
+        ...(selectedAdditionalBoard ? [selectedAdditionalBoard.board] : []),
+    ];
 
+    if (selectedAdditionalBoard) {
+        const extraBoard = allBoards.pop();
+        if (!extraBoard) {
+            throw new Error("Could not determine the additional board position.");
+        }
+        const extraBoardPosition =
+            additionalBoardPosition ??
+            Math.floor(engineRng() * (allBoards.length + 1));
+        allBoards.splice(extraBoardPosition, 0, extraBoard);
+    }
+
+    if (layout?.templates?.length || selectedAdditionalBoard) {
         boardPositions = allBoards.reduce<Record<number, Board>>((positions, board, index) => {
             positions[index + 1] = board;
             return positions;
         }, {});
-        layoutUrlString = renderLayoutUrlString(boardPositions, layout, allBoards.length);
+
+        if (layout?.templates?.length) {
+            layoutUrlString = renderLayoutUrlString(boardPositions, layout, allBoards.length);
+        }
     }
 
     return {

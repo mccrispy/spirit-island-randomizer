@@ -85,6 +85,121 @@ describe("buildWebLaunchUrl", () => {
         expect(buildWebLaunchUrl(result, defaultSettings())).toContain("adversary=England");
     });
 
+    it("orders boards by randomized layout positions", () => {
+        const result = makeResult({
+            selectedBoards: [
+                {
+                    board: {
+                        name: "Board A",
+                        canonicalName: "BoardA",
+                        sides: [],
+                        expansions: ["Base Game"],
+                        incompatibleBoards: [],
+                    },
+                    boardSide: {
+                        sideType: "standard",
+                        identifier: "A",
+                        canonicalName: "BoardA-standard",
+                        lands: [],
+                    },
+                    forced: false,
+                },
+            ],
+            selectedAdditionalBoard: {
+                board: {
+                    name: "Board B",
+                    canonicalName: "BoardB",
+                    sides: [],
+                    expansions: ["Base Game"],
+                    incompatibleBoards: [],
+                },
+                boardSide: {
+                    sideType: "standard",
+                    identifier: "B",
+                    canonicalName: "BoardB-standard",
+                    lands: [],
+                },
+                forced: false,
+            },
+            boardPositions: {
+                1: {
+                    name: "Board B",
+                    canonicalName: "BoardB",
+                    sides: [],
+                    expansions: ["Base Game"],
+                    incompatibleBoards: [],
+                },
+                2: {
+                    name: "Board A",
+                    canonicalName: "BoardA",
+                    sides: [],
+                    expansions: ["Base Game"],
+                    incompatibleBoards: [],
+                },
+            },
+        });
+
+        expect(buildWebLaunchUrl(result, defaultSettings())).toContain("boards=BoardB,BoardA");
+    });
+
+    it("orders thematic boards and uses their side canonical names", () => {
+        const result = makeResult({
+            selectedBoards: [
+                {
+                    board: {
+                        name: "Board A",
+                        canonicalName: "BoardA",
+                        sides: [],
+                        expansions: ["Base Game"],
+                        incompatibleBoards: [],
+                    },
+                    boardSide: {
+                        sideType: "thematic",
+                        identifier: "West",
+                        canonicalName: "West",
+                        lands: [],
+                    },
+                    forced: false,
+                },
+            ],
+            selectedAdditionalBoard: {
+                board: {
+                    name: "Board B",
+                    canonicalName: "BoardB",
+                    sides: [],
+                    expansions: ["Base Game"],
+                    incompatibleBoards: [],
+                },
+                boardSide: {
+                    sideType: "thematic",
+                    identifier: "East",
+                    canonicalName: "East",
+                    lands: [],
+                },
+                forced: false,
+            },
+            boardPositions: {
+                1: {
+                    name: "Board B",
+                    canonicalName: "BoardB",
+                    sides: [],
+                    expansions: ["Base Game"],
+                    incompatibleBoards: [],
+                },
+                2: {
+                    name: "Board A",
+                    canonicalName: "BoardA",
+                    sides: [],
+                    expansions: ["Base Game"],
+                    incompatibleBoards: [],
+                },
+            },
+        });
+
+        const settings: SettingsState = { ...defaultSettings(), useThematicBoards: true };
+        expect(buildWebLaunchUrl(result, settings)).toContain("boards=East,West");
+    });
+
     it("includes scenario canonical name when present", () => {
         const result = makeResult({
             scenario: { name: "Blitz", canonicalName: "Blitz", expansion: "Base Game" },
