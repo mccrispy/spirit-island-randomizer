@@ -64,10 +64,8 @@ npm test
   against known-good reference state; they aren't wired into the live UI.
 
 ## Playbooks
-- [Development and release workflow](./playbooks/RELEASING.md) — the primary guide for feature branches,
-  local commits, pull requests, and production releases.
-- [Updating a feature branch with uncommitted work](./playbooks/LOCAL-REPO-UPDATE.md) — an exception for
-  when you need to bring a branch up to date but cannot make a local commit yet.
+- [Releasing flow](./playbooks/releasing-flow.md) — the primary guide from a local commit through pull
+  requests and, when appropriate, a versioned production release.
 
 ## License
 The original work in this project is licensed under the [Creative Commons

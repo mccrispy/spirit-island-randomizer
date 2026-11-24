@@ -9,6 +9,10 @@ yarn-error.log*
 plan.html
 README.html
 
+# Keep only the public releasing flow in the repository
+/playbooks/**
+!/playbooks/releasing-flow.md
+
 # Internal planning/analysis docs — kept locally, not part of the public repo
 plan.md
 ui-implementation-plan.md
