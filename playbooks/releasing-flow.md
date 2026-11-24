@@ -25,13 +25,14 @@ flowchart TD
     C3 --> D
     C4 --> D
     D --> E{"Does branch include<br/>latest origin/main?"}
-    E -->|No| F["4. Merge main;<br/>resolve and test"]
+    E -->|No| F["4a. Merge main;<br/>resolve and test"]
     F --> E
     E -->|Yes| G["5. Push branch;<br/>open PR"]
     G --> H{"PR validation<br/>passes?"}
     H -->|No| I["Fix, test,<br/>and push"]
     I --> H
-    H -->|Needs latest main| F
+    H -->|Needs latest main| F2["4b. Update existing<br/>PR branch;<br/>resolve, test, push"]
+    F2 --> H
     H -->|Yes| J["6. Squash-merge PR"]
     J --> K["7. Update local<br/>main"]
     K --> L{"Cut a versioned<br/>release now?"}
@@ -49,7 +50,10 @@ flowchart TD
 - **1. Inspect status and review commit:** [After a local commit](#after-a-local-commit)
 - **2. What is the release impact?:** [Classify release impact](#classify-release-impact)
 - **3. Fetch GitHub and check branch freshness:** [Refresh and verify `main`](#refresh-and-verify-main)
-- **4. Merge `origin/main`; resolve and test:** [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main)
+- **4a. Before opening a PR, merge `origin/main`; resolve and test:**
+  [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main)
+- **4b. For an existing PR that needs recent `main`, update its branch and
+  revalidate:** [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main)
 - **5. Push branch and open pull request:** [Open and validate a change PR](#open-and-validate-a-change-pr)
 - **6. Squash-merge the PR:** [Open and validate a change PR](#open-and-validate-a-change-pr)
 - **7. Update local `main`:** [Merge and clean up a change PR](#merge-and-clean-up-a-change-pr)
@@ -89,6 +93,9 @@ git status --short --branch
 
 Do not push directly to protected `main`.
 
+**Next:** Continue to [Classify release impact](#classify-release-impact)
+([flowchart step 2](#flowchart)).
+
 ## Classify release impact
 
 Classify the change by its effect on the product, not just its commit message
@@ -113,6 +120,9 @@ release is being made now, record its impact for the next release and do not
 create a tag for it. A merge to `main` can deploy the app without a version
 tag.
 
+**Next:** Continue to [Refresh and verify `main`](#refresh-and-verify-main)
+([flowchart step 3](#flowchart)).
+
 ## Protecting `main`
 
 Import [`.github/rulesets/protect-main.json`](../.github/rulesets/protect-main.json)
@@ -121,6 +131,10 @@ The ruleset requires changes to `main` to arrive through pull requests, allows
 squash merges without requiring an approval, and blocks force-pushes and branch
 deletion. It requires the **Validate pull request** status check, which runs
 the tests and production build.
+
+This is a one-time repository setup, not a step in each release. After
+configuring the ruleset, return to the point in the [flowchart](#flowchart)
+where you paused.
 
 ## Refresh and verify `main`
 
@@ -133,13 +147,19 @@ git merge-base --is-ancestor origin/main HEAD
 
 If `git merge-base` exits with code `0`, the branch includes the latest fetched
 `origin/main`. If it exits with code `1`, the branch does not include that
-commit; follow [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main).
+commit; follow [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main),
+then return here and run the freshness check again.
 For any other error, stop and resolve the Git or remote-reference problem
 before proceeding.
 
 This is the PR-readiness check: it tests whether the current branch contains
 the latest `origin/main` now. Recheck after fetching if `main` may have moved
 again before merge.
+
+**Next:** When the check exits with code `0`, continue to
+[Open and validate a change PR](#open-and-validate-a-change-pr)
+([flowchart step 5](#flowchart)). If it exits with code `1`, follow the
+update-and-return path above. Stop on any other error.
 
 ## Start a change
 
@@ -173,6 +193,10 @@ create the new branch directly without stashing; `git switch -c` carries
 staged, unstaged, and untracked changes to it. Check the branch and status
 afterward.
 
+**Next:** Work on the new branch, then use
+[Review and commit checkpoints](#review-and-commit-checkpoints). After each
+commit, return to [After a local commit](#after-a-local-commit).
+
 ## Review and commit checkpoints
 
 Before each commit, review the staged and unstaged changes:
@@ -204,6 +228,9 @@ In VS Code, **Commit** also makes a local commit. Push is separate. If the
 tree is clean after the commit, you can start another phase on the same
 branch. Each commit on that branch will be part of its pull request.
 
+**Next:** Return to [After a local commit](#after-a-local-commit)
+([flowchart step 1](#flowchart)) to review the checkpoint and continue.
+
 ## Update a branch that is behind `main`
 
 First commit or otherwise save work so the tree is clean. Then fetch and merge
@@ -220,10 +247,26 @@ Resolve conflicts, run relevant checks, and push the updated branch. Do not
 reset or force-push to get past conflicts. If `main` advances again before the
 PR merges, repeat the freshness check and update.
 
+**Next depends on why you came here:**
+
+- From [Refresh and verify `main`](#refresh-and-verify-main) before opening a
+  PR: finish checks and push the branch, then return there and rerun the
+  freshness check. When it passes, continue to
+  [Open and validate a change PR](#open-and-validate-a-change-pr).
+- From PR validation because an existing PR needs recent `main`: push the
+  updated branch to that PR, then return to
+  [Open and validate a change PR](#open-and-validate-a-change-pr) to check
+  validation again. Do not create a second PR.
+- From step 2 of [release work already on a maintenance
+  branch](#if-release-work-is-already-on-a-maintenance-branch): finish checks
+  and push the branch, then return to step 3 there and open the maintenance PR.
+
 If you cannot checkpoint your current work first, follow the
 [local-update exception](./LOCAL-REPO-UPDATE.md). It stashes staged,
 unstaged, and untracked changes, merges `origin/main`, and restores the work
-without discarding the backup.
+without discarding the backup. After restoring and verifying your work, finish
+the applicable checks and push described above, then follow the same
+caller-specific return path.
 
 ## Open and validate a change PR
 
@@ -242,8 +285,16 @@ request** to pass, then choose **Squash and merge**. Do not push directly to
 
 If validation requires the branch to include recent `main` changes, first
 commit or otherwise save your work so the tree is clean, then follow
-[Update a branch that is behind `main`](#update-a-branch-that-is-behind-main).
+[Update a branch that is behind `main`](#update-a-branch-that-is-behind-main),
+then push the updated branch to the existing PR and check validation again.
+
 After resolving conflicts, rerun checks and push again.
+
+**Next:** When validation passes, squash-merge the PR, then continue to
+[Merge and clean up a change PR](#merge-and-clean-up-a-change-pr)
+([flowchart step 6](#flowchart)). If validation fails for another reason, fix
+the issue, push, and check validation again. If it needs recent `main`, follow
+the update-and-return path above.
 
 ## Merge and clean up a change PR
 
@@ -260,10 +311,16 @@ git status --short --branch
 Switch only when the working tree is clean. Confirm `main` tracks
 `origin/main` and is up to date.
 
+**Next:** Continue to [After a change PR is merged](#after-a-change-pr-is-merged)
+([flowchart step 7](#flowchart)) to decide whether to prepare a release.
+
 ## After a change PR is merged
 
 The change is now on `main`; a push to `main` automatically runs the deploy
-workflow when checks pass. Decide whether to cut a versioned release now:
+workflow when checks pass. Confirm the deployment completed and the production
+site reflects the merged change. If the normal workflow did not start, use
+[Manual deployment fallback](#manual-deployment-fallback), then return here.
+After verifying the deployment, decide whether to cut a versioned release:
 
 - If this change has no product release impact, no version bump or tag is
   needed.
@@ -281,6 +338,11 @@ git branch -d maintenance/short-description
 
 GitHub may delete the remote branch automatically. Start the next change with
 a new feature or maintenance branch.
+
+**Next:** If releasing now, continue to
+[Choose the release version](#choose-the-release-version)
+([flowchart step 8](#flowchart)). Otherwise, stop here; when new work is ready,
+continue to [Start a change](#start-a-change).
 
 ## Dependency update PRs
 
@@ -300,6 +362,14 @@ GitHub Pages deployment explicitly, because merges performed with
 dependency updates do not by themselves create a product release or version
 tag.
 
+**Next:** For an auto-merged update, no release-tag step is needed; when
+starting new work, use [Start a change](#start-a-change) to refresh local
+`main`. For an update left for manual review, finish reviewing and merging
+that PR through GitHub, then use
+[Merge and clean up a change PR](#merge-and-clean-up-a-change-pr) to update
+local `main` and [After a change PR is merged](#after-a-change-pr-is-merged)
+to continue. Do not cut a product release solely for a dependency update.
+
 ## Choose the release version
 
 Choose the SemVer increase based on all product changes included since the
@@ -314,6 +384,9 @@ previous release, using the
 When changes of multiple types are included, use the highest impact. Choose
 the exact next `X.Y.Z` version and use it consistently in the changelog,
 `package.json`, `package-lock.json`, release commit, PR title, and tag.
+
+**Next:** Continue to [Prepare a release branch](#prepare-a-release-branch)
+([flowchart step 9](#flowchart)).
 
 ## Prepare a release branch
 
@@ -345,12 +418,17 @@ release branch:
    to pass, then squash-merge it. Do not push or commit directly to protected
    `main`.
 4. After GitHub confirms the maintenance PR is merged, update local `main`
-   using [After a change PR is merged](#after-a-change-pr-is-merged). Create
-   `release/vX.Y.Z` from that updated `main`, then continue below.
+   using [Merge and clean up a change PR](#merge-and-clean-up-a-change-pr),
+   then continue to [After a change PR is merged](#after-a-change-pr-is-merged).
+   Create `release/vX.Y.Z` from that updated `main`, then continue below.
 
 The maintenance PR merges the actual feature or fix. The later release PR
 contains the changelog and version changes; it is a separate PR and also
 targets `main`.
+
+**Next:** With the release branch created from updated `main`, continue to
+[Validate and preview the release](#validate-and-preview-the-release)
+([flowchart step 10](#flowchart)).
 
 ## Validate and preview the release
 
@@ -413,6 +491,8 @@ the printed local URL, check the footer, then open the About tab and check
 that both display the expected version (for example, `v1.8.0`). Stop the
 preview server with `Ctrl+C`.
 
+**Next:** Continue to [Commit the release changes](#commit-the-release-changes).
+
 ## Commit the release changes
 
 Stage only the changelog and version files. Review the diff and commit:
@@ -426,6 +506,8 @@ git commit -m "chore: release vX.Y.Z"
 
 Do not include unrelated changes.
 
+**Next:** Continue to [Merge the release PR](#merge-the-release-pr).
+
 ## Merge the release PR
 
 Push the release branch and open a PR targeting `main`, using
@@ -433,6 +515,10 @@ Push the release branch and open a PR targeting `main`, using
 validation details in its description. Wait for **Validate pull request** to
 pass, then squash-merge the PR. The merge—not the tag—triggers production
 deployment.
+
+**Next:** After GitHub confirms the merge, continue to
+[Tag and verify the release](#tag-and-verify-the-release)
+([flowchart step 12](#flowchart)).
 
 ## Tag and verify the release
 
@@ -474,11 +560,19 @@ GitHub Pages URL in a clean browser profile and on target browsers/platforms:
   worker. Follow the PWA section in the User Guide for manual installation
   steps in browsers without an in-app prompt.
 
+**Next:** After deployment and product verification pass, the release is
+complete. If deployment failed, fix it through the everyday
+[change PR workflow](#open-and-validate-a-change-pr), then return here to verify
+the deployment; do not move or overwrite the published tag.
+
 ## Manual deployment fallback
 
 If a push to `main` did not start the workflow, open **Actions** →
 **Deploy to GitHub Pages** → **Run workflow**, select `main`, and start it.
-Confirm the run finishes successfully and verify the production URL as in
-[Tag and verify the release](#tag-and-verify-the-release). Use this only when
-the normal deployment workflow did not start; manually running it does not
-replace the release tag.
+Confirm the run finishes successfully and verify the production URL. After
+verification, return to the procedure that sent you here and continue its
+remaining steps: [Tag and verify the release](#tag-and-verify-the-release)
+for a release, including any remaining release-specific checks, or
+[After a change PR is merged](#after-a-change-pr-is-merged) for an ordinary
+change, to make its release decision. Use this only when the normal deployment
+workflow did not start; manually running it does not replace the release tag.
