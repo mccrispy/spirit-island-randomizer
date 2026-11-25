@@ -90,6 +90,9 @@ export function buildWebLaunchUrl(result: EngineResult, settings: SettingsState)
 
     if (result.layoutUrlString) parts.push(`layout=${result.layoutUrlString}`);
     if (result.adversary) parts.push(`adversary=${result.adversary.canonicalName}`);
+    if (result.supportingAdversary) {
+        parts.push(`supportingAdversary=${result.supportingAdversary.canonicalName}`);
+    }
     if (result.scenario) parts.push(`scenario=${result.scenario.canonicalName}`);
 
     const expansionIds = new Set(

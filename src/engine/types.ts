@@ -25,6 +25,7 @@ export interface EngineOptions {
     includeAdditionalBoard?: boolean;
     useThematicBoards?: boolean;
     useAdversaries?: boolean;
+    useSupportingAdversary?: boolean;
     useScenarios?: boolean;
     strictBoardCompatibility?: boolean;
     selectionState?: SelectionState;
@@ -54,6 +55,8 @@ export interface EngineResult {
     additionalBoardDroppedWarning: boolean;
     adversary: Adversary | null;
     adversaryForced: boolean;
+    supportingAdversary?: Adversary | null;
+    supportingAdversaryForced?: boolean;
     scenario: Scenario | null;
     scenarioForced: boolean;
     layout: BoardLayout | null;

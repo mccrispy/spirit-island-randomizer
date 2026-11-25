@@ -10,9 +10,54 @@ import {
     setFavouriteLayoutForBoardCount,
     setLayoutExcludedForBoardCount,
     toggleDigitalOption,
+    toggleAdversaryRandomizer,
+    toggleSupportingAdversary,
+    countEligibleAdversaries,
     withFavouriteLayoutForBoardCount,
 } from "./OptionsPanel";
 import { defaultSettings } from "../persistence";
+import { TriState } from "../engine/types";
+
+describe("supporting adversary option behaviour", () => {
+    it("defaults off and can be enabled only while adversary randomization is on", () => {
+        expect(defaultSettings().useSupportingAdversary).toBe(false);
+        const enabled = toggleSupportingAdversary({
+            ...defaultSettings(),
+            useSupportingAdversary: false,
+        });
+        expect(enabled.useSupportingAdversary).toBe(true);
+        expect(toggleSupportingAdversary({
+            ...enabled,
+            useAdversaries: false,
+        }).useSupportingAdversary).toBe(false);
+    });
+
+    it("deselects support and leaves it unchecked when adversary randomization returns", () => {
+        const enabled = {
+            ...defaultSettings(),
+            useSupportingAdversary: true,
+        };
+        const disabled = toggleAdversaryRandomizer(enabled);
+        expect(disabled.useAdversaries).toBe(false);
+        expect(disabled.useSupportingAdversary).toBe(false);
+        expect(toggleAdversaryRandomizer(disabled).useSupportingAdversary).toBe(false);
+    });
+
+    it("counts checked and forced adversaries as eligible", () => {
+        expect(countEligibleAdversaries(
+            [
+                { canonicalName: "a" },
+                { canonicalName: "b" },
+                { canonicalName: "c" },
+            ],
+            {
+                a: TriState.CHECKED,
+                b: TriState.INDETERMINATE,
+                c: TriState.UNCHECKED,
+            },
+        )).toBe(2);
+    });
+});
 
 describe("layout favourite behaviour", () => {
     it("marks the current selected layout as favourite only when it matches the saved favourite", () => {

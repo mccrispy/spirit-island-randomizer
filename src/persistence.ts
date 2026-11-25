@@ -11,6 +11,7 @@ export interface SettingsState {
     includeAdditionalBoard: boolean;
     useThematicBoards: boolean;
     useAdversaries: boolean;
+    useSupportingAdversary: boolean;
     useScenarios: boolean;
     useEvents: boolean;
     practiceNoBlightCard: boolean;
@@ -33,6 +34,7 @@ const DEFAULT_SETTINGS: SettingsState = {
     includeAdditionalBoard: false,
     useThematicBoards: false,
     useAdversaries: true,
+    useSupportingAdversary: false,
     useScenarios: false,
     useEvents: true,
     practiceNoBlightCard: false,
@@ -177,6 +179,9 @@ export function sanitizeSettingsState(raw: unknown): SettingsState {
         includeAdditionalBoard: bool("includeAdditionalBoard", base.includeAdditionalBoard),
         useThematicBoards: bool("useThematicBoards", base.useThematicBoards),
         useAdversaries: bool("useAdversaries", base.useAdversaries),
+        useSupportingAdversary:
+            bool("useSupportingAdversary", base.useSupportingAdversary) &&
+            bool("useAdversaries", base.useAdversaries),
         useScenarios: bool("useScenarios", base.useScenarios),
         useEvents:
             bool("useEvents", base.useEvents) &&

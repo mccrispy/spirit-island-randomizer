@@ -215,10 +215,15 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Randomizer Shortcuts:</strong>{" "}
-            <em>Randomize an adversary</em> and <em>Randomize a scenario</em>{" "}
+            <em>Randomize an adversary</em>,{" "}
+            <em>Use a Supporting Adversary</em>, and{" "}
+            <em>Randomize a scenario</em>{" "}
             quickly include or skip those randomizers for the next setup. They
             leave your individual adversary and scenario pool selections
-            unchanged.
+            unchanged. When enabled with <em>Randomize an adversary</em>, a
+            Supporting Adversary adds a second, distinct adversary. A forced
+            adversary remains the primary choice, and a warning appears if
+            fewer than two are eligible.
           </li>
         </ul>
       </section>

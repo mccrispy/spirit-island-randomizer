@@ -466,9 +466,9 @@ function selectSpirits(data: AppData, options: EngineOptions, rng: RNG): Selecte
     return selected.map(({ spirit, forced }) => ({ spirit, forced }));
 }
 
-function selectAdversary(data: AppData, options: EngineOptions, rng: RNG) {
+function selectAdversaries(data: AppData, options: EngineOptions, rng: RNG) {
     if (options.useAdversaries === false) {
-        return null;
+        return { adversary: null, supportingAdversary: null };
     }
 
     const expansionFilteredAdversaries = filterByExpansion(data.adversaries, options.expansions);
@@ -488,15 +488,40 @@ function selectAdversary(data: AppData, options: EngineOptions, rng: RNG) {
         );
     }
 
+    if (options.useSupportingAdversary && adversaries.length < 2) {
+        throw new Error(
+            `Not enough distinct adversaries available: need 2, have ${adversaries.length}.`
+        );
+    }
+
     if (forcedAdversaries.length === 1) {
-        return forcedAdversaries[0];
+        const adversary = forcedAdversaries[0];
+        if (!options.useSupportingAdversary) {
+            return { adversary, supportingAdversary: null };
+        }
+        const remaining = adversaries.filter(
+            (candidate) => candidate.canonicalName !== adversary.canonicalName
+        );
+        return {
+            adversary,
+            supportingAdversary: pickRandom(remaining, rng),
+        };
     }
 
     const adversary = pickRandom(adversaries, rng);
     if (!adversary) {
         throw new Error("No adversaries available for the selected expansions");
     }
-    return adversary;
+    if (!options.useSupportingAdversary) {
+        return { adversary, supportingAdversary: null };
+    }
+    const remaining = adversaries.filter(
+        (candidate) => candidate.canonicalName !== adversary.canonicalName
+    );
+    return {
+        adversary,
+        supportingAdversary: pickRandom(remaining, rng),
+    };
 }
 
 function selectScenario(data: AppData, options: EngineOptions, rng: RNG) {
@@ -622,7 +647,7 @@ export function generateSetup(
         additionalBoardDroppedWarning,
     } = selectBoards(data, mergedOptions, engineRng);
     const selectedSpirits = selectSpirits(data, mergedOptions, engineRng);
-    const adversary = selectAdversary(data, mergedOptions, engineRng);
+    const { adversary, supportingAdversary } = selectAdversaries(data, mergedOptions, engineRng);
     const adversaryForced = adversary !== null && isForcedState(mergedOptions.selectionState?.[adversary.canonicalName]);
     const scenario = selectScenario(data, mergedOptions, engineRng);
     const scenarioForced = scenario !== null && isForcedState(mergedOptions.selectionState?.[scenario.canonicalName]);
@@ -668,6 +693,8 @@ export function generateSetup(
         selectedSpirits,
         adversary,
         adversaryForced,
+        supportingAdversary,
+        supportingAdversaryForced: false,
         scenario,
         scenarioForced,
         layout,

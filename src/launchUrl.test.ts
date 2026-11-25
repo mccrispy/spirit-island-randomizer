@@ -85,6 +85,19 @@ describe("buildWebLaunchUrl", () => {
         expect(buildWebLaunchUrl(result, defaultSettings())).toContain("adversary=England");
     });
 
+    it("includes supportingAdversary only when generated", () => {
+        const withSupport = makeResult({
+            adversary: { name: "England", canonicalName: "England", expansion: "Base Game", levels: [] },
+            supportingAdversary: { name: "Russia", canonicalName: "Russia", expansion: "Base Game", levels: [] },
+        });
+        expect(buildWebLaunchUrl(withSupport, defaultSettings())).toContain(
+            "supportingAdversary=Russia"
+        );
+        expect(buildWebLaunchUrl(makeResult(), defaultSettings())).not.toContain(
+            "supportingAdversary="
+        );
+    });
+
     it("orders boards by randomized layout positions", () => {
         const result = makeResult({
             selectedBoards: [

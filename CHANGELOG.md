@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-11-25
+### Added
+- Added an optional Supporting Adversary, selected as a distinct second adversary from the eligible pool. A forced adversary remains primary; the app warns when fewer than two are eligible, and includes the support adversary in results and launch links.
+
 ## [1.10.0] - 2026-11-25
 ### Changed
 - The additional board may now appear in any randomized layout position instead of always following the spirit boards.
