@@ -241,6 +241,16 @@ export function ResultsPanel() {
               "None"
             )}
           </p>
+          {result.supportingAdversary && (
+            <p className="result-line">
+              <strong>Support Adversary:</strong>{" "}
+              <span>
+                {result.supportingAdversary.name} [
+                {getExpansionAbbreviation(result.supportingAdversary.expansion)}
+                ]
+              </span>
+            </p>
+          )}
           <p className="result-line">
             <strong>Scenario:</strong>{" "}
             {result.scenario ? (

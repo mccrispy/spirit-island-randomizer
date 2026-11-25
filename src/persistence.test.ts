@@ -157,6 +157,7 @@ describe("sanitizeSettingsState", () => {
         });
         expect(result.numSpirits).toBe(defaultSettings().numSpirits);
         expect(result.useAdversaries).toBe(defaultSettings().useAdversaries);
+        expect(result.useSupportingAdversary).toBe(false);
         expect(result.expansionBranchClaw).toBe(false);
         expect(result.preferredLayouts).toEqual({ "3": "layout-a" });
         expect(result.excludedLayouts).toEqual({

@@ -528,6 +528,61 @@ describe("randomizer engine", () => {
         expect(result.adversaryForced).toBe(false);
     });
 
+    it("selects distinct normal and supporting adversaries", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                useSupportingAdversary: true,
+                selectionState: defaultSelectionState,
+            },
+            createSeededRng(23)
+        );
+
+        expect(result.adversary).not.toBeNull();
+        expect(result.supportingAdversary).not.toBeNull();
+        expect(result.supportingAdversary?.canonicalName).not.toBe(
+            result.adversary?.canonicalName
+        );
+    });
+
+    it("keeps a forced adversary as normal and chooses support from the remainder", () => {
+        const result = runWithTrace(
+            sampleData,
+            {
+                expansions: ["Base Game"],
+                useSupportingAdversary: true,
+                selectionState: {
+                    "test-spirit": TriState.CHECKED,
+                    "optional-adversary": TriState.INDETERMINATE,
+                    "test-adversary": TriState.CHECKED,
+                },
+            },
+            createSeededRng(23)
+        );
+
+        expect(result.adversary?.canonicalName).toBe("optional-adversary");
+        expect(result.adversaryForced).toBe(true);
+        expect(result.supportingAdversary?.canonicalName).toBe("test-adversary");
+    });
+
+    it("throws a clear error when fewer than two adversaries are eligible", () => {
+        expect(() =>
+            runWithTrace(
+                sampleData,
+                {
+                    expansions: ["Base Game"],
+                    useSupportingAdversary: true,
+                    selectionState: {
+                        "test-spirit": TriState.CHECKED,
+                        "test-adversary": TriState.CHECKED,
+                    },
+                },
+                createSeededRng(23)
+            )
+        ).toThrow("Not enough distinct adversaries available");
+    });
+
     it("marks forced scenario as forced", () => {
         const result = runWithTrace(
             sampleData,

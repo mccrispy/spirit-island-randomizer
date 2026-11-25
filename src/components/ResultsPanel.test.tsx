@@ -69,4 +69,47 @@ describe("ResultsPanel thematic forced-board warning", () => {
     await act(async () => root.unmount());
     container.remove();
   });
+
+  it("displays a generated supporting adversary", async () => {
+    const container = document.createElement("div");
+    const root = createRoot(container);
+    useAppStateMock.mockReturnValue({
+      data: { boards: [], layouts: [], adversaries: [] },
+      selectionState: {},
+      settings: defaultSettings(),
+      result: {
+        selectedSpirits: [],
+        selectedBoards: [],
+        selectedAdditionalBoard: null,
+        additionalBoardDroppedWarning: false,
+        adversary: null,
+        adversaryForced: false,
+        supportingAdversary: {
+          name: "Russia",
+          canonicalName: "Russia",
+          expansion: "Base Game",
+          levels: [],
+        },
+        supportingAdversaryForced: false,
+        scenario: null,
+        scenarioForced: false,
+        layout: null,
+        boardPositions: null,
+        layoutUrlString: null,
+        options: {},
+        generatedAt: "2026-08-12",
+      },
+      running: false,
+      generate: vi.fn(),
+      clearResult: vi.fn(),
+    });
+
+    await act(async () => root.render(<ResultsPanel />));
+
+    expect(container.textContent).toContain("Support Adversary:");
+    expect(container.textContent).toContain("Russia");
+
+    await act(async () => root.unmount());
+    container.remove();
+  });
 });

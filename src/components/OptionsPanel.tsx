@@ -2,6 +2,7 @@ import * as Slider from "@radix-ui/react-slider";
 import { useEffect, useRef } from "react";
 import { useAppState } from "../state/AppStateContext";
 import type { SettingsState } from "../persistence";
+import { TriState } from "../engine/types";
 
 export const RANDOM_LAYOUT = "__random__";
 
@@ -174,8 +175,35 @@ export function withFavouriteLayoutForBoardCount(
   };
 }
 
+export function toggleAdversaryRandomizer(settings: SettingsState): SettingsState {
+  const useAdversaries = !settings.useAdversaries;
+  return {
+    ...settings,
+    useAdversaries,
+    useSupportingAdversary: false,
+  };
+}
+
+export function toggleSupportingAdversary(settings: SettingsState): SettingsState {
+  return {
+    ...settings,
+    useSupportingAdversary:
+      settings.useAdversaries && !settings.useSupportingAdversary,
+  };
+}
+
+export function countEligibleAdversaries(
+  adversaries: Array<{ canonicalName: string }>,
+  selectionState: Record<string, TriState>,
+): number {
+  return adversaries.filter((adversary) => {
+    const state = selectionState[adversary.canonicalName];
+    return state === TriState.CHECKED || state === TriState.INDETERMINATE;
+  }).length;
+}
+
 export function OptionsPanel() {
-  const { data, settings, setSettings } = useAppState();
+  const { data, settings, selectionState, setSettings } = useAppState();
   const savedStrictCompatibilityRef = useRef<boolean | null>(null);
   const totalBoards = settings
     ? settings.numSpirits + (settings.includeAdditionalBoard ? 1 : 0)
@@ -519,13 +547,32 @@ export function OptionsPanel() {
           selections.
         </p>
         <div className="option-grid">
-          {checkboxRow("Randomize an adversary", settings.useAdversaries, () =>
-            toggle("useAdversaries"),
-          )}
+          <div className="adversary-randomizer-options">
+            {checkboxRow("Randomize an adversary", settings.useAdversaries, () =>
+              setSettings(toggleAdversaryRandomizer(settings)),
+            )}
+            {checkboxRow(
+              "Use a Supporting Adversary",
+              settings.useSupportingAdversary,
+              () => setSettings(toggleSupportingAdversary(settings)),
+              !settings.useAdversaries,
+              !settings.useAdversaries
+                ? "requires adversary randomization"
+                : undefined,
+            )}
+          </div>
           {checkboxRow("Randomize a scenario", settings.useScenarios, () =>
             toggle("useScenarios"),
           )}
         </div>
+        {settings.useAdversaries &&
+          settings.useSupportingAdversary &&
+          selectionState &&
+          countEligibleAdversaries(data.adversaries, selectionState) < 2 && (
+            <p className="option-section-description warning-line">
+              ⚠ Supporting Adversary requires at least two eligible adversaries.
+            </p>
+          )}
       </div>
 
       <div className="option-section">

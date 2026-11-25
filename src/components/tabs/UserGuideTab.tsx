@@ -215,7 +215,9 @@ export function UserGuideTab() {
           </li>
           <li>
             <strong>Randomizer Shortcuts:</strong>{" "}
-            <em>Randomize an adversary</em> and <em>Randomize a scenario</em>{" "}
+            <em>Randomize an adversary</em>,{" "}
+            <em>Use a Supporting Adversary</em>, and{" "}
+            <em>Randomize a scenario</em>{" "}
             quickly include or skip those randomizers for the next setup. They
             leave your individual adversary and scenario pool selections
             unchanged.

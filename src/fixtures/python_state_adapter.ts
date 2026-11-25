@@ -25,6 +25,7 @@ export interface PythonSettingsState {
     expansion_nature_incarnate?: boolean;
     use_events?: boolean;
     use_adversaries?: boolean;
+    use_supporting_adversary?: boolean;
     use_scenarios?: boolean;
     preferred_layouts?: Record<string, string>;
     selected_layouts?: Record<string, string>;
@@ -86,6 +87,9 @@ export function mapPythonSettingsState(input: SettingsStateContainer): SettingsS
         includeAdditionalBoard: Boolean(rawSettingsState.additional_board),
         useThematicBoards: Boolean(rawSettingsState.thematic_boards),
         useAdversaries: rawSettingsState.use_adversaries ?? true,
+        useSupportingAdversary:
+            (rawSettingsState.use_supporting_adversary ?? false) &&
+            (rawSettingsState.use_adversaries ?? true),
         useScenarios: rawSettingsState.use_scenarios ?? true,
         useEvents: rawSettingsState.use_events ?? true,
         practiceNoBlightCard: false,
