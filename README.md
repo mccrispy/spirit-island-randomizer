@@ -65,7 +65,9 @@ npm test
 
 ## Playbooks
 - [Releasing flow](./playbooks/releasing-flow.md) — the primary guide from a local commit through pull
-  requests and, when appropriate, a versioned production release.
+  requests and deployment. Product-impacting changes include their SemVer
+  version in the same PR; the guide also documents the assistant workflow and
+  repository release commands.
 
 ## License
 The original work in this project is licensed under the [Creative Commons
