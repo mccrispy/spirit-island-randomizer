@@ -1,13 +1,15 @@
 {
   "name": "spirit-island-randomizer",
   "private": true,
-  "version": "1.9.0",
+  "version": "1.10.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "release:prepare": "node scripts/prepare-release.mjs",
+    "release:check": "node scripts/check-release-version.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

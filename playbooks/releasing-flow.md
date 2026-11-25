@@ -1,14 +1,15 @@
 # Releasing flow
 
-This is the primary guide for taking a local commit through review and, when
-appropriate, a versioned production release. Start at the flowchart, then use
-the linked procedure references immediately below it to jump to the detailed
-steps.
+This is the primary guide for taking a local commit through review and
+deployment. Start at the flowchart, then use the linked procedure references
+immediately below it to jump to the detailed steps.
 
-Merging a PR to `main` automatically deploys the site if checks pass. A
-versioned release is an additional process: it records a SemVer version in the
-changelog and app, then creates a tag for the merged release commit. A tag by
-itself does not deploy the site.
+Each PR that changes the product must include its SemVer version and changelog
+entry before it merges to `main`; merging then deploys that version to GitHub
+Pages. Documentation-only and internal-only changes with no product impact do
+not need a version bump. Dependabot dependency updates remain excluded from
+product versioning. Version tags are created after a versioned PR deploys and
+is verified; a tag by itself does not deploy the site.
 
 ## Flowchart
 
@@ -16,32 +17,30 @@ itself does not deploy the site.
 flowchart TD
     A([Local commit made]) --> B["1. Review status<br/> and commit"]
     B --> C{"2. Classify<br/>release impact"}
-    C -->|Breaking change| C1["Major:<br/>breaking change"]
-    C -->|Backward-compatible feature| C2["Minor:<br/>compatible feature"]
-    C -->|Compatible fix| C3["Patch:<br/>compatible fix"]
-    C -->|No product impact| C4["No product<br/>release"]
-    C1 --> D["3. Fetch and check<br/>branch freshness"]
-    C2 --> D
-    C3 --> D
-    C4 --> D
-    D --> E{"Does branch include<br/>latest origin/main?"}
-    E -->|No| F["4a. Merge main;<br/>resolve and test"]
-    F --> E
-    E -->|Yes| G["5. Push branch;<br/>open PR"]
-    G --> H{"PR validation<br/>passes?"}
-    H -->|No| I["Fix, test,<br/>and push"]
-    I --> H
-    H -->|Needs latest main| F2["4b. Update existing<br/>PR branch;<br/>resolve, test, push"]
-    F2 --> H
-    H -->|Yes| J["6. Squash-merge PR"]
-    J --> K["7. Update local<br/>main"]
-    K --> L{"Cut a versioned<br/>release now?"}
-    L -->|No| M([Stop: no tag;<br/>record impact<br/>for later])
-    L -->|Yes| N["8. Choose highest<br/>SemVer impact"]
-    N --> O["9. Create release<br/>branch; prepare<br/>changelog/version"]
-    O --> P["10. Test and preview<br/>release build"]
-    P --> Q["11. Merge release PR"]
-    Q --> R["12. Tag merge;<br/>verify deployment"]
+    C -->|Breaking change| D["3. Choose Major<br/>version"]
+    C -->|Backward-compatible feature| D2["3. Choose Minor<br/>version"]
+    C -->|Compatible fix| D3["3. Choose Patch<br/>version"]
+    C -->|No product impact| E["3. No version bump"]
+    D --> F["4. Update changelog<br/>and app version"]
+    D2 --> F
+    D3 --> F
+    F --> G["5. Test and preview<br/>versioned change"]
+    E --> H["6. Fetch and check<br/>branch freshness"]
+    G --> H
+    H --> I{"Does branch include<br/>latest origin/main?"}
+    I -->|No| J["Update branch;<br/>resolve and test"]
+    J --> H
+    I -->|Yes| K["7. Push branch;<br/>open PR"]
+    K --> L{"PR validation<br/>passes?"}
+    L -->|No| M["Fix, test,<br/>and push"]
+    M --> L
+    L -->|Needs latest main| J2["Update PR branch;<br/>resolve, test, push"]
+    J2 --> L
+    L -->|Yes| N["8. Squash-merge PR"]
+    N --> O["9. Update local main;<br/>verify deployment"]
+    O --> P{"Versioned product<br/>change?"}
+    P -->|No| Q([Done: no version tag])
+    P -->|Yes| R["10. Tag deployed<br/>version"]
     R --> S([Release complete])
 ```
 
@@ -49,23 +48,51 @@ flowchart TD
 
 - **1. Inspect status and review commit:** [After a local commit](#after-a-local-commit)
 - **2. What is the release impact?:** [Classify release impact](#classify-release-impact)
-- **3. Fetch GitHub and check branch freshness:** [Refresh and verify `main`](#refresh-and-verify-main)
-- **4a. Before opening a PR, merge `origin/main`; resolve and test:**
+- **3. Choose the SemVer version and include it in the change PR:**
+  [Prepare version and changelog](#prepare-version-and-changelog)
+- **4. Update the changelog and app version:** [Prepare version and changelog](#prepare-version-and-changelog)
+- **5. Test and preview the versioned change:** [Prepare version and changelog](#prepare-version-and-changelog)
+- **6. Fetch GitHub and check branch freshness:** [Refresh and verify `main`](#refresh-and-verify-main)
+- **6a. Before opening a PR, merge `origin/main`; resolve and test:**
   [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main)
-- **4b. For an existing PR that needs recent `main`, update its branch and
+- **6b. For an existing PR that needs recent `main`, update its branch and
   revalidate:** [Update a branch that is behind `main`](#update-a-branch-that-is-behind-main)
-- **5. Push branch and open pull request:** [Open and validate a change PR](#open-and-validate-a-change-pr)
-- **6. Squash-merge the PR:** [Open and validate a change PR](#open-and-validate-a-change-pr)
-- **7. Update local `main`:** [Merge and clean up a change PR](#merge-and-clean-up-a-change-pr)
-- **8. Choose the release impact:** [Choose the release version](#choose-the-release-version)
-- **9. Create release branch and prepare changelog/version:** [Prepare a release branch](#prepare-a-release-branch)
-- **10. Validate and preview the release build:** [Validate and preview the release](#validate-and-preview-the-release)
-- **11. Open and merge release PR:** [Merge the release PR](#merge-the-release-pr)
-- **12. Update `main`, tag, and verify:** [Tag and verify the release](#tag-and-verify-the-release)
+- **7. Push branch and open pull request:** [Open and validate a change PR](#open-and-validate-a-change-pr)
+- **8. Squash-merge the PR:** [Open and validate a change PR](#open-and-validate-a-change-pr)
+- **9. Update local `main` and verify deployment:** [Merge and clean up a change PR](#merge-and-clean-up-a-change-pr)
+- **10. Tag the deployed version:** [Tag and verify the release](#tag-and-verify-the-release)
 
 For work that must be preserved while updating a branch but cannot yet be
 committed, use the [local-update exception](./LOCAL-REPO-UPDATE.md) instead of
 the normal branch-update steps.
+
+## Releasing with Copilot
+
+For a request such as “release the latest commit on this branch,” Copilot
+follows this confirmation-gated procedure:
+
+1. Check the branch and worktree, fetch `origin`, and inspect the commits and
+   product diff since `origin/main`. Stop if unrelated or uncommitted changes
+   make the release scope unclear, or if the branch needs updating.
+2. Recommend `major`, `minor`, `patch`, or `none` using the
+   [impact categories](#classify-release-impact), with a brief explanation
+   based on the changes. Dependabot dependency updates remain excluded.
+3. Propose the exact changelog notes and version. Review `README.md` and the
+   in-app User Guide at `src/components/tabs/UserGuideTab.tsx`; propose edits
+   only when the change makes either inaccurate or incomplete. Explicitly
+   report when no README or User Guide edit is needed.
+4. Ask for confirmation of the impact and proposed documentation before
+   editing any release files. After approval, apply only the approved changes
+   and follow [Prepare version and changelog](#prepare-version-and-changelog).
+5. Run checks and show the final diff. Ask before pushing the branch or
+   creating/updating its PR. After PR validation passes, ask again before
+   merging; a merge to `main` triggers the existing deployment. Verify the
+   deployed version and behavior, then ask before pushing a version tag.
+
+For `none`, do not bump the app version or create a version tag. A merge to
+`main` may still run the existing Pages workflow. The assistant does not push
+directly to protected `main`, merge without confirmation, or infer a release
+impact without presenting its rationale.
 
 ## After a local commit
 
@@ -77,7 +104,7 @@ git show --stat --oneline HEAD
 git diff
 ```
 
-Confirm you are on the intended feature, maintenance, or release branch. A
+Confirm you are on the intended feature or maintenance branch. A
 local commit does not push anything to GitHub. If the working tree is not
 clean, inspect the remaining changes: they are not included in the commit.
 Commit another checkpoint if those changes belong in the same work, or keep
@@ -99,9 +126,8 @@ Do not push directly to protected `main`.
 ## Classify release impact
 
 Classify the change by its effect on the product, not just its commit message
-or branch name. The classification helps choose the version when a release is
-cut. If a release contains several changes since the previous release, use the
-highest applicable impact among all of them.
+or branch name. If a PR contains several product changes, use the highest
+applicable impact among them.
 
 | Impact | Use when | Version change |
 | --- | --- | --- |
@@ -111,17 +137,20 @@ highest applicable impact among all of them.
 | No release | The change does not alter the released product, such as documentation-only or internal-only work. | No version bump or release tag for this change. |
 
 Dependency changes are not automatically “no release”: classify them by their
-actual product impact. Routine [dependency-update PRs](#dependency-update-prs)
-do not themselves create a product release or version tag.
+actual product impact. The exception is routine
+[Dependabot dependency-update PRs](#dependency-update-prs), which do not
+themselves create a product release or version tag.
 
-All changes still go through a PR to `main`. Merging a feature or fix does not
-mean a separate versioned release must be cut immediately. If no versioned
-release is being made now, record its impact for the next release and do not
-create a tag for it. A merge to `main` can deploy the app without a version
-tag.
+All changes still go through a PR to `main`. Every product-impacting change
+must include its version and changelog entry in that same PR, so no product
+change can deploy ahead of its version. Do not defer its version bump or
+combine it with product changes in later PRs. The narrow catch-up exception
+for already-deployed code without a version bump is detailed under
+[Prepare version and changelog](#prepare-version-and-changelog).
 
-**Next:** Continue to [Refresh and verify `main`](#refresh-and-verify-main)
-([flowchart step 3](#flowchart)).
+**Next:** For a product-impacting change, continue to
+[Prepare version and changelog](#prepare-version-and-changelog). For a
+no-release change, continue to [Refresh and verify `main`](#refresh-and-verify-main).
 
 ## Protecting `main`
 
@@ -129,8 +158,8 @@ Import [`.github/rulesets/protect-main.json`](../.github/rulesets/protect-main.j
 from **Settings → Rules → Rulesets → New branch ruleset → Import a ruleset**.
 The ruleset requires changes to `main` to arrive through pull requests, allows
 squash merges without requiring an approval, and blocks force-pushes and branch
-deletion. It requires the **Validate pull request** status check, which runs
-the tests and production build.
+deletion. It requires the **Validate pull request** status check, which checks
+release metadata, runs the tests, and builds the production app.
 
 This is a one-time repository setup, not a step in each release. After
 configuring the ruleset, return to the point in the [flowchart](#flowchart)
@@ -158,7 +187,7 @@ again before merge.
 
 **Next:** When the check exits with code `0`, continue to
 [Open and validate a change PR](#open-and-validate-a-change-pr)
-([flowchart step 5](#flowchart)). If it exits with code `1`, follow the
+([flowchart step 7](#flowchart)). If it exits with code `1`, follow the
 update-and-return path above. Stop on any other error.
 
 ## Start a change
@@ -257,10 +286,6 @@ PR merges, repeat the freshness check and update.
   updated branch to that PR, then return to
   [Open and validate a change PR](#open-and-validate-a-change-pr) to check
   validation again. Do not create a second PR.
-- From step 2 of [release work already on a maintenance
-  branch](#if-release-work-is-already-on-a-maintenance-branch): finish checks
-  and push the branch, then return to step 3 there and open the maintenance PR.
-
 If you cannot checkpoint your current work first, follow the
 [local-update exception](./LOCAL-REPO-UPDATE.md). It stashes staged,
 unstaged, and untracked changes, merges `origin/main`, and restores the work
@@ -290,9 +315,22 @@ then push the updated branch to the existing PR and check validation again.
 
 After resolving conflicts, rerun checks and push again.
 
+For product-impacting changes, include the version bump, updated
+`package-lock.json`, and matching `CHANGELOG.md` release entry in this PR.
+For changes to app source, public data/assets, build configuration, or
+production dependencies, include exactly one of these lines in the PR
+description: `Release-impact: major`, `Release-impact: minor`,
+`Release-impact: patch`, or `Release-impact: none`. The **Validate pull
+request** check requires the selected impact to match the SemVer increase,
+and verifies the lockfile and changelog entries. It excludes documentation,
+test/fixture files, and development-only dependencies. Use `none` only for an
+app-path change that has no product impact, such as an internal-only refactor;
+the check then allows the app version to remain unchanged. Dependabot PRs are
+exempt from the version check.
+
 **Next:** When validation passes, squash-merge the PR, then continue to
 [Merge and clean up a change PR](#merge-and-clean-up-a-change-pr)
-([flowchart step 6](#flowchart)). If validation fails for another reason, fix
+([flowchart step 8](#flowchart)). If validation fails for another reason, fix
 the issue, push, and check validation again. If it needs recent `main`, follow
 the update-and-return path above.
 
@@ -312,23 +350,17 @@ Switch only when the working tree is clean. Confirm `main` tracks
 `origin/main` and is up to date.
 
 **Next:** Continue to [After a change PR is merged](#after-a-change-pr-is-merged)
-([flowchart step 7](#flowchart)) to decide whether to prepare a release.
+([flowchart step 9](#flowchart)) to verify the deployment and, if versioned,
+tag the release.
 
 ## After a change PR is merged
 
 The change is now on `main`; a push to `main` automatically runs the deploy
 workflow when checks pass. Confirm the deployment completed and the production
-site reflects the merged change. If the normal workflow did not start, use
-[Manual deployment fallback](#manual-deployment-fallback), then return here.
-After verifying the deployment, decide whether to cut a versioned release:
-
-- If this change has no product release impact, no version bump or tag is
-  needed.
-- If it affects the product but a release is not being cut now, keep its
-  impact in mind for the next release. Do not tag an unreleased feature or fix
-  on its own.
-- If you are preparing a versioned release, continue with
-  [Choose the release version](#choose-the-release-version).
+site reflects the merged change. For a product-impacting change, verify the
+live footer and About tab show the version included in this PR. If the normal
+workflow did not start, use [Manual deployment fallback](#manual-deployment-fallback),
+then return here.
 
 After verifying the merge, you may delete the old local feature branch:
 
@@ -339,10 +371,11 @@ git branch -d maintenance/short-description
 GitHub may delete the remote branch automatically. Start the next change with
 a new feature or maintenance branch.
 
-**Next:** If releasing now, continue to
-[Choose the release version](#choose-the-release-version)
-([flowchart step 8](#flowchart)). Otherwise, stop here; when new work is ready,
-continue to [Start a change](#start-a-change).
+**Next:** For a versioned product change, continue to
+[Tag and verify the release](#tag-and-verify-the-release)
+([flowchart step 10](#flowchart)). For a no-release change or a Dependabot
+update, no version tag is needed; continue to [Start a change](#start-a-change)
+when ready.
 
 ## Dependency update PRs
 
@@ -352,15 +385,17 @@ direct dependency ranges; `package-lock.json` records the exact resolved
 dependency tree installed by `npm ci`. Dependabot updates these files in its
 PRs. The configuration controls the schedule and grouping, not the lockfile.
 
-Dependabot PRs run the **Dependabot updates** workflow. It installs from the
+Every PR runs the **Pull request validation and Dependabot updates** workflow.
+It checks the release version (exempting Dependabot), installs from the
 lockfile, runs the complete test suite, and builds the production app. After
 validation, identified patch and minor updates are squash-merged
 automatically; major updates and updates whose version type cannot be
 identified remain for manual review. A successful merge to `main` triggers
 GitHub Pages deployment explicitly, because merges performed with
 `GITHUB_TOKEN` do not trigger the normal `push` deployment event. These
-dependency updates do not by themselves create a product release or version
-tag.
+dependency updates are the explicit exception to the same-PR version rule:
+they do not change the app version, create a product release, or need a
+version tag.
 
 **Next:** For an auto-merged update, no release-tag step is needed; when
 starting new work, use [Start a change](#start-a-change) to refresh local
@@ -370,78 +405,137 @@ that PR through GitHub, then use
 local `main` and [After a change PR is merged](#after-a-change-pr-is-merged)
 to continue. Do not cut a product release solely for a dependency update.
 
-## Choose the release version
+## Prepare version and changelog
 
-Choose the SemVer increase based on all product changes included since the
-previous release, using the
+For a product-impacting PR, choose the SemVer increase using the
 [impact categories above](#classify-release-impact):
 
 - **Major** for breaking changes.
 - **Minor** for backward-compatible user-facing features.
 - **Patch** for compatible fixes.
-- **No release** when there are no product changes to publish.
+- **No release** for changes with no product impact, such as documentation-only
+  or internal-only work.
 
-When changes of multiple types are included, use the highest impact. Choose
-the exact next `X.Y.Z` version and use it consistently in the changelog,
-`package.json`, `package-lock.json`, release commit, PR title, and tag.
+When a PR contains changes of multiple types, use the highest impact.
+Ordinarily, each product-impacting PR gets its own version increase; do not
+defer it to a later PR that only changes release metadata or combine it with
+changes that have already deployed. The sole catch-up exception is for product
+code already present in a successful Pages deployment without its version
+bump. Confirm the deployed commit and require the base branch's `[Unreleased]`
+notes to describe that deployed change. Choose the next exact `X.Y.Z` version
+after the current app version on `main`.
+Include the matching line in the PR description, for example
+`Release-impact: patch`. The PR check enforces the declared increase:
+major advances `X` and resets `Y` and `Z`, minor advances `Y` and resets `Z`,
+and patch advances `Z`.
 
-**Next:** Continue to [Prepare a release branch](#prepare-a-release-branch)
-([flowchart step 9](#flowchart)).
+Update `CHANGELOG.md`: keep a fresh, empty `[Unreleased]` section at the top
+and move the completed product changes below it into a new
+`## [X.Y.Z] - YYYY-MM-DD` section. Use the same version as the app.
 
-## Prepare a release branch
+After the approved release notes are under `[Unreleased]`, run the release
+dry run first:
 
-Create a release branch from up-to-date `main`, using the normal
-[Start a change](#start-a-change) procedure and a branch name such as
-`release/vX.Y.Z`. The working tree must be clean so the release contains only
-intended release changes. Release fixes and features should already have been
-merged through their own PRs; do not stash or cherry-pick unrelated work onto
-the release branch.
+```powershell
+npm run release:prepare -- --base origin/main --impact patch --dry-run
+```
 
-### If release work is already on a maintenance branch
+Replace `patch` with the confirmed `major` or `minor` impact. The dry run
+calculates the candidate `X.Y.Z` version from `origin/main`, prints the exact
+release-metadata diff, then applies that candidate only in an isolated
+temporary copy of the current worktree. It runs release-tooling tests, the
+complete app test suite, and the production build against the candidate
+package versions. If dependencies changed, it installs them from the candidate
+lockfile in the temporary copy. It removes the temporary copy afterward and
+does not change the worktree or interact with GitHub. It refuses to run on
+`main`, against a stale/already-versioned package, without detected product
+changes unless `--catch-up` is used, or without release notes. Catch-up also
+requires the base `[Unreleased]` notes to be carried into the versioned entry.
+If any check fails, fix the issue and repeat the dry run before preparing the
+release.
 
-Treat committed maintenance work as an everyday change first, not as a
-release branch:
+After reviewing a successful dry-run diff and results, prepare the matching
+app and changelog versions with the same command without `--dry-run`:
 
-1. Confirm the working tree is clean and you are on the intended branch.
-   Commit any work you want included before updating it.
-2. Fetch and merge the latest `main` into the maintenance branch:
+```powershell
+npm run release:prepare -- --base origin/main --impact patch
+```
 
-   ```powershell
-   git fetch origin
-   git switch maintenance/short-description
-   git merge origin/main
-   ```
+`--date YYYY-MM-DD` can set a specific changelog date. The command does not
+stage, commit, push, create a PR, merge, deploy, or tag. The preview does not
+simulate GitHub Actions or the live Pages environment; PR validation and
+post-deployment verification remain separate gates.
 
-   Resolve conflicts, run checks, and push the updated branch. Repeat if
-   `main` advances before the PR merges.
-3. Open a maintenance PR targeting `main`. Wait for **Validate pull request**
-   to pass, then squash-merge it. Do not push or commit directly to protected
-   `main`.
-4. After GitHub confirms the maintenance PR is merged, update local `main`
-   using [Merge and clean up a change PR](#merge-and-clean-up-a-change-pr),
-   then continue to [After a change PR is merged](#after-a-change-pr-is-merged).
-   Create `release/vX.Y.Z` from that updated `main`, then continue below.
+For an approved catch-up, the product files must already be present in the
+base branch; the PR changes release metadata only. Use the same preparation
+flow with `--catch-up`, after confirming the base `[Unreleased]` notes:
 
-The maintenance PR merges the actual feature or fix. The later release PR
-contains the changelog and version changes; it is a separate PR and also
-targets `main`.
+```powershell
+npm run release:prepare -- --base origin/main --impact minor --catch-up --dry-run
+npm run release:prepare -- --base origin/main --impact minor --catch-up
+```
 
-**Next:** With the release branch created from updated `main`, continue to
-[Validate and preview the release](#validate-and-preview-the-release)
-([flowchart step 10](#flowchart)).
+The catch-up option refuses product-file changes in the PR and requires the
+base branch's existing `[Unreleased]` notes to appear in the new version
+section. Include exactly one `Release-impact: major`, `Release-impact: minor`,
+or `Release-impact: patch` line matching the approved impact and exactly one
+`Release-catch-up: true` line in the PR description. The local release check
+can validate the same decision with:
 
-## Validate and preview the release
+```powershell
+npm run release:check -- --base origin/main --impact minor --catch-up
+```
+
+Vite reads the version from `package.json` and injects it into the page footer
+and About-tab heading. Include the changelog, package files, and product
+changes in the same PR. For no-impact work, run the read-only dry run with
+`--impact none` to test the current worktree without changing release metadata:
+
+```powershell
+npm run release:prepare -- --base origin/main --impact none --dry-run
+```
+
+Do not run the mutating version-preparation command or create a version tag.
+For UI or interaction changes, serve the built app locally with
+`npm run preview -- --host 127.0.0.1` and exercise the affected flows at both
+desktop and mobile viewport sizes before asking to push or open/update a PR.
+Check the responsive layout and affected interactions in both sizes. Report
+if browser-based inspection is not available.
+
+Run the local version check against the same base and selected impact:
+
+```powershell
+npm run release:check -- --base origin/main --impact patch
+```
+
+Use the confirmed impact, or `none` for a no-impact change. For app source,
+public assets/data, build configuration, or production dependency changes (and for
+every catch-up release, even though its PR changes release metadata only),
+include exactly one `Release-impact: major`, `Release-impact: minor`,
+`Release-impact: patch`, or `Release-impact: none` line in the PR description.
+The PR check enforces the declared version increase and verifies the changelog
+and lockfile. The `none` declaration is for path-classified changes with no
+product impact; documentation, test-only, and development-dependency-only
+changes need no release metadata. Dependabot is exempt.
+
+If the preparation command is unavailable, manually move the approved
+`[Unreleased]` entries into a dated `## [X.Y.Z]` section, preserve a fresh
+empty `[Unreleased]` section, and set `package.json`'s `version`, the
+top-level `package-lock.json` `version`, and `package-lock.json`'s
+`packages[""].version` to the same `X.Y.Z`. The PR validation remains the
+final version/changelog check.
 
 Run the release checks locally:
 
 ```powershell
 npm ci
 npm test -- --run
+npm run build
 ```
 
 `npm ci` checks that the lockfile can reproduce the install, and tests check
-behavior. Resolve failures before continuing. Build after setting the
-release version so built files contain that version.
+behavior. Resolve failures before continuing. The build must use the new
+version so the displayed app version matches the changelog and package files.
 
 On Windows, if `npm ci` fails with `EPERM` while unlinking a file under
 `node_modules`, a running Vite server may be locking it. Stop it with
@@ -463,26 +557,9 @@ Replace `<PID>` with each matching process ID, then retry `npm ci`. If the
 error persists, another editor process or antivirus software may be holding
 the file.
 
-Update `CHANGELOG.md`: keep a fresh, empty `[Unreleased]` section at the top
-and move the completed items below it into a new
-`## [X.Y.Z] - YYYY-MM-DD` section. Use the release date and the same version
-you will use in the next step.
-
-Set the application version in `package.json` and `package-lock.json` to the
-same `X.Y.Z`. Use npm to update both files and their root version entries:
+Preview the production build after changing the version:
 
 ```powershell
-npm version X.Y.Z --no-git-tag-version
-```
-
-Replace `X.Y.Z` with the exact changelog version, without the leading `v`.
-`--no-git-tag-version` prevents npm from making its own Git commit or tag; the
-release files will be reviewed and committed together. Vite reads the version
-from `package.json` and injects it into the page footer and About-tab heading.
-Build and preview after changing the version:
-
-```powershell
-npm run build
 npm run preview
 ```
 
@@ -491,48 +568,30 @@ the printed local URL, check the footer, then open the About tab and check
 that both display the expected version (for example, `v1.8.0`). Stop the
 preview server with `Ctrl+C`.
 
-**Next:** Continue to [Commit the release changes](#commit-the-release-changes).
-
-## Commit the release changes
-
-Stage only the changelog and version files. Review the diff and commit:
-
-```powershell
-git add -- CHANGELOG.md package.json package-lock.json
-git diff --cached --check
-git diff --cached
-git commit -m "chore: release vX.Y.Z"
-```
-
-Do not include unrelated changes.
-
-**Next:** Continue to [Merge the release PR](#merge-the-release-pr).
-
-## Merge the release PR
-
-Push the release branch and open a PR targeting `main`, using
-`chore: release vX.Y.Z` as the PR title. Include the release summary and
-validation details in its description. Wait for **Validate pull request** to
-pass, then squash-merge the PR. The merge—not the tag—triggers production
-deployment.
-
-**Next:** After GitHub confirms the merge, continue to
-[Tag and verify the release](#tag-and-verify-the-release)
-([flowchart step 12](#flowchart)).
+**Next:** Stage and commit the changelog and version files together with the
+product change through [Review and commit checkpoints](#review-and-commit-checkpoints),
+then open and validate the same change PR.
 
 ## Tag and verify the release
 
-After GitHub confirms the release PR is merged, update local `main` using
-[After a change PR is merged](#after-a-change-pr-is-merged). Confirm the
-latest commit is the release PR merge:
+After GitHub confirms a versioned product PR is merged, update local `main`
+using [After a change PR is merged](#after-a-change-pr-is-merged). Confirm the
+latest commit is the versioned PR merge:
 
 ```powershell
 git log -1 --oneline
 ```
 
-If the latest commit is not the release PR merge, stop and investigate before
-tagging. Create and publish an annotated version tag for the exact release
-revision:
+If the latest commit is not the versioned PR merge, stop and investigate.
+Confirm the **Deploy to GitHub Pages** run for the merged commit completes
+successfully. Open the production URL and verify the footer and About tab show
+the expected version and the key changes are live. If deployment failed,
+inspect its logs and fix the issue on a follow-up feature or maintenance
+branch, then use the everyday PR workflow. Do not tag an unverified
+deployment.
+
+After verification, create and publish an annotated version tag for the exact
+release revision:
 
 ```powershell
 git tag -a vX.Y.Z -m "Release vX.Y.Z"
@@ -540,12 +599,7 @@ git push origin vX.Y.Z
 ```
 
 Pushing the tag makes it available on GitHub but does not trigger deployment.
-Confirm the **Deploy to GitHub Pages** run for the release commit completes
-successfully in the repository's GitHub Actions tab. Open the production URL
-and verify the released version and key changes. If the workflow fails,
-inspect its logs and fix the issue on a follow-up feature or maintenance
-branch, then use the everyday PR workflow. Do not move or overwrite a
-published tag.
+Do not move or overwrite a published tag.
 
 For the first release that enables PWA support, verify the deployed app at its
 GitHub Pages URL in a clean browser profile and on target browsers/platforms:
@@ -572,7 +626,6 @@ If a push to `main` did not start the workflow, open **Actions** →
 Confirm the run finishes successfully and verify the production URL. After
 verification, return to the procedure that sent you here and continue its
 remaining steps: [Tag and verify the release](#tag-and-verify-the-release)
-for a release, including any remaining release-specific checks, or
-[After a change PR is merged](#after-a-change-pr-is-merged) for an ordinary
-change, to make its release decision. Use this only when the normal deployment
-workflow did not start; manually running it does not replace the release tag.
+for a versioned product change, or [After a change PR is merged](#after-a-change-pr-is-merged)
+for a no-release change. Use this only when the normal deployment workflow did
+not start; manually running it does not replace the release tag.

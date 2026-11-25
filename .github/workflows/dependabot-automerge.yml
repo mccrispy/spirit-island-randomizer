@@ -1,4 +1,4 @@
-name: Dependabot updates
+name: Pull request validation and Dependabot updates
 
 on:
   pull_request:
@@ -14,10 +14,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+      - name: Test release version check
+        run: >-
+          node --test scripts/check-release-version.test.mjs
+          scripts/prepare-release.test.mjs
+          scripts/release-workflow-docs.test.mjs
+          scripts/release-preview.test.mjs
+      - name: Check release version
+        run: npm run release:check
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          IS_DEPENDABOT: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
+          PULL_REQUEST_BODY: ${{ github.event.pull_request.body }}
       - run: npm ci
       - run: npm test -- --run
       - run: npm run build
